@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 /*Helpful resources: https://stackoverflow.com/questions/9620278/how-do-i-make-calls-to-a-rest-api-using-c
                      https://code-maze.com/different-ways-consume-restful-api-csharp/
@@ -14,6 +15,7 @@ namespace Project300
 {
     internal class API
     {
+
         //TODO Setup correct return type, should return the GamesList List
         public static void FetchAPIData()
         {
