@@ -14,6 +14,7 @@ namespace Project300
 {
     internal class API
     {
+        //TODO Setup correct return type, should return the GamesList List
         public static void FetchAPIData()
         {
             using HttpClient client = new();
@@ -26,6 +27,8 @@ namespace Project300
             client.DefaultRequestHeaders.Add("User-Agent", ".NET API Reader");
 
             var GamesList = await ProcessDataAsync(client);
+
+            //return GamesList;
 
             static async Task<List<GamesList>> ProcessDataAsync(HttpClient client)
             {

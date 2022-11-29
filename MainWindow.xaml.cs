@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 namespace Project300
 {
+    //TODO: Add settings with data stored in a local INI file to all the location of individual emulators to be stored
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
