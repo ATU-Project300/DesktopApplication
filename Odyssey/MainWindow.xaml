@@ -5,8 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Odyssey"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
+        <TabControl TabStripPlacement="Top" Style="{DynamicResource MaterialDesignNavigationRailTabControl}">
+            <TabItem Header="Games">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Name="darkModeStatus">Unknown</Label>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Name="darkModeChkBx" Grid.Row="0" Grid.Column="0" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top">Dark Mode</CheckBox>
+                    <Button Name="applyBtn" Grid.Row="0" Grid.Column="0" Margin="10,10" Width="50" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="applyBtn_Click">Apply</Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
         
     </Grid>
 </Window>
