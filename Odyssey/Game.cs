@@ -4,12 +4,12 @@ namespace Odyssey
 {
     internal class Game
     {
-        [property: JsonPropertyName("title")] public string Title { get; set; }
-        [property: JsonPropertyName("year")] public int YearReleased { get; set; }
-        [property: JsonPropertyName("description")] public string Description { get; set; }
-        [property: JsonPropertyName("image")] public string Image { get; set; }
-        [property: JsonPropertyName("console")] public string[] Consoles { get; set; }
-        [property: JsonPropertyName("emulator")] public Emulator Emulator { get; set; }
+        public string Title { get; set; }
+        public int YearReleased { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+        public string[] Consoles { get; set; }
+        public Emulator Emulator { get; set; }
         public string FileLocation { get; set; } //Location of the ROM/ISO, add this to the local INI file mentioned in MainWindow.xaml.cs
     }
 }
