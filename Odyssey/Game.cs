@@ -10,6 +10,6 @@ namespace Odyssey
         public string Image { get; set; }
         public string[] Consoles { get; set; }
         public Emulator Emulator { get; set; }
-        public string FileLocation { get; set; } //Location of the ROM/ISO, add this to the local INI file mentioned in MainWindow.xaml.cs
+        public string FileLocation { get; set; } //Location of the ROM/ISO, to be added to Properties.Settings ...
     }
 }
