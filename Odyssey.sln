@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey", "Odyssey\Odyssey.csproj", "{F8B00C4C-8DC2-49E3-B555-B1FE13024CC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{FA9CC047-B37A-421B-9550-922C54748209}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F8B00C4C-8DC2-49E3-B555-B1FE13024CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8B00C4C-8DC2-49E3-B555-B1FE13024CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8B00C4C-8DC2-49E3-B555-B1FE13024CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9CC047-B37A-421B-9550-922C54748209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9CC047-B37A-421B-9550-922C54748209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9CC047-B37A-421B-9550-922C54748209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9CC047-B37A-421B-9550-922C54748209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

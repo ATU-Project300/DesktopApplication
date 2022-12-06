@@ -16,7 +16,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+
+                    <!-- Below are elements only added for testing -->
                     <Label Name="darkModeStatus">Unknown</Label>
+                    <TextBlock Name="myText" Margin="100">x</TextBlock>
+                    <Button Width="70" Height="20" Name="loadGames" Margin="0,0,0,-370" Click="loadGames_Click">Load Games</Button>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
