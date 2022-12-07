@@ -30,7 +30,10 @@
     <Label Name="TitleLBL" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Center">Home</Label>
     <TextBox Name="SearchTxBx" Grid.Row="0" Grid.Column="1" Width="450" Height="25" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="TextBox_TextChanged"></TextBox>
     <Button Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center">Search</Button>
-    <DataGrid Name="DataGrid" Grid.Row="1" Grid.Column="1" Margin="5" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" />
+
+    <!-- TODO: Scroll view and manual creation of card-like items? -->
+
+    <DataGrid Name="DataGrid" Grid.Row="1" Grid.Column="1" Margin="5" CanUserAddRows="False" CanUserDeleteRows="False"/>
     <Grid Grid.Row="1" Grid.Column="0">
     <Grid.RowDefinitions>
         <RowDefinition Height="*"></RowDefinition>
