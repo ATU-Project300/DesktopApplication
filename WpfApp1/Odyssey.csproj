@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API\API.csproj" />
   </ItemGroup>
 

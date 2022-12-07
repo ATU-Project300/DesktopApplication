@@ -28,3 +28,18 @@ C:\Users\Admin\Downloads\Potential Odyssey\API\bin\Debug\net7.0\API.dll
 C:\Users\Admin\Downloads\Potential Odyssey\API\bin\Debug\net7.0\API.pdb
 C:\Users\Admin\Downloads\Potential Odyssey\API\obj\Debug\net7.0\API.genruntimeconfig.cache
 C:\Users\Admin\Downloads\Potential Odyssey\API\obj\Debug\net7.0\ref\API.dll
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\bin\Debug\net7.0\API.exe
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\bin\Debug\net7.0\API.deps.json
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\bin\Debug\net7.0\API.runtimeconfig.json
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\bin\Debug\net7.0\API.dll
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\bin\Debug\net7.0\API.pdb
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.AssemblyInfo.cs
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.dll
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\refint\API.dll
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.pdb
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\API.genruntimeconfig.cache
+C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\API\obj\Debug\net7.0\ref\API.dll

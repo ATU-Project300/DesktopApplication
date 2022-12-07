@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\WpfApp1\\Odyssey.csproj": {}
+    "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\WpfApp1\\Odyssey.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\API.csproj": {
+    "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -63,14 +63,14 @@
         }
       }
     },
-    "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\WpfApp1\\Odyssey.csproj": {
+    "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\WpfApp1\\Odyssey.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\WpfApp1\\Odyssey.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\WpfApp1\\Odyssey.csproj",
         "projectName": "Odyssey",
-        "projectPath": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\WpfApp1\\Odyssey.csproj",
+        "projectPath": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\WpfApp1\\Odyssey.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\WpfApp1\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\WpfApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -91,8 +91,8 @@
           "net7.0-windows7.0": {
             "targetAlias": "net7.0-windows",
             "projectReferences": {
-              "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\API.csproj": {
-                "projectPath": "C:\\Users\\Admin\\Downloads\\Potential Odyssey\\API\\API.csproj"
+              "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\API.csproj": {
+                "projectPath": "C:\\Users\\Admin\\Documents\\Project-300-Git-Repos\\DesktopApplication\\API\\API.csproj"
               }
             }
           }
@@ -106,6 +106,12 @@
       "frameworks": {
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
+          "dependencies": {
+            "MaterialDesignThemes.MahApps": {
+              "target": "Package",
+              "version": "[0.2.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
