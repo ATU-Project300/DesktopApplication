@@ -35,6 +35,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header = "Title" Binding = "{Binding Title}" />
                 <DataGridTextColumn Header = "Console" Binding = "{Binding Consoles}"/>
+                <DataGridTextColumn Header = "Emulator" Binding = "{Binding Emulator}"/>
             </DataGrid.Columns>
 </DataGrid>
 
