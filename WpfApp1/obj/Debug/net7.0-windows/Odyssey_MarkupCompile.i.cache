@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\WpfApp1\obj\Debug\net7.0-windows\
+C:\DesktopAppGit\WpfApp1\obj\Debug\net7.0-windows\
 Odyssey
 none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
-C:\Users\Admin\Documents\Project-300-Git-Repos\DesktopApplication\WpfApp1\App.xaml
-11407045341
+C:\DesktopAppGit\WpfApp1\App.xaml
+3584641632
 
-7-1331286247
-2051526047516
-MainWindow.xaml;
+9-789117455
+205-1402319253
+MainWindow.xaml;Theme\MenuButtonTheme.xaml;Theme\TextboxTheme.xaml;
 
 False
 

@@ -14,10 +14,20 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="Odyssey" Height="450" Width="800"
         MinHeight="425" MinWidth="750">
     <Grid>
-        <Grid.RowDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,3"
+                                 EndPoint="1,1">
+                <GradientStop Color="Purple" 
+                              Offset="0.1"/>
+                <GradientStop Color="Yellow"
+                              Offset="2.5"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions >
             <RowDefinition Height="15*"/>
             <RowDefinition Height="85*"/>
         </Grid.RowDefinitions>
@@ -26,18 +36,29 @@
             <ColumnDefinition Width="90*"/>
         </Grid.ColumnDefinitions>
         <!-- <ListBox Name="ListBox" Grid.Row="1" Grid.Column="1" Height="180" VerticalAlignment="Top"></ListBox> -->
-        <Button x:Name="SettingsBTN" Grid.Row="0" Grid.Column="0" Width="85" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" Click="SettingsButtonClick" Content="Settings"/>
-        <Label x:Name="TitleLBL" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Center" Content="Home"/>
-        <TextBox x:Name="SearchTxBx" Grid.Row="0" Grid.Column="1" Width="450" Height="25" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="TextBox_TextChanged"/>
+
+        <!--<Label x:Name="TitleLBL" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Content="Home"/>-->
+        <TextBox x:Name="SearchTxBx" TextChanged="TextBox_TextChanged" Width="250"
+                     Height="40"
+                     VerticalContentAlignment="Center"
+                     HorizontalAlignment="Right"
+                     Margin="0,10,90,15"
+                     Grid.Column="1"
+                     Style="{StaticResource ModernTextBox}"/>
+
         <Button x:Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Search"/>
 
-        <DataGrid Grid.Row="1" Grid.Column="1" x:Name="DataGrid" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="DataGrid_OnMouseDoubleClick" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header = "Title" Binding = "{Binding Title}" />
+        <DataGrid Grid.Column="1" x:Name="DataGrid" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="DataGrid_OnMouseDoubleClick" AutoGenerateColumns="False" Margin="13,65,0,0" Grid.RowSpan="2" Foreground="#DDFFFFFF">
+            <DataGrid.Columns >
+                <DataGridTextColumn x:Name="Title" Header = "Title"  Binding = "{Binding Title}" />
                 <DataGridTextColumn Header = "Console" Binding = "{Binding Consoles}"/>
                 <DataGridTextColumn Header = "Emulator" Binding = "{Binding Emulator}"/>
             </DataGrid.Columns>
-</DataGrid>
+        </DataGrid>
+
+
+
+
 
         <!-- TODO: Scroll view and manual creation of card-like items? -->
         <!--
@@ -53,15 +74,72 @@
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel5"></StackPanel>
             </StackPanel>
         </ScrollViewer>-->
-        <Grid Grid.Row="1" Grid.Column="0">
+        <!--<Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="RecentBTN" Grid.Row="0" Height="40" Width="100" VerticalAlignment="Center" Content="Recent"/>
-            <Button x:Name="AllGamesBTN" Grid.Row="1" Height="40" Width="100" VerticalAlignment="Center" Content="All games"/>
-            <Button x:Name="SavedBTN" Grid.Row="2"  Height="40" Width="100" VerticalAlignment="Center" Content="Saved"/>
+            <Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-63,-26,-63,0" Grid.RowSpan="3"/>
+            <Button x:Name="RecentBTN" Grid.Row="1" Height="40" Width="100" VerticalAlignment="Center" Content="Recent"/>
+            <Button x:Name="AllGamesBTN" Grid.Row="2" Height="40" Width="100" VerticalAlignment="Center" Content="All games"/>
+            <Button x:Name="SavedBTN" Grid.Row="3"  Height="40" Width="100" VerticalAlignment="Center" Content="Saved"/>
+            <Button x:Name="SettingsBTN" Grid.Row="4" Height="40" Width="100" VerticalAlignment="Top" HorizontalAlignment="Center" Click="SettingsButtonClick" Content="Settings" Margin="0,25,0,0"/>
+        </Grid>-->
+
+        <Grid Background="#b06050" Grid.ColumnSpan="2" Margin="0,0,613,320" Grid.RowSpan="2" >
+            <!--<TextBlock Text="Odyssey"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Foreground="White"
+                   FontSize="22"
+                   Margin="50,0,0,0" FontFamily="Segoe UI Black"/>-->
+            <Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-47,-32,-16,0" />
         </Grid>
+
+        <StackPanel Background="#b06050" Grid.Row="1" Margin="0,20,0,0">
+
+            <RadioButton Content="Home"
+                             
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+            <RadioButton Content="Recent"
+                             
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}" Width="175"/>
+
+            <RadioButton Content="All Games"
+                             
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+            <RadioButton Content="Settings"
+                             Name="SettingsBTN"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+            <RadioButton Content="Play"
+                             
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+
+
+        </StackPanel>
+ 
+
     </Grid>
 </Window>

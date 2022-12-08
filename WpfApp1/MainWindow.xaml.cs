@@ -12,6 +12,7 @@ using MahApps.Metro.Controls;
 using static API.API;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using System.Windows.Media;
 
 namespace WpfApp1
 {
@@ -38,6 +39,20 @@ namespace WpfApp1
             games = list;
 
             DataGrid.ItemsSource = list;
+
+            //Programmatically added gradient for DataGrid
+            LinearGradientBrush myLinearGradientBrush =
+            new LinearGradientBrush();
+            myLinearGradientBrush.StartPoint = new Point(0, 3);
+            myLinearGradientBrush.EndPoint = new Point(1, 1);
+            myLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Purple, 0.1));
+            myLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Yellow, 2.5));
+            
+
+            // Use the brush to paint the datagrid .
+            DataGrid.Background = myLinearGradientBrush;
 
             /*
             int i = 0;
