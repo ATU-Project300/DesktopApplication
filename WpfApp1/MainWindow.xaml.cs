@@ -143,6 +143,11 @@ namespace WpfApp1
 
         private void DataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            StartGame(DataGrid.SelectedIndex);
+        }
+
+        private void StartGame(int gameIndex)
+        {
             switch (DataGrid.SelectedIndex)
             {
                 default:
@@ -156,6 +161,7 @@ namespace WpfApp1
                     break;
                 
             }
+
         }
     }
 }

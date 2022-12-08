@@ -31,6 +31,13 @@
         <TextBox x:Name="SearchTxBx" Grid.Row="0" Grid.Column="1" Width="450" Height="25" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="TextBox_TextChanged"/>
         <Button x:Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Search"/>
 
+        <DataGrid Grid.Row="1" Grid.Column="1" x:Name="DataGrid" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="DataGrid_OnMouseDoubleClick" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header = "Title" Binding = "{Binding Title}" />
+                <DataGridTextColumn Header = "Console" Binding = "{Binding Consoles}"/>
+            </DataGrid.Columns>
+</DataGrid>
+
         <!-- TODO: Scroll view and manual creation of card-like items? -->
         <!--
         <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Grid.Column="1" Margin="2">
@@ -44,9 +51,7 @@
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel4"></StackPanel>
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel5"></StackPanel>
             </StackPanel>
-        </ScrollViewer>
-            -->
-        <DataGrid Grid.Row="1" Grid.Column="1" x:Name="DataGrid" CanUserAddRows="False" Height="2000" CanUserDeleteRows="False" MouseDoubleClick="DataGrid_OnMouseDoubleClick" />
+        </ScrollViewer>-->
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
