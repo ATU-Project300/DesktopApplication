@@ -111,6 +111,8 @@ namespace WpfApp1
             StreamWriter sw = new StreamWriter("c:\\data\\games.json");
 
             sw.WriteLine(jsondata);
+            sw.Close();
+            Console.WriteLine(jsondata);
         }
 
 
