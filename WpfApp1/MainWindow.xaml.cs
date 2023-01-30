@@ -13,6 +13,10 @@ using static API.API;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using System.Windows.Media;
+using System.Collections.Generic;
+
+using Newtonsoft.Json;
+using System.IO;
 
 namespace WpfApp1
 {
@@ -37,6 +41,11 @@ namespace WpfApp1
             _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
             var list = await ProcessRepositoriesAsync(_client);
             games = list;
+
+
+
+
+            TestMethod(list);
 
             DataGrid.ItemsSource = list;
 
@@ -89,6 +98,22 @@ namespace WpfApp1
             */
 
         }
+
+        private void TestMethod(List<GamesList> list)
+        {
+            //foreach (var item in list)
+            //{
+            //    Console.WriteLine(item.Title);
+            //}
+
+            string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
+
+            StreamWriter sw = new StreamWriter("c:\\data\\games.json");
+
+            sw.WriteLine(jsondata);
+        }
+
+
 
         /*
         public void GenCard(string Uri, int HIndex, string game)

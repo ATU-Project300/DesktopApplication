@@ -1,16 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "j+lqvyOAbYqUW/ziXKK8GDmjNBUZAB1IvPS9JVsp2MM7PVrkjgjCFkGxf5sd+7c9EBodKPWfcqX4jg+ZpKD/4w==",
+  "dgSpecHash": "/zqa2w6GehGi5i9V7Y9D7lZaID0FChG2E+t+IN3/+HP9Qh0jaZY+ZA4mqhpAK1NkrI5dX12SuEjZ4ve3BDIllw==",
   "success": true,
-  "projectFilePath": "C:\\DesktopAppGit\\WpfApp1\\Odyssey.csproj",
+  "projectFilePath": "C:\\Users\\User\\source\\repos\\DesktopApplication2\\WpfApp1\\Odyssey.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Ross\\.nuget\\packages\\controlzex\\4.3.0\\controlzex.4.3.0.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\mahapps.metro\\2.0.0\\mahapps.metro.2.0.0.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\materialdesigncolors\\2.0.9\\materialdesigncolors.2.0.9.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\materialdesignthemes\\4.6.1\\materialdesignthemes.4.6.1.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\materialdesignthemes.mahapps\\0.2.5\\materialdesignthemes.mahapps.0.2.5.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
-    "C:\\Users\\Ross\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512"
+    "C:\\Users\\User\\.nuget\\packages\\controlzex\\4.3.0\\controlzex.4.3.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\mahapps.metro\\2.0.0\\mahapps.metro.2.0.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\materialdesigncolors\\2.0.9\\materialdesigncolors.2.0.9.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\materialdesignthemes\\4.6.1\\materialdesignthemes.4.6.1.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\materialdesignthemes.mahapps\\0.2.5\\materialdesignthemes.mahapps.0.2.5.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512"
   ],
   "logs": []
 }
