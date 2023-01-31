@@ -48,13 +48,6 @@
 
         <Button x:Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Search"/>
 
-        <DataGrid Grid.Column="1" x:Name="DataGrid" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="DataGrid_OnMouseDoubleClick" AutoGenerateColumns="False" Margin="13,65,0,0" Grid.RowSpan="2" Foreground="#DDFFFFFF">
-            <DataGrid.Columns >
-                <DataGridTextColumn x:Name="Title" Header = "Title"  Binding = "{Binding Title}" />
-                <DataGridTextColumn Header = "Console" Binding = "{Binding Consoles}"/>
-                <DataGridTextColumn Header = "Emulator" Binding = "{Binding Emulator}"/>
-            </DataGrid.Columns>
-        </DataGrid>
 
 
 
