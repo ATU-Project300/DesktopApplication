@@ -14,7 +14,6 @@ using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using System.Windows.Media;
 using System.Collections.Generic;
-
 using Newtonsoft.Json;
 using System.IO;
 using Odyssey;
@@ -24,6 +23,7 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
         private Object games;
+        String emulatorPath, gameFolderPath;
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
 
@@ -48,7 +48,7 @@ namespace WpfApp1
 
             TestMethod(list);
 
-            DataGrid.ItemsSource = list;
+            //DataGrid.ItemsSource = list;
 
             //Programmatically added gradient for DataGrid
             LinearGradientBrush myLinearGradientBrush =
@@ -59,12 +59,12 @@ namespace WpfApp1
             new GradientStop(Colors.Purple, 0.1));
             myLinearGradientBrush.GradientStops.Add(
             new GradientStop(Colors.Yellow, 2.5));
-            
+
 
             // Use the brush to paint the datagrid .
-            DataGrid.Background = myLinearGradientBrush;
+            //DataGrid.Background = myLinearGradientBrush;
 
-            /*
+            
             int i = 0;
             //Testing
             foreach (var game in list)
@@ -93,10 +93,22 @@ namespace WpfApp1
                 {
                     GenCard(game.Image, 5, game.Title.Substring(0,3));
                 }
+                else if (i < 35)
+                {
+                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                }
+                else if (i < 40)
+                {
+                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                }
+                else if (i < 45)
+                {
+                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                }
                 i++;
             }
-            //MessageBox.Show(list[0].Title); //Example of an individually addressed item
-            */
+            MessageBox.Show(list[0].Title); //Example of an individually addressed item
+            
 
         }
 
@@ -118,7 +130,7 @@ namespace WpfApp1
 
 
 
-        /*
+        
         public void GenCard(string Uri, int HIndex, string game)
         {
             Image Img = new Image();
@@ -151,7 +163,7 @@ namespace WpfApp1
             }
         }
 
-        */
+        
 
         //Spawn settings window?
         //Hide list and other items and show settings instead?
@@ -184,33 +196,104 @@ namespace WpfApp1
             }
         }
 
-        private void DataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            StartGame(DataGrid.SelectedIndex);
-        }
+        //private void DataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    StartGame(DataGrid.SelectedIndex);
+        //}
 
-        private void StartGame(int gameIndex)
-        {
-            switch (DataGrid.SelectedIndex)
-            {
-                default:
-                    MessageBox.Show("Game not installed!");
-                    break;
-                case 0: 
-                    MessageBox.Show("Game not installed!");
-                    break;
-                case 1: 
-                    Process.Start("C:\\Games\\RPCS3\\rpcs3.exe", "E:\\Mods\\PS3\\GAMES\\BLUS30418");
-                    break;
+        //private void StartGame(int gameIndex)
+        //{
+        //    switch (DataGrid.SelectedIndex)
+        //    {
+        //        default:
+        //            MessageBox.Show("Game not installed!");
+        //            break;
+        //        case 0: 
+        //            MessageBox.Show("Game not installed!");
+        //            break;
+        //        case 1: 
+        //            Process.Start("C:\\Games\\RPCS3\\rpcs3.exe", "E:\\Mods\\PS3\\GAMES\\BLUS30418");
+        //            break;
                 
-            }
+        //    }
 
-        }
+        //}
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new SettingsWindow();
-            settingsWindow.Show();
+            //Hides the Stack panels of games - using collapsed so that they still arent taking up whitespace
+            HorizGameStackPanel0.Visibility = Visibility.Collapsed;
+            HorizGameStackPanel1.Visibility = Visibility.Collapsed;
+            HorizGameStackPanel2.Visibility = Visibility.Collapsed;
+            HorizGameStackPanel3.Visibility = Visibility.Collapsed;
+            HorizGameStackPanel4.Visibility = Visibility.Collapsed;
+            HorizGameStackPanel5.Visibility = Visibility.Collapsed;
+
+            //Allows the settings to appear for the end user
+            applyBtn.Visibility = Visibility.Visible;
+            darkModeChkBx.Visibility = Visibility.Visible;
+            EFPtxtblk.Visibility = Visibility.Visible;
+            GFPtxtblk.Visibility = Visibility.Visible;
+            EmulatorFilePath.Visibility = Visibility.Visible;
+            GameFolderPath.Visibility = Visibility.Visible;
+
+        }
+
+        //Save settings
+        private void SaveSettings()
+        {
+            //Save dark mode setting
+            Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+
+            Odyssey.Properties.Settings.Default.Save();
+        }
+
+        //Load settings on startup
+        private void LoadSettings()
+        {
+            if (!Odyssey.Properties.Settings.Default.DarkMode)
+            {
+                //Disable dark mode
+                darkModeChkBx.IsChecked = false;
+            }
+            else
+            {
+                //Dark mode is enabled
+                darkModeChkBx.IsChecked = true;
+            }
+        }
+
+        // On application startup
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Load stored settings
+            LoadSettings();
+        }
+
+        private void ApplyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettings();
+            MessageBox.Show("Settings applied");
+
+            if (darkModeChkBx.IsChecked == true)
+            {
+                //Change Bg Colour to black
+            }
+
+            if (EmulatorFilePath != null)
+            {
+                emulatorPath = EmulatorFilePath.Text;
+            }
+
+            if (GameFolderPath != null)
+            {
+                gameFolderPath = GameFolderPath.Text;
+            }
+        }
+
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

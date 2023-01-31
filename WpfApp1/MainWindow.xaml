@@ -49,12 +49,8 @@
         <Button x:Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Search"/>
 
 
-
-
-
-
         <!-- TODO: Scroll view and manual creation of card-like items? -->
-        <!--
+
         <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Grid.Column="1" Margin="2">
             <StackPanel CanHorizontallyScroll="True"  Name="VertGameStackPanel">
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel0">
@@ -66,8 +62,8 @@
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel4"></StackPanel>
                 <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel5"></StackPanel>
             </StackPanel>
-        </ScrollViewer>-->
-        <!--<Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+        </ScrollViewer>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -75,12 +71,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-63,-26,-63,0" Grid.RowSpan="3"/>
+            <!--<Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-63,-26,-63,0" Grid.RowSpan="3"/>
             <Button x:Name="RecentBTN" Grid.Row="1" Height="40" Width="100" VerticalAlignment="Center" Content="Recent"/>
             <Button x:Name="AllGamesBTN" Grid.Row="2" Height="40" Width="100" VerticalAlignment="Center" Content="All games"/>
             <Button x:Name="SavedBTN" Grid.Row="3"  Height="40" Width="100" VerticalAlignment="Center" Content="Saved"/>
-            <Button x:Name="SettingsBTN" Grid.Row="4" Height="40" Width="100" VerticalAlignment="Top" HorizontalAlignment="Center" Click="SettingsButtonClick" Content="Settings" Margin="0,25,0,0"/>
-        </Grid>-->
+            <Button x:Name="SettingsBTN" Grid.Row="4" Height="40" Width="100" VerticalAlignment="Top" HorizontalAlignment="Center" Click="SettingsButtonClick" Content="Settings" Margin="0,25,0,0"/>-->
+        </Grid>
 
         <Grid Background="#b06050" Grid.ColumnSpan="2" Margin="0,0,613,320" Grid.RowSpan="2" >
             <!--<TextBlock Text="Odyssey"
@@ -89,12 +85,13 @@
                    Foreground="White"
                    FontSize="22"
                    Margin="50,0,0,0" FontFamily="Segoe UI Black"/>-->
-            <Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-47,-32,-16,0" />
+            <Image Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-37,-32,-26,0" />
         </Grid>
 
         <StackPanel Background="#b06050" Grid.Row="1" Margin="0,20,613,0" Grid.ColumnSpan="2">
 
             <Button Content="Home"
+                    Name="HomeBtn"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
@@ -109,6 +106,7 @@
                              BorderThickness="0" BorderBrush="#00000000" ClipToBounds="True"/>
 
             <Button Content="All Games"
+                    Name="AllGamesBtn"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
@@ -131,8 +129,13 @@
                              BorderThickness="0"
                              BorderBrush="#00000000" Foreground="White" ClipToBounds="True"/>
 
-
-
         </StackPanel>
+        <Button Name="applyBtn" Content="Apply Changes" Visibility="Collapsed"  HorizontalAlignment="Center" Margin="0,288,0,0" VerticalAlignment="Top" Click="ApplyBtn_Click" Grid.Column="1" Grid.Row="1" Width="150"/>
+        <CheckBox  Name="darkModeChkBx" Content="Dark Mode" Visibility="Collapsed" FontSize="20" HorizontalAlignment="Left" Margin="226,49,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"/>
+        <TextBox x:Name="EmulatorFilePath" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Name="EFPtxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,185,0,0" TextWrapping="Wrap" Text="Emulator File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+        <TextBox x:Name="GameFolderPath" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Name="GFPtxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,103,0,0" TextWrapping="Wrap" Text="Game Folder Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Height="68" Grid.Row="1" Width="364"/>
     </Grid>
+
 </Window>
