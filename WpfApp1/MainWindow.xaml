@@ -99,47 +99,47 @@
             <Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-47,-32,-16,0" />
         </Grid>
 
-        <StackPanel Background="#b06050" Grid.Row="1" Margin="0,20,0,0">
+        <StackPanel Background="#b06050" Grid.Row="1" Margin="0,20,613,0" Grid.ColumnSpan="2">
 
-            <RadioButton Content="Home"
-                             
+            <Button Content="Home"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
-
-            <RadioButton Content="Recent"
-                             
+                             Background="#b06050"
+                             BorderThickness="0" ClipToBounds="True"/>
+            <Button Content="Recent"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}" Width="175"/>
+                             Width="172"
+                             Background="#b06050"
+                             BorderThickness="0" BorderBrush="#00000000" ClipToBounds="True"/>
 
-            <RadioButton Content="All Games"
-                             
+            <Button Content="All Games"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Background="#b06050"
+                             BorderThickness="0" ClipToBounds="True"/>
 
-            <RadioButton Content="Settings"
+            <Button Content="Settings"
                              Name="SettingsBTN"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Background="#b06050"
+                             BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click"/>
 
-            <RadioButton Content="Play"
-                             
+            <Button Content="Play"
+                             Name="PlayBTN"
                              Height="50"
-                             Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Background="#b06050"
+                             BorderThickness="0"
+                             BorderBrush="#00000000" Foreground="White" ClipToBounds="True"/>
 
 
 
         </StackPanel>
- 
-
     </Grid>
 </Window>

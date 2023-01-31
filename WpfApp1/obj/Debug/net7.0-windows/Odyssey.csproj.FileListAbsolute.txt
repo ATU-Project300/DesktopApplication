@@ -172,3 +172,5 @@ C:\Users\User\Source\Repos\DesktopApplication2\WpfApp1\obj\Debug\net7.0-windows\
 C:\Users\User\Source\Repos\DesktopApplication2\WpfApp1\obj\Debug\net7.0-windows\Odyssey.genruntimeconfig.cache
 C:\Users\User\Source\Repos\DesktopApplication2\WpfApp1\obj\Debug\net7.0-windows\ref\Odyssey.dll
 C:\Users\User\source\repos\DesktopApplication2\WpfApp1\bin\Debug\net7.0-windows\Newtonsoft.Json.dll
+C:\Users\User\source\repos\DesktopApplication2\WpfApp1\obj\Debug\net7.0-windows\SettingsWindow.g.cs
+C:\Users\User\source\repos\DesktopApplication2\WpfApp1\obj\Debug\net7.0-windows\SettingsWindow.baml

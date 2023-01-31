@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 using System.IO;
+using Odyssey;
 
 namespace WpfApp1
 {
@@ -204,6 +205,12 @@ namespace WpfApp1
                 
             }
 
+        }
+
+        private void SettingsBTN_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
         }
     }
 }

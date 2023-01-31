@@ -11,7 +11,7 @@
         "projectName": "API",
         "projectPath": "C:\\Users\\User\\source\\repos\\DesktopApplication2\\API\\API.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Source\\Repos\\DesktopApplication2\\API\\obj\\",
+        "outputPath": "C:\\Users\\User\\source\\repos\\DesktopApplication2\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
