@@ -33,18 +33,14 @@ namespace WpfApp1
             InitializeApi();
         }
 
-
         public async void InitializeApi()
         {
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
             var list = await ProcessRepositoriesAsync(_client);
             games = list;
-
-
-
 
             TestMethod(list);
 
@@ -60,10 +56,8 @@ namespace WpfApp1
             myLinearGradientBrush.GradientStops.Add(
             new GradientStop(Colors.Yellow, 2.5));
 
-
             // Use the brush to paint the datagrid .
             //DataGrid.Background = myLinearGradientBrush;
-
             
             int i = 0;
             //Testing
@@ -108,8 +102,13 @@ namespace WpfApp1
                 i++;
             }
             MessageBox.Show(list[0].Title); //Example of an individually addressed item
-            
+        }
 
+        // On application startup
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Load stored settings
+            LoadSettings();
         }
 
         private void TestMethod(List<GamesList> list)
@@ -127,9 +126,6 @@ namespace WpfApp1
             sw.Close();
             Console.WriteLine(jsondata);
         }
-
-
-
         
         public void GenCard(string Uri, int HIndex, string game)
         {
@@ -161,9 +157,7 @@ namespace WpfApp1
                     HorizGameStackPanel5.Children.Add(Img);
                     break;
             }
-        }
-
-        
+        }  
 
         //Spawn settings window?
         //Hide list and other items and show settings instead?
@@ -236,7 +230,6 @@ namespace WpfApp1
             GFPtxtblk.Visibility = Visibility.Visible;
             EmulatorFilePath.Visibility = Visibility.Visible;
             GameFolderPath.Visibility = Visibility.Visible;
-
         }
 
         //Save settings
@@ -244,7 +237,6 @@ namespace WpfApp1
         {
             //Save dark mode setting
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
-
             Odyssey.Properties.Settings.Default.Save();
         }
 
@@ -263,13 +255,34 @@ namespace WpfApp1
             }
         }
 
-        // On application startup
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
-            //Load stored settings
-            LoadSettings();
+            if(HorizGameStackPanel0.Visibility == Visibility.Collapsed)
+            {
+                //Brings back the game cover art if they are currently closed due to being in another tab
+                HorizGameStackPanel0.Visibility = Visibility.Visible;
+                HorizGameStackPanel1.Visibility = Visibility.Visible;
+                HorizGameStackPanel2.Visibility = Visibility.Visible;
+                HorizGameStackPanel3.Visibility = Visibility.Visible;
+                HorizGameStackPanel4.Visibility = Visibility.Visible;
+                HorizGameStackPanel5.Visibility = Visibility.Visible;
+            }
+
+            //If apply button is visible, then it is safe to say the settings window is opened.
+            //This will change all settings to Collapsed - Collapsed prevents leftover whitespace from the objects.
+            if(applyBtn.Visibility== Visibility.Visible)
+            {
+                //Allows the settings to appear for the end user
+                applyBtn.Visibility = Visibility.Collapsed;
+                darkModeChkBx.Visibility = Visibility.Collapsed;
+                EFPtxtblk.Visibility = Visibility.Collapsed;
+                GFPtxtblk.Visibility = Visibility.Collapsed;
+                EmulatorFilePath.Visibility = Visibility.Collapsed;
+                GameFolderPath.Visibility = Visibility.Collapsed;
+            }
         }
 
+        //Settings Apply Button
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
             SaveSettings();
@@ -289,11 +302,6 @@ namespace WpfApp1
             {
                 gameFolderPath = GameFolderPath.Text;
             }
-        }
-
-        private void BackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }
