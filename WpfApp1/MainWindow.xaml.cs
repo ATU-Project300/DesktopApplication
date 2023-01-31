@@ -101,7 +101,7 @@ namespace WpfApp1
                 }
                 i++;
             }
-            MessageBox.Show(list[0].Title); //Example of an individually addressed item
+            //MessageBox.Show(list[0].Title); //Example of an individually addressed item
         }
 
         // On application startup
@@ -159,23 +159,6 @@ namespace WpfApp1
             }
         }  
 
-        //Spawn settings window?
-        //Hide list and other items and show settings instead?
-        //TODO: Implement persistent settings from previous build
-        private void SettingsButtonClick(object sender, RoutedEventArgs e)
-        {
-            //ToString for safety :)
-            if (SettingsBTN.Content.ToString() == "Back")
-            {
-                MessageBox.Show("Exiting settings");
-                SettingsBTN.Content = "Settings";
-            }
-            else
-            {
-                MessageBox.Show("Entering settings");
-                SettingsBTN.Content = "Back";
-            }
-        }
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
