@@ -111,7 +111,7 @@
                              Foreground="White"
                              FontSize="14"
                              Background="#b06050"
-                             BorderThickness="0" ClipToBounds="True"/>
+                             BorderThickness="0" ClipToBounds="True" Click="AllGamesBtn_Click"/>
 
             <Button Content="Settings"
                              Name="SettingsBTN"

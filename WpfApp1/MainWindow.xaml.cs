@@ -282,6 +282,35 @@ namespace WpfApp1
             }
         }
 
+        private void AllGamesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (HorizGameStackPanel0.Visibility == Visibility.Collapsed)
+            {
+                //Brings back the game cover art if they are currently closed due to being in another tab
+                HorizGameStackPanel0.Visibility = Visibility.Visible;
+                HorizGameStackPanel1.Visibility = Visibility.Visible;
+                HorizGameStackPanel2.Visibility = Visibility.Visible;
+                HorizGameStackPanel3.Visibility = Visibility.Visible;
+                HorizGameStackPanel4.Visibility = Visibility.Visible;
+                HorizGameStackPanel5.Visibility = Visibility.Visible;
+            }
+
+            //If apply button is visible, then it is safe to say the settings window is opened.
+            //This will change all settings to Collapsed - Collapsed prevents leftover whitespace from the objects.
+            if (applyBtn.Visibility == Visibility.Visible)
+            {
+                //Allows the settings to appear for the end user
+                applyBtn.Visibility = Visibility.Collapsed;
+                darkModeChkBx.Visibility = Visibility.Collapsed;
+                EFPtxtblk.Visibility = Visibility.Collapsed;
+                GFPtxtblk.Visibility = Visibility.Collapsed;
+                EmulatorFilePath.Visibility = Visibility.Collapsed;
+                GameFolderPath.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+
         //Settings Apply Button
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
