@@ -398,3 +398,13 @@ FodyWeavers.xsd
 *.sln.iml
 
 .vs/*
+API/bin/Debug/net7.0/API.dll
+API/bin/Debug/net7.0/API.exe
+API/bin/Debug/net7.0/API.pdb
+WpfApp1/bin/Debug/net7.0-windows/API.dll
+WpfApp1/bin/Debug/net7.0-windows/API.exe
+WpfApp1/bin/Debug/net7.0-windows/API.pdb
+WpfApp1/bin/Debug/net7.0-windows/Odyssey.dll
+WpfApp1/bin/Debug/net7.0-windows/Odyssey.dll.config
+WpfApp1/bin/Debug/net7.0-windows/Odyssey.exe
+WpfApp1/bin/Debug/net7.0-windows/Odyssey.pdb
