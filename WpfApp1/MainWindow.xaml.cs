@@ -1,31 +1,27 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media.Imaging;
-using MahApps.Metro.Controls;
-using static API.API;
-using static System.Net.Mime.MediaTypeNames;
-using Image = System.Windows.Controls.Image;
 using System.Windows.Media;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Win32;
+using System.Windows.Media.Imaging;
 using Odyssey;
+using static API.API;
+using Image = System.Windows.Controls.Image;
 
 namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        private Object games;
-        String emulatorPath, gameFolderPath;
+        private Object games; // TODO: what was this for again?
+        public List<Game> myGames = new List<Game>(); // Contains games stored in a sane fashion
+
+        //String emulatorPath, gameFolderPath;
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
 
@@ -40,11 +36,13 @@ namespace WpfApp1
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
-            var list = await ProcessRepositoriesAsync(_client);
-            games = list;
 
+            var list = await ProcessRepositoriesAsync(_client);
+            //games = list;
             // Outputs all games from the list to a JSON file in the working directory
-            TestMethod(list);
+            //TestMethod(list);
+
+            OccupyListVar(await  ProcessRepositoriesAsync(_client));
 
             //DataGrid.ItemsSource = list;
 
@@ -60,7 +58,7 @@ namespace WpfApp1
 
             // Use the brush to paint the datagrid .
             //DataGrid.Background = myLinearGradientBrush;
-            
+
             int i = 0;
             //Testing
             foreach (var game in list)
@@ -116,10 +114,6 @@ namespace WpfApp1
 
         private void TestMethod(List<GamesList> list)
         {
-            //foreach (var item in list)
-            //{
-            //    Console.WriteLine(item.Title);
-            //}
 
             string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
 
@@ -129,7 +123,26 @@ namespace WpfApp1
             sw.Close();
             Console.WriteLine(jsondata);
         }
-        
+
+        // Occupy the local list var "myGames" with the games such that they are truly individually addressable
+        private void OccupyListVar(List<GamesList> list)
+        {
+            int i = 0;
+            foreach (var x in list)
+            {
+                myGames.Add(new Game()
+                {
+                    Title = x.Title,
+                    Year = x.Year,
+                    Description = x.Description,
+                    Image = x.Image,
+                    Consoles = x.Consoles,
+                    Emulator = x.Emulator
+                });
+                i++;
+            }
+        }
+
         public void GenCard(string Uri, int HIndex, string game)
         {
             // Create a new image which is sourced from the Uri provided
@@ -141,14 +154,14 @@ namespace WpfApp1
             Img.Height = 170;
             Img.Width = 120;
             Img.ToolTip = game;
-            
+
             // Add margin to bottom of each image
-            Img.Margin = new Thickness(0, 0, 0, 5); 
+            Img.Margin = new Thickness(0, 0, 0, 5);
 
             switch (HIndex)
             {
-               default:
-                   break;
+                default:
+                    break;
                 case 0:
                     HorizGameStackPanel0.Children.Add(Img);
                     break;
@@ -206,7 +219,7 @@ namespace WpfApp1
         //        case 1: 
         //            Process.Start("C:\\Games\\RPCS3\\rpcs3.exe", "E:\\Mods\\PS3\\GAMES\\BLUS30418");
         //            break;
-                
+
         //    }
 
         //}
@@ -262,7 +275,7 @@ namespace WpfApp1
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(HorizGameStackPanel0.Visibility == Visibility.Collapsed)
+            if (HorizGameStackPanel0.Visibility == Visibility.Collapsed)
             {
                 //Brings back the game cover art if they are currently closed due to being in another tab
                 HorizGameStackPanel0.Visibility = Visibility.Visible;
@@ -275,7 +288,7 @@ namespace WpfApp1
 
             //If apply button is visible, then it is safe to say the settings window is opened.
             //This will change all settings to Collapsed - Collapsed prevents leftover whitespace from the objects.
-            if(applyBtn.Visibility== Visibility.Visible)
+            if (applyBtn.Visibility == Visibility.Visible)
             {
                 //Allows the settings to appear for the end user
                 applyBtn.Visibility = Visibility.Collapsed;
