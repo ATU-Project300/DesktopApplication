@@ -396,4 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-.vs/WpfApp1/v17/.suo
+
+.vs/*
