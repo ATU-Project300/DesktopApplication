@@ -132,8 +132,13 @@
         </StackPanel>
         <Button Name="applyBtn" Content="Apply Changes" Visibility="Collapsed"  HorizontalAlignment="Center" Margin="0,288,0,0" VerticalAlignment="Top" Click="ApplyBtn_Click" Grid.Column="1" Grid.Row="1" Width="150"/>
         <CheckBox  Name="darkModeChkBx" Content="Dark Mode" Visibility="Collapsed" FontSize="20" HorizontalAlignment="Left" Margin="226,49,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"/>
-        <TextBox x:Name="EmulatorFilePath" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
-        <TextBlock Name="EFPtxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,185,0,0" TextWrapping="Wrap" Text="Emulator File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+
+        <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="PathRPCS3TxtBx_OnMouseDoubleClick" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Name="RPCS3txtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,185,0,0" TextWrapping="Wrap" Text="RPCS3 File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+
+        <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="PathXeniaTxtBx_OnMouseDoubleClick" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Name="Xeniatxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,250,0,0" TextWrapping="Wrap" Text="Xenia File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+
         <TextBox x:Name="GameFolderPath" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
         <TextBlock Name="GFPtxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,103,0,0" TextWrapping="Wrap" Text="Game Folder Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Height="68" Grid.Row="1" Width="364"/>
     </Grid>

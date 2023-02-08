@@ -38,24 +38,36 @@ namespace Odyssey.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RPCS3 {
+        public string pathRPCS3 {
             get {
-                return ((string)(this["RPCS3"]));
+                return ((string)(this["pathRPCS3"]));
             }
             set {
-                this["RPCS3"] = value;
+                this["pathRPCS3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Xenia {
+        public string pathXenia {
             get {
-                return ((string)(this["Xenia"]));
+                return ((string)(this["pathXenia"]));
             }
             set {
-                this["Xenia"] = value;
+                this["pathXenia"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathPPSSPP {
+            get {
+                return ((string)(this["pathPPSSPP"]));
+            }
+            set {
+                this["pathPPSSPP"] = value;
             }
         }
     }

@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Win32;
 using Odyssey;
 
 namespace WpfApp1
@@ -36,12 +38,12 @@ namespace WpfApp1
         public async void InitializeApi()
         {
             _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
             var list = await ProcessRepositoriesAsync(_client);
             games = list;
 
+            // Outputs all games from the list to a JSON file in the working directory
             TestMethod(list);
 
             //DataGrid.ItemsSource = list;
@@ -65,42 +67,43 @@ namespace WpfApp1
             {
                 if (i < 5)
                 {
-                    GenCard(game.Image, 0, game.Title.Substring(0,3));
+                    GenCard(game.Image, 0, game.Title);
                 }
-                else if (i < 10)
+                else if (i < 1)
                 {
-                    GenCard(game.Image, 1, game.Title.Substring(0,3));
+                    GenCard(game.Image, 1, game.Title);
                 }
                 else if (i < 15)
                 {
-                    GenCard(game.Image, 2, game.Title.Substring(0,3));
+                    GenCard(game.Image, 2, game.Title);
                 }
                 else if (i < 20)
                 {
-                    GenCard(game.Image, 3, game.Title.Substring(0,3));
+                    GenCard(game.Image, 3, game.Title);
                 }
                 else if (i < 25)
                 {
-                    GenCard(game.Image, 4, game.Title.Substring(0,3));
+                    GenCard(game.Image, 4, game.Title);
                 }
                 else if (i < 30)
                 {
-                    GenCard(game.Image, 5, game.Title.Substring(0,3));
+                    GenCard(game.Image, 5, game.Title);
                 }
                 else if (i < 35)
                 {
-                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                    GenCard(game.Image, 5, game.Title);
                 }
                 else if (i < 40)
                 {
-                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                    GenCard(game.Image, 5, game.Title);
                 }
                 else if (i < 45)
                 {
-                    GenCard(game.Image, 5, game.Title.Substring(0, 3));
+                    GenCard(game.Image, 5, game.Title);
                 }
                 i++;
             }
+
             //MessageBox.Show(list[0].Title); //Example of an individually addressed item
         }
 
@@ -120,7 +123,7 @@ namespace WpfApp1
 
             string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
 
-            StreamWriter sw = new StreamWriter("c:\\data\\games.json");
+            StreamWriter sw = new StreamWriter("games.json");
 
             sw.WriteLine(jsondata);
             sw.Close();
@@ -129,11 +132,19 @@ namespace WpfApp1
         
         public void GenCard(string Uri, int HIndex, string game)
         {
+            // Create a new image which is sourced from the Uri provided
             Image Img = new Image();
             Img.Source = new BitmapImage(new Uri(Uri));
+
+            // Set image dimensions
             Img.MaxHeight = 120;
             Img.Height = 170;
             Img.Width = 120;
+            Img.ToolTip = game;
+            
+            // Add margin to bottom of each image
+            Img.Margin = new Thickness(0, 0, 0, 5); 
+
             switch (HIndex)
             {
                default:
@@ -157,8 +168,12 @@ namespace WpfApp1
                     HorizGameStackPanel5.Children.Add(Img);
                     break;
             }
-        }  
+        }
 
+        private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
@@ -209,33 +224,38 @@ namespace WpfApp1
             //Allows the settings to appear for the end user
             applyBtn.Visibility = Visibility.Visible;
             darkModeChkBx.Visibility = Visibility.Visible;
-            EFPtxtblk.Visibility = Visibility.Visible;
+
+            RPCS3txtblk.Visibility = Visibility.Visible;
+            pathRPCS3TxtBx.Visibility = Visibility.Visible;
+
+            Xeniatxtblk.Visibility = Visibility.Visible;
+            pathXeniaTxtBx.Visibility = Visibility.Visible;
+
             GFPtxtblk.Visibility = Visibility.Visible;
-            EmulatorFilePath.Visibility = Visibility.Visible;
             GameFolderPath.Visibility = Visibility.Visible;
         }
 
         //Save settings
         private void SaveSettings()
         {
-            //Save dark mode setting
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
 
-        //Load settings on startup
+        // Load settings on startup
         private void LoadSettings()
         {
-            if (!Odyssey.Properties.Settings.Default.DarkMode)
-            {
-                //Disable dark mode
-                darkModeChkBx.IsChecked = false;
-            }
+            // Check the stored settings to see find the last state of the dark mode setting
+            if (!Odyssey.Properties.Settings.Default.DarkMode) // if it's false or null, dark mode stays off
+                darkModeChkBx.IsChecked = false; //Disable dark mode
+            else // Else it is enabled
+                darkModeChkBx.IsChecked = true; //Dark mode is enabled
+
+            if (Odyssey.Properties.Settings.Default.pathRPCS3 is null)
+                pathRPCS3TxtBx.Text = "Unset";
             else
-            {
-                //Dark mode is enabled
-                darkModeChkBx.IsChecked = true;
-            }
+                pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3;
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
@@ -258,9 +278,14 @@ namespace WpfApp1
                 //Allows the settings to appear for the end user
                 applyBtn.Visibility = Visibility.Collapsed;
                 darkModeChkBx.Visibility = Visibility.Collapsed;
-                EFPtxtblk.Visibility = Visibility.Collapsed;
+
+                Xeniatxtblk.Visibility = Visibility.Visible;
+                pathXeniaTxtBx.Visibility = Visibility.Visible;
+
+                RPCS3txtblk.Visibility = Visibility.Collapsed;
+                pathRPCS3TxtBx.Visibility = Visibility.Collapsed;
+
                 GFPtxtblk.Visibility = Visibility.Collapsed;
-                EmulatorFilePath.Visibility = Visibility.Collapsed;
                 GameFolderPath.Visibility = Visibility.Collapsed;
             }
         }
@@ -285,9 +310,14 @@ namespace WpfApp1
                 //Allows the settings to appear for the end user
                 applyBtn.Visibility = Visibility.Collapsed;
                 darkModeChkBx.Visibility = Visibility.Collapsed;
-                EFPtxtblk.Visibility = Visibility.Collapsed;
+
+                RPCS3txtblk.Visibility = Visibility.Collapsed;
+                pathRPCS3TxtBx.Visibility = Visibility.Collapsed;
+
+                Xeniatxtblk.Visibility = Visibility.Collapsed;
+                pathXeniaTxtBx.Visibility = Visibility.Collapsed;
+
                 GFPtxtblk.Visibility = Visibility.Collapsed;
-                EmulatorFilePath.Visibility = Visibility.Collapsed;
                 GameFolderPath.Visibility = Visibility.Collapsed;
             }
         }
@@ -305,15 +335,35 @@ namespace WpfApp1
                 //Change Bg Colour to black
             }
 
-            if (EmulatorFilePath != null)
+            /*
+            if (pathRPCS3TxtBx != null)
             {
-                emulatorPath = EmulatorFilePath.Text;
+                emulatorPath = pathRPCS3TxtBx.Text;
             }
 
             if (GameFolderPath != null)
             {
                 gameFolderPath = GameFolderPath.Text;
             }
+            */
+        }
+
+        private void PathRPCS3TxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathRPCS3TxtBx);
+        }
+
+        private void PathXeniaTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathXeniaTxtBx);
+        }
+
+        private void FilePicker(TextBox t)
+        {
+            var ofd = new OpenFileDialog();
+            var result = ofd.ShowDialog();
+            if (result == false) return;
+            t.Text = ofd.FileName;
         }
     }
 }
