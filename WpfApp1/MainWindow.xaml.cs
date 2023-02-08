@@ -235,6 +235,8 @@ namespace WpfApp1
             GameFolderPath.Visibility = Visibility.Visible;
         }
 
+        //TODO: Verify settings
+
         //Save settings
         private void SaveSettings()
         {
@@ -348,16 +350,22 @@ namespace WpfApp1
             */
         }
 
+        // Open a file picker, store the resulting path in the text box
         private void PathRPCS3TxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FilePicker(pathRPCS3TxtBx);
         }
 
+        // Open a file picker, store the resulting path in the text box
         private void PathXeniaTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FilePicker(pathXeniaTxtBx);
         }
 
+        /*
+         Display file picker. Expected arg is the textbox which contains the property being modified.
+         Done this not directly modify properties as the text box is manually modifiable and the user presses "Apply".
+        */
         private void FilePicker(TextBox t)
         {
             var ofd = new OpenFileDialog();
