@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
+using Odyssey;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Odyssey;
 using static API.API;
 using Image = System.Windows.Controls.Image;
 
@@ -29,6 +29,8 @@ namespace WpfApp1
         {
             InitializeComponent();
             InitializeApi();
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
         }
 
         public async void InitializeApi()
@@ -42,7 +44,7 @@ namespace WpfApp1
             // Outputs all games from the list to a JSON file in the working directory
             //TestMethod(list);
 
-            OccupyListVar(await  ProcessRepositoriesAsync(_client));
+            OccupyListVar(await ProcessRepositoriesAsync(_client));
 
             //DataGrid.ItemsSource = list;
 
@@ -55,9 +57,6 @@ namespace WpfApp1
             new GradientStop(Colors.Purple, 0.1));
             myLinearGradientBrush.GradientStops.Add(
             new GradientStop(Colors.Yellow, 2.5));
-
-            // Use the brush to paint the datagrid .
-            //DataGrid.Background = myLinearGradientBrush;
 
             int i = 0;
             //Testing
@@ -114,7 +113,6 @@ namespace WpfApp1
 
         private void TestMethod(List<GamesList> list)
         {
-
             string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
 
             StreamWriter sw = new StreamWriter("games.json");
@@ -124,7 +122,7 @@ namespace WpfApp1
             Console.WriteLine(jsondata);
         }
 
-        // Occupy the local list var "myGames" with the games such that they are truly individually addressable
+        // Occupy the local list var "myGames" with the games such that they are truly individually addressable (!!!)
         private void OccupyListVar(List<GamesList> list)
         {
             int i = 0;
@@ -145,6 +143,7 @@ namespace WpfApp1
 
         public void GenCard(string Uri, int HIndex, string game)
         {
+
             // Create a new image which is sourced from the Uri provided
             Image Img = new Image();
             Img.Source = new BitmapImage(new Uri(Uri));
@@ -224,28 +223,15 @@ namespace WpfApp1
 
         //}
 
+        private void StartGame(Game g)
+        {
+
+        }
+
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
         {
-            //Hides the Stack panels of games - using collapsed so that they still arent taking up whitespace
-            HorizGameStackPanel0.Visibility = Visibility.Collapsed;
-            HorizGameStackPanel1.Visibility = Visibility.Collapsed;
-            HorizGameStackPanel2.Visibility = Visibility.Collapsed;
-            HorizGameStackPanel3.Visibility = Visibility.Collapsed;
-            HorizGameStackPanel4.Visibility = Visibility.Collapsed;
-            HorizGameStackPanel5.Visibility = Visibility.Collapsed;
-
-            //Allows the settings to appear for the end user
-            applyBtn.Visibility = Visibility.Visible;
-            darkModeChkBx.Visibility = Visibility.Visible;
-
-            RPCS3txtblk.Visibility = Visibility.Visible;
-            pathRPCS3TxtBx.Visibility = Visibility.Visible;
-
-            Xeniatxtblk.Visibility = Visibility.Visible;
-            pathXeniaTxtBx.Visibility = Visibility.Visible;
-
-            GFPtxtblk.Visibility = Visibility.Visible;
-            GameFolderPath.Visibility = Visibility.Visible;
+            Games.Visibility = Visibility.Collapsed;
+            Settings.Visibility = Visibility.Visible;
         }
 
         //TODO: Verify settings
@@ -275,66 +261,14 @@ namespace WpfApp1
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (HorizGameStackPanel0.Visibility == Visibility.Collapsed)
-            {
-                //Brings back the game cover art if they are currently closed due to being in another tab
-                HorizGameStackPanel0.Visibility = Visibility.Visible;
-                HorizGameStackPanel1.Visibility = Visibility.Visible;
-                HorizGameStackPanel2.Visibility = Visibility.Visible;
-                HorizGameStackPanel3.Visibility = Visibility.Visible;
-                HorizGameStackPanel4.Visibility = Visibility.Visible;
-                HorizGameStackPanel5.Visibility = Visibility.Visible;
-            }
-
-            //If apply button is visible, then it is safe to say the settings window is opened.
-            //This will change all settings to Collapsed - Collapsed prevents leftover whitespace from the objects.
-            if (applyBtn.Visibility == Visibility.Visible)
-            {
-                //Allows the settings to appear for the end user
-                applyBtn.Visibility = Visibility.Collapsed;
-                darkModeChkBx.Visibility = Visibility.Collapsed;
-
-                Xeniatxtblk.Visibility = Visibility.Visible;
-                pathXeniaTxtBx.Visibility = Visibility.Visible;
-
-                RPCS3txtblk.Visibility = Visibility.Collapsed;
-                pathRPCS3TxtBx.Visibility = Visibility.Collapsed;
-
-                GFPtxtblk.Visibility = Visibility.Collapsed;
-                GameFolderPath.Visibility = Visibility.Collapsed;
-            }
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
         }
 
         private void AllGamesBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (HorizGameStackPanel0.Visibility == Visibility.Collapsed)
-            {
-                //Brings back the game cover art if they are currently closed due to being in another tab
-                HorizGameStackPanel0.Visibility = Visibility.Visible;
-                HorizGameStackPanel1.Visibility = Visibility.Visible;
-                HorizGameStackPanel2.Visibility = Visibility.Visible;
-                HorizGameStackPanel3.Visibility = Visibility.Visible;
-                HorizGameStackPanel4.Visibility = Visibility.Visible;
-                HorizGameStackPanel5.Visibility = Visibility.Visible;
-            }
-
-            //If apply button is visible, then it is safe to say the settings window is opened.
-            //This will change all settings to Collapsed - Collapsed prevents leftover whitespace from the objects.
-            if (applyBtn.Visibility == Visibility.Visible)
-            {
-                //Allows the settings to appear for the end user
-                applyBtn.Visibility = Visibility.Collapsed;
-                darkModeChkBx.Visibility = Visibility.Collapsed;
-
-                RPCS3txtblk.Visibility = Visibility.Collapsed;
-                pathRPCS3TxtBx.Visibility = Visibility.Collapsed;
-
-                Xeniatxtblk.Visibility = Visibility.Collapsed;
-                pathXeniaTxtBx.Visibility = Visibility.Collapsed;
-
-                GFPtxtblk.Visibility = Visibility.Collapsed;
-                GameFolderPath.Visibility = Visibility.Collapsed;
-            }
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
         }
 
 

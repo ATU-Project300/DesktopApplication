@@ -1,146 +1,174 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Class="WpfApp1.MainWindow"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d"
-        ResizeMode="NoResize"
-        Title="Odyssey" Height="450" Width="800"
-        MinHeight="425" MinWidth="750">
-    <Grid Name="overallGrid">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Class="WpfApp1.MainWindow"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    mc:Ignorable="d"
+    ResizeMode="NoResize"
+    Title="Odyssey" Height="450" Width="800"
+    MinHeight="425" MinWidth="750">
+    <Grid>
+        <!-- Colours and layout -->
         <Grid.Background>
-            <LinearGradientBrush StartPoint="0,3"
-                                 EndPoint="1,1">
-                <GradientStop Color="Purple" 
-                              Offset="0.1"/>
-                <GradientStop Color="Yellow"
-                              Offset="2.5"/>
+            <LinearGradientBrush StartPoint="0,3" EndPoint="1,1">
+                <GradientStop Color="Purple" Offset="0.1" />
+                <GradientStop Color="Yellow" Offset="2.5" />
             </LinearGradientBrush>
         </Grid.Background>
-        <Grid.RowDefinitions >
-            <RowDefinition Height="15*"/>
-            <RowDefinition Height="85*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="90*"/>
+            <!-- Logo and button grid go here -->
+            <ColumnDefinition Width="25*" />
+            <!-- Tab panels go here -->
+            <ColumnDefinition Width="90*" />
         </Grid.ColumnDefinitions>
-        <!-- <ListBox Name="ListBox" Grid.Row="1" Grid.Column="1" Height="180" VerticalAlignment="Top"></ListBox> -->
 
-        <!--<Label x:Name="TitleLBL" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Content="Home"/>-->
-        <TextBox x:Name="SearchTxBx" TextChanged="TextBox_TextChanged" Width="250"
-                     Height="40"
-                     VerticalContentAlignment="Center"
-                     HorizontalAlignment="Right"
-                     Margin="0,10,90,15"
-                     Grid.Column="1"
-                     Style="{StaticResource ModernTextBox}"/>
-
-        <Button x:Name="SearchBTN" Grid.Row="0" Grid.Column="1" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Search"/>
-
-
-        <!-- TODO: Scroll view and manual creation of card-like items? -->
-
-        <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Grid.Column="1" Margin="2">
-            <StackPanel CanHorizontallyScroll="True"  Name="VertGameStackPanel">
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel0">
-                </StackPanel>
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel1">
-                </StackPanel>
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel2"></StackPanel>
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel3"></StackPanel>
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel4"></StackPanel>
-                <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal"  Name="HorizGameStackPanel5"></StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+        <!-- Grid for logo and buttons -->
+        <Grid Grid.Column="0" Background="#b06050">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <!-- Logo goes here -->
+                <RowDefinition Height="2*" />
+                <!-- Buttons go here -->
+                <RowDefinition Height="7*" />
             </Grid.RowDefinitions>
-            <!--<Image x:Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-63,-26,-63,0" Grid.RowSpan="3"/>
-            <Button x:Name="RecentBTN" Grid.Row="1" Height="40" Width="100" VerticalAlignment="Center" Content="Recent"/>
-            <Button x:Name="AllGamesBTN" Grid.Row="2" Height="40" Width="100" VerticalAlignment="Center" Content="All games"/>
-            <Button x:Name="SavedBTN" Grid.Row="3"  Height="40" Width="100" VerticalAlignment="Center" Content="Saved"/>
-            <Button x:Name="SettingsBTN" Grid.Row="4" Height="40" Width="100" VerticalAlignment="Top" HorizontalAlignment="Center" Click="SettingsButtonClick" Content="Settings" Margin="0,25,0,0"/>-->
+
+            <!-- 
+                Logo image.
+                May be the wrong size right now, not sure, probably a simple fix.
+            -->
+            <Image Source="images/light_final_png.png" Height="500" HorizontalAlignment="Center" Margin="0,1,0,10"
+                   Grid.Row="0" />
+
+            <!-- Stack panel of buttons -->
+            <StackPanel Grid.Row="1">
+                <Button Content="Home"
+                        Name="HomeBtn"
+                        Height="50"
+                        Foreground="White"
+                        FontSize="14"
+                        Background="#b06050"
+                        BorderThickness="0" ClipToBounds="True" Click="HomeBtn_Click" />
+                <Button Content="Recent"
+                        Height="50"
+                        Foreground="White"
+                        FontSize="14"
+                        Width="172"
+                        Background="#b06050"
+                        BorderThickness="0" BorderBrush="#00000000" ClipToBounds="True" />
+
+                <Button Content="All Games"
+                        Name="AllGamesBtn"
+                        Height="50"
+                        Foreground="White"
+                        FontSize="14"
+                        Background="#b06050"
+                        BorderThickness="0" ClipToBounds="True" Click="AllGamesBtn_Click" />
+
+                <Button Content="Settings"
+                        Name="SettingsBTN"
+                        Height="50"
+                        Foreground="White"
+                        FontSize="14"
+                        Background="#b06050"
+                        BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click" />
+
+                <Button Content="Play"
+                        Name="PlayBTN"
+                        Height="50"
+                        FontSize="14"
+                        Background="#b06050"
+                        BorderThickness="0"
+                        BorderBrush="#00000000" Foreground="White" ClipToBounds="True" />
+            </StackPanel>
         </Grid>
 
-        <Grid Background="#b06050" Grid.ColumnSpan="2" Margin="0,0,613,320" Grid.RowSpan="2" >
-            <!--<TextBlock Text="Odyssey"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Left"
-                   Foreground="White"
-                   FontSize="22"
-                   Margin="50,0,0,0" FontFamily="Segoe UI Black"/>-->
-            <Image Name="logoImg" Source="images/light_final_png.png" Width="250" Height="200" VerticalAlignment="Top" Margin="-37,-32,-26,0" />
-        </Grid>
+        <!--
+            NOTE: All TabPanels *should* be in `Grid.Column="1"` such that they all take the same positioning.
+            In some cases, you may need to specify the dimensions of the main item under the tab panel.
 
-        <StackPanel Background="#b06050" Grid.Row="1" Margin="0,20,613,0" Grid.ColumnSpan="2">
+            Example: The "ScrollViewer" for the "Games" panel needed to have its width set to 600 such that it would
+            present properly before the games were loaded.
+        -->
 
-            <Button Content="Home"
-                    Name="HomeBtn"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Background="#b06050"
-                             BorderThickness="0" ClipToBounds="True" Click="HomeBtn_Click"/>
-            <Button Content="Recent"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Width="172"
-                             Background="#b06050"
-                             BorderThickness="0" BorderBrush="#00000000" ClipToBounds="True"/>
+        <!-- First panel, "Games" -->
+        <TabPanel Grid.Column="1" Name="Games">
+            <!-- Contains its own grid in which we position the search elements and the games covers -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Search elements go here -->
+                    <RowDefinition Height="2*" />
+                    <!-- Game covers go here -->
+                    <RowDefinition Height="8*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="SearchTxBx" TextChanged="TextBox_TextChanged" Width="350"
+                         Height="40"
+                         VerticalContentAlignment="Center"
+                         HorizontalAlignment="Right"
+                         Margin="0,10,90,15"
+                         Grid.Column="0"
+                         Style="{StaticResource ModernTextBox}" />
+                <Button x:Name="SearchBTN" Grid.Row="0" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Content="Search" />
 
-            <Button Content="All Games"
-                    Name="AllGamesBtn"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Background="#b06050"
-                             BorderThickness="0" ClipToBounds="True" Click="AllGamesBtn_Click"/>
+                <!-- This NEEDS to be replaced with something like GridView or ListView with DataBinding to display only the images. -->
+                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="600">
+                    <StackPanel CanHorizontallyScroll="True" Name="VertGameStackPanel">
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel0" />
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel1" />
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel2" />
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel3" />
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel4" />
+                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel5" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </TabPanel>
 
-            <Button Content="Settings"
-                             Name="SettingsBTN"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Background="#b06050"
-                             BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click"/>
+        <!-- Second panel, "Settings" -->
+        <TabPanel Grid.Column="1" Name="Settings">
+            <!-- Create a grid of specific dimensions for the settings items to reside -->
+            <Grid Margin="10" Width="600" Height="400">
+                <!-- Add a row for each setting (or pair of elements for setting) -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
 
-            <Button Content="Play"
-                             Name="PlayBTN"
-                             Height="50"
-                             FontSize="14"
-                             Background="#b06050"
-                             BorderThickness="0"
-                             BorderBrush="#00000000" Foreground="White" ClipToBounds="True"/>
+                <CheckBox Name="darkModeChkBx" Content="Dark Mode" FontSize="20" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" Grid.Row="0" />
 
-        </StackPanel>
-        <Button Name="applyBtn" Content="Apply Changes" Visibility="Collapsed"  HorizontalAlignment="Center" Margin="0,288,0,0" VerticalAlignment="Top" Click="ApplyBtn_Click" Grid.Column="1" Grid.Row="1" Width="150"/>
-        <CheckBox  Name="darkModeChkBx" Content="Dark Mode" Visibility="Collapsed" FontSize="20" HorizontalAlignment="Left" Margin="226,49,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Name="RPCS3txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
+                <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="PathRPCS3TxtBx_OnMouseDoubleClick"
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
+                         Width="230" Grid.Row="1" />
 
-        <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="PathRPCS3TxtBx_OnMouseDoubleClick" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
-        <TextBlock Name="RPCS3txtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,185,0,0" TextWrapping="Wrap" Text="RPCS3 File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Name="Xeniatxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="Xenia File Path:" FontSize="20" Grid.Row="2" />
+                <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="PathXeniaTxtBx_OnMouseDoubleClick"
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
+                         Width="230" Grid.Row="2" />
 
-        <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="PathXeniaTxtBx_OnMouseDoubleClick" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
-        <TextBlock Name="Xeniatxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,250,0,0" TextWrapping="Wrap" Text="Xenia File Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Name="GFPtxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Width="364" />
+                <TextBox x:Name="GameFolderPath" TextWrapping="Wrap" Width="230" HorizontalAlignment="Right"
+                         VerticalAlignment="Center" Height="25" Grid.Row="3" />
 
-        <TextBox x:Name="GameFolderPath" Visibility="Collapsed" HorizontalAlignment="Left" Margin="226,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229" Grid.Column="1" Grid.Row="1"/>
-        <TextBlock Name="GFPtxtblk" Visibility="Collapsed" HorizontalAlignment="Left" Margin="44,103,0,0" TextWrapping="Wrap" Text="Game Folder Path:" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Height="68" Grid.Row="1" Width="364"/>
+                <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
+                        Grid.Row="4" Width="150" />
+
+            </Grid>
+        </TabPanel>
     </Grid>
 
 </Window>
