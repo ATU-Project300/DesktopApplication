@@ -106,6 +106,20 @@ namespace WpfApp1
             LoadSettings();
         }
 
+        // Allow for switching between light and dark themes
+        // Must be added soon after InitializeComponent
+        private void Theming(bool dark)
+        {
+            if (dark)
+            {
+                //Set dark theme here
+            }
+            else
+            {
+                //Set default theme here
+            }
+        }
+
         //Saves the game to a JSON file (unused but keeping for reference)
         private void GamesToJson(List<GamesList> list)
         {

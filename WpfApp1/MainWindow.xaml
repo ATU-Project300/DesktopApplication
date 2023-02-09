@@ -15,7 +15,7 @@
     ResizeMode="NoResize"
     Title="Odyssey" Height="450" Width="800"
     MinHeight="425" MinWidth="750">
-    <Grid>
+    <Grid Name="MainGrid">
         <!-- Colours and layout -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,3" EndPoint="1,1">
@@ -31,7 +31,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Grid for logo and buttons -->
-        <Grid Grid.Column="0" Background="#b06050">
+        <Grid Grid.Column="0" Name="LogoButtonsGrid" Background="#b06050">
             <Grid.RowDefinitions>
                 <!-- Logo goes here -->
                 <RowDefinition Height="2*" />
