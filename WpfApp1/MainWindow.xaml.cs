@@ -21,7 +21,6 @@ namespace WpfApp1
         private Object games; // TODO: what was this for again?
         public List<Game> myGames = new List<Game>(); // Contains games stored in a sane fashion
 
-        //String emulatorPath, gameFolderPath;
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
 
@@ -43,13 +42,8 @@ namespace WpfApp1
             _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
 
             var list = await ProcessRepositoriesAsync(_client);
-            //games = list;
-            // Outputs all games from the list to a JSON file in the working directory
-            //TestMethod(list);
 
             OccupyListVar(await ProcessRepositoriesAsync(_client));
-
-            //DataGrid.ItemsSource = list;
 
             //Programmatically added gradient for DataGrid
             LinearGradientBrush myLinearGradientBrush =
@@ -62,7 +56,8 @@ namespace WpfApp1
             new GradientStop(Colors.Yellow, 2.5));
 
             int i = 0;
-            //Testing
+
+            //Hacky way to do the game cover grid, this will be removed and replaced.
             foreach (var game in list)
             {
                 if (i < 5)
@@ -103,8 +98,6 @@ namespace WpfApp1
                 }
                 i++;
             }
-
-            //MessageBox.Show(list[0].Title); //Example of an individually addressed item
         }
 
         // On application startup
@@ -114,7 +107,8 @@ namespace WpfApp1
             LoadSettings();
         }
 
-        private void TestMethod(List<GamesList> list)
+        //Saves the game to a JSON file (unused but keeping for reference)
+        private void GamesToJson(List<GamesList> list)
         {
             string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
 
@@ -144,9 +138,10 @@ namespace WpfApp1
             }
         }
 
+        // Creates an image element from the game cover art and adds it to a given StackPanel.
+        // This will be removed and replaced.
         public void GenCard(string Uri, int HIndex, string game)
         {
-
             // Create a new image which is sourced from the Uri provided
             Image Img = new Image();
             Img.Source = new BitmapImage(new Uri(Uri));
@@ -185,11 +180,6 @@ namespace WpfApp1
             }
         }
 
-        private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             //If the text box is modified and become empty, let all games be listed
@@ -200,35 +190,8 @@ namespace WpfApp1
             else
             {
                 //TODO: Filter the list by textbox text
+                //Requires replacing the hacky game cover stuff.
             }
-        }
-
-        //private void DataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    StartGame(DataGrid.SelectedIndex);
-        //}
-
-        //private void StartGame(int gameIndex)
-        //{
-        //    switch (DataGrid.SelectedIndex)
-        //    {
-        //        default:
-        //            MessageBox.Show("Game not installed!");
-        //            break;
-        //        case 0: 
-        //            MessageBox.Show("Game not installed!");
-        //            break;
-        //        case 1: 
-        //            Process.Start("C:\\Games\\RPCS3\\rpcs3.exe", "E:\\Mods\\PS3\\GAMES\\BLUS30418");
-        //            break;
-
-        //    }
-
-        //}
-
-        private void StartGame(Game g)
-        {
-
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -237,7 +200,11 @@ namespace WpfApp1
             Settings.Visibility = Visibility.Visible;
         }
 
-        //TODO: Verify settings
+        //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
+        private void VerifySettings()
+        {
+            // Some basic checks such as if the text is shorter than 5 chars or is null etc.
+        }
 
         //Save settings
         private void SaveSettings()
@@ -247,7 +214,7 @@ namespace WpfApp1
             Odyssey.Properties.Settings.Default.Save();
         }
 
-        // Load settings on startup
+        // Load settings
         private void LoadSettings()
         {
             // Check the stored settings to see find the last state of the dark mode setting
@@ -273,8 +240,6 @@ namespace WpfApp1
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
         }
-
-
 
         //Settings Apply Button
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
