@@ -18,7 +18,6 @@ namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        private Object games; // TODO: what was this for again?
         public List<Game> myGames = new List<Game>(); // Contains games stored in a sane fashion
 
         //Static client because it is thread safe and we don't need more than one
