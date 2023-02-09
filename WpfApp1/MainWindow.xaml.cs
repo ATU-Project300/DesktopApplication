@@ -29,6 +29,9 @@ namespace WpfApp1
         {
             InitializeComponent();
             InitializeApi();
+
+            // Essentially sets the default page to be the Games one.
+            // Any new TabPanels should be added here and set to "Collapsed"
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
         }
