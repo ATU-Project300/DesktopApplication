@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -114,8 +115,9 @@ namespace WpfApp1
 
                 //Changes colour of all text to white so its easier to read text with dark mode
                 Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
-                RPCS3txtblk.Foreground= new SolidColorBrush(Colors.White);
-                pathRPCS3TxtBx.Foreground= new SolidColorBrush(Colors.White);
+                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
+                pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
                 darkModeChkBx.Foreground= new SolidColorBrush(Colors.White);
 
