@@ -17,12 +17,7 @@
     MinHeight="425" MinWidth="750">
     <Grid Name="MainGrid">
         <!-- Colours and layout -->
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,3" EndPoint="1,1">
-                <GradientStop Color="Purple" Offset="0.1" />
-                <GradientStop Color="Yellow" Offset="2.5" />
-            </LinearGradientBrush>
-        </Grid.Background>
+
         <Grid.ColumnDefinitions>
             <!-- Logo and button grid go here -->
             <ColumnDefinition Width="25*" />
@@ -53,6 +48,7 @@
                         Background="#b06050"
                         BorderThickness="0" ClipToBounds="True" Click="HomeBtn_Click" />
                 <Button Content="Recent"
+                        Name="RecentBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
