@@ -34,6 +34,8 @@ namespace WpfApp1
             Settings.Visibility = Visibility.Collapsed;
         }
 
+        //TODO: Move this method back into the API itself such that we create an instance of the API at the beginning.
+        //      This will be more versatile.
         public async void InitializeApi()
         {
             _client.DefaultRequestHeaders.Accept.Clear();
