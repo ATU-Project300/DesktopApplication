@@ -92,15 +92,8 @@ namespace WpfApp1
             }
         }
 
-        // On application startup
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Load stored settings
-            LoadSettings();
-        }
-
         // Allow for switching between light and dark themes
-        // Must be added soon after InitializeComponent
+        // Must be added soon after InitializeComponent (Currently part of LoadSettings)
         private void Theming(bool dark)
         {
             if (dark)
