@@ -265,6 +265,7 @@ namespace WpfApp1
         {
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
             Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
 
@@ -288,6 +289,11 @@ namespace WpfApp1
                 pathRPCS3TxtBx.Text = "Unset";
             else
                 pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3;
+
+            if (Odyssey.Properties.Settings.Default.pathXenia is null)
+                pathXeniaTxtBx.Text = "Unset";
+            else
+                pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia;
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
@@ -307,19 +313,6 @@ namespace WpfApp1
         {
             SaveSettings();
             LoadSettings();
-            MessageBox.Show("Settings applied");
-
-            /*
-            if (pathRPCS3TxtBx != null)
-            {
-                emulatorPath = pathRPCS3TxtBx.Text;
-            }
-
-            if (GameFolderPath != null)
-            {
-                gameFolderPath = GameFolderPath.Text;
-            }
-            */
         }
 
         // Open a file picker, store the resulting path in the text box

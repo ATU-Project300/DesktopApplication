@@ -16,8 +16,7 @@
     Title="Odyssey" Height="450" Width="800"
     MinHeight="425" MinWidth="750">
     <Grid Name="MainGrid">
-        <!-- Colours and layout -->
-
+        <!-- Layout -->
         <Grid.ColumnDefinitions>
             <!-- Logo and button grid go here -->
             <ColumnDefinition Width="25*" />
