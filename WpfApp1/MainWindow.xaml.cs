@@ -26,6 +26,7 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            LoadSettings();
             InitializeApi();
 
             // Essentially sets the default page to be the Games one.
@@ -45,19 +46,6 @@ namespace WpfApp1
             var list = await ProcessRepositoriesAsync(_client);
 
             OccupyListVar(await ProcessRepositoriesAsync(_client));
-
-            //Programmatically added gradient for DataGrid
-            LinearGradientBrush myLinearGradientBrush =
-            new LinearGradientBrush();
-            myLinearGradientBrush.StartPoint = new Point(0, 3);
-            myLinearGradientBrush.EndPoint = new Point(1, 1);
-            myLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Purple, 0.1));
-            myLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Yellow, 2.5));
-
-            // Use the brush to paint the Grid .
-            MainGrid.Background = myLinearGradientBrush;
 
             int i = 0;
 
@@ -117,12 +105,65 @@ namespace WpfApp1
         {
             if (dark)
             {
-                //Set dark theme here
+                //Change Bg Colour to black
+                //Programmatically added gradient for DataGrid
+                LinearGradientBrush myLinearGradientBrush =
+                new LinearGradientBrush();
+                myLinearGradientBrush.StartPoint = new Point(0, 3);
+                myLinearGradientBrush.EndPoint = new Point(1, 1);
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Black, 0.1));
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Gray, 2.5));
+
+                //Sets background to Gradient
+                MainGrid.Background = myLinearGradientBrush;
+
+                //Changes colour of all text to white so its easier to read text with dark mode
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
+                RPCS3txtblk.Foreground= new SolidColorBrush(Colors.White);
+                pathRPCS3TxtBx.Foreground= new SolidColorBrush(Colors.White);
+                GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
+                darkModeChkBx.Foreground= new SolidColorBrush(Colors.White);
+
+                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
                 
             }
             else
             {
-                //Set default theme here
+                //Programmatically added gradient for DataGrid
+                LinearGradientBrush myLinearGradientBrush =
+                new LinearGradientBrush();
+                myLinearGradientBrush.StartPoint = new Point(0, 3);
+                myLinearGradientBrush.EndPoint = new Point(1, 1);
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Purple, 0.1));
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Yellow, 2.5));
+
+                // Use the brush to paint the Grid .
+                MainGrid.Background = myLinearGradientBrush;
+
+                //Changes colour of all text to Black so its easier to read text with light mode
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
+                GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
+
+                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
                 
             }
         }
@@ -238,10 +279,17 @@ namespace WpfApp1
         private void LoadSettings()
         {
             // Check the stored settings to see find the last state of the dark mode setting
-            if (!Odyssey.Properties.Settings.Default.DarkMode) // if it's false or null, dark mode stays off
-                darkModeChkBx.IsChecked = false; //Disable dark mode
+            if (!Odyssey.Properties.Settings.Default.DarkMode)
+            {
+                // if it's false or null, dark mode stays off
+                darkModeChkBx.IsChecked = false;
+                Theming(false);
+            }
             else // Else it is enabled
-                darkModeChkBx.IsChecked = true; //Dark mode is enabled
+            {
+                darkModeChkBx.IsChecked = true;
+                Theming(true); //Dark mode is enabled
+            }
 
             if (Odyssey.Properties.Settings.Default.pathRPCS3 is null)
                 pathRPCS3TxtBx.Text = "Unset";
@@ -265,72 +313,8 @@ namespace WpfApp1
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
             SaveSettings();
+            LoadSettings();
             MessageBox.Show("Settings applied");
-
-            if (darkModeChkBx.IsChecked == true)
-            {
-                //Change Bg Colour to black
-                //Set dark theme here
-                //Programmatically added gradient for DataGrid
-                LinearGradientBrush myLinearGradientBrush =
-                new LinearGradientBrush();
-                myLinearGradientBrush.StartPoint = new Point(0, 3);
-                myLinearGradientBrush.EndPoint = new Point(1, 1);
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Black, 0.1));
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Gray, 2.5));
-
-                //Sets background to Gradient
-                MainGrid.Background = myLinearGradientBrush;
-
-                //Changes colour of all text to white so its easier to read text with dark mode
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
-                RPCS3txtblk.Foreground= new SolidColorBrush(Colors.White);
-                pathRPCS3TxtBx.Foreground= new SolidColorBrush(Colors.White);
-                GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
-                darkModeChkBx.Foreground= new SolidColorBrush(Colors.White);
-
-                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
-                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-
-            }
-
-            if(darkModeChkBx.IsChecked == false)
-            {
-                //Programmatically added gradient for DataGrid
-                LinearGradientBrush myLinearGradientBrush =
-                new LinearGradientBrush();
-                myLinearGradientBrush.StartPoint = new Point(0, 3);
-                myLinearGradientBrush.EndPoint = new Point(1, 1);
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Purple, 0.1));
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Yellow, 2.5));
-
-                // Use the brush to paint the Grid .
-                MainGrid.Background = myLinearGradientBrush;
-
-                //Changes colour of all text to Black so its easier to read text with light mode
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
-                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
-                GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
-                darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
-
-                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
-                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-            }
 
             /*
             if (pathRPCS3TxtBx != null)
