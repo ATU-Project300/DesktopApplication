@@ -109,10 +109,8 @@
                 <Button x:Name="SearchBTN" Grid.Row="0" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Content="Search" />
 
-                <!-- This NEEDS to be replaced with something like GridView or ListView with DataBinding to display only the images. -->
-                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="650">
+                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="630">
                     <Grid>
-                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -128,13 +126,13 @@
                                         <StackPanel Margin="10" MouseLeftButtonUp="StackPanel_MouseLeftButtonUp">
                                             <Image Source="{Binding Image}" Width="80" Height="120" />
                                             <!--
+                                            Example of adding other Game specific data to the view:
                                             <TextBlock Text="{Binding Title}" TextAlignment="Center" />
                                             -->
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                        </Grid>
                     </Grid>
                 </ScrollViewer>
             </Grid>

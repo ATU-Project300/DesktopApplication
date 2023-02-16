@@ -17,6 +17,7 @@ namespace WpfApp1
 {
     public class GameViewModel
     {
+        //The list read by the XAML binding
         public List<Game> myGames { get; set; }
 
         public GameViewModel(List<Game> games)
@@ -27,7 +28,7 @@ namespace WpfApp1
 
     public partial class MainWindow : Window
     {
-        public List<Game> myGames = new List<Game>(); // Contains games stored in a sane fashion
+        public List<Game> myGames = new List<Game>(); //Contains games stored in a sane fashion
 
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
@@ -46,7 +47,6 @@ namespace WpfApp1
 
 
         // From the API, use the games data to occupy the myGames List
-        // (also runs the hacky game cover grid function)
         public async void InitializeApiData()
         {
             OccupyListVar(await ProcessGamesData(_client));
@@ -142,10 +142,6 @@ namespace WpfApp1
             }
         }
 
-        // ------------ Start of code to be removed ------------ 
-        // -----------------------------------------------------
-        // ------------ End of code to be removed ------------ 
-
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             //If the text box is modified and become empty, let all games be listed
@@ -167,7 +163,7 @@ namespace WpfApp1
             // Do something with the selected game object, such as showing more details in a new window
             if (game != null)
             {
-                MessageBox.Show($"You clicked on the game: {game.Title}");
+                MessageBox.Show($"You clicked on: {game.Title}\nReleased in {game.Year} for the {game.Consoles}.");
             }
         }
 
