@@ -168,7 +168,7 @@
 
                 <TextBlock Name="GFPtxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Width="364" />
-                <TextBox x:Name="GameFolderPath" TextWrapping="Wrap" Width="230" HorizontalAlignment="Right"
+                <TextBox x:Name="GameFolderPath" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" Width="230" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Height="25" Grid.Row="3" />
 
                 <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"

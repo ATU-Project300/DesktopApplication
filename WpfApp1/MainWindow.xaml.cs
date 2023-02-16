@@ -3,7 +3,9 @@ using Newtonsoft.Json;
 using Odyssey;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
@@ -163,8 +165,42 @@ namespace WpfApp1
             // Do something with the selected game object, such as showing more details in a new window
             if (game != null)
             {
-                MessageBox.Show($"You clicked on: {game.Title}\nReleased in {game.Year} for the {game.Consoles}.");
+                //MessageBox.Show($"You clicked on: {game.Title}\nReleased in {game.Year} for the {game.Consoles}.");
+                StartGame(game);
             }
+        }
+
+        private void StartGame(Game game)
+        {
+            string LaunchCommand = "";
+            LaunchCommand += PickEmulator(game);
+            Process.Start(LaunchCommand);
+        }
+
+        // Returns the path to the correct emulator for a game
+        private string PickEmulator(Game game)
+        {
+            switch (game.Emulator)
+            {
+                case "RPCS3":
+                    return Odyssey.Properties.Settings.Default.pathRPCS3;
+                    break;
+                case "Xenia":
+                    return Odyssey.Properties.Settings.Default.pathXenia;
+                    break;
+                case "PPSSPP":
+                    break;
+                default:
+                    return "";
+                    break;
+            }
+            return "";
+        }
+
+        //TODO: Function to search the game directory for the provided game and return its path as a string
+        private string FindGame(Game game)
+        {
+            return "";
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -248,7 +284,6 @@ namespace WpfApp1
 
         /*
          Display file picker. Expected arg is the textbox which contains the property being modified.
-         Done this not directly modify properties as the text box is manually modifiable and the user presses "Apply".
         */
         private void FilePicker(TextBox t)
         {
@@ -256,6 +291,11 @@ namespace WpfApp1
             var result = ofd.ShowDialog();
             if (result == false) return;
             t.Text = ofd.FileName;
+        }
+
+        private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(GameFolderPath);
         }
     }
 }
