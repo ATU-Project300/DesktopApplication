@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -73,7 +71,7 @@ namespace WpfApp1
                 pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
                 pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
-                darkModeChkBx.Foreground= new SolidColorBrush(Colors.White);
+                darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
 
                 //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
                 HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
@@ -82,7 +80,7 @@ namespace WpfApp1
                 SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
                 RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
                 LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                
+
             }
             else
             {
@@ -113,7 +111,7 @@ namespace WpfApp1
                 SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
                 RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
                 LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                
+
             }
         }
 
