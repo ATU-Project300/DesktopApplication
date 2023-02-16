@@ -1,19 +1,13 @@
 ﻿using Microsoft.Win32;
-using Newtonsoft.Json;
 using Odyssey;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using static API.API;
-using Image = System.Windows.Controls.Image;
 
 namespace WpfApp1
 {
@@ -52,7 +46,7 @@ namespace WpfApp1
         public async void InitializeApiData()
         {
             OccupyListVar(await ProcessGamesData(_client));
-            DataContext = new GameViewModel(myGames);
+            DataContext = new GameViewModel(myGames); //This goes here only because it loads too early anywhere else
         }
 
         // Allow for switching between light and dark themes
@@ -154,9 +148,10 @@ namespace WpfApp1
             else
             {
                 //TODO: Filter the list by textbox text
-                //Requires replacing the hacky game cover stuff.
             }
         }
+
+        //Essentially the click even for the game covers
         private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
@@ -170,14 +165,18 @@ namespace WpfApp1
             }
         }
 
+        //Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
         {
             string LaunchCommand = "";
-            LaunchCommand += PickEmulator(game);
+
+            LaunchCommand += PickEmulator(game) + " ";
+
             Process.Start(LaunchCommand);
         }
 
         // Returns the path to the correct emulator for a game
+        //TODO: Add support for the other emulators in our database (Also in the XAML)
         private string PickEmulator(Game game)
         {
             switch (game.Emulator)
@@ -295,6 +294,7 @@ namespace WpfApp1
 
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //TODO: Find a way to pick a FOLDER instead of a file
             FilePicker(GameFolderPath);
         }
     }

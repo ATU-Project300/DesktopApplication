@@ -115,7 +115,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <ItemsControl ItemsSource="{Binding myGames}" Grid.Row="1">
+                            <ItemsControl Name="ItemsControl" ItemsSource="{Binding myGames}" Grid.Row="1">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel Orientation="Horizontal" />
