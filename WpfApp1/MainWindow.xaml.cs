@@ -15,6 +15,16 @@ using Image = System.Windows.Controls.Image;
 
 namespace WpfApp1
 {
+    public class GameViewModel
+    {
+        public List<Game> myGames { get; set; }
+
+        public GameViewModel(List<Game> games)
+        {
+            myGames = games;
+        }
+    }
+
     public partial class MainWindow : Window
     {
         public List<Game> myGames = new List<Game>(); // Contains games stored in a sane fashion
@@ -40,9 +50,7 @@ namespace WpfApp1
         public async void InitializeApiData()
         {
             OccupyListVar(await ProcessGamesData(_client));
-
-            //To be removed
-            OccupyHackyGameGrid();
+            DataContext = new GameViewModel(myGames);
         }
 
         // Allow for switching between light and dark themes
@@ -136,108 +144,6 @@ namespace WpfApp1
 
         // ------------ Start of code to be removed ------------ 
         // -----------------------------------------------------
-
-        //Saves the game to a JSON file (unused but keeping for reference)
-        private void GamesToJson(List<GamesList> list)
-        {
-            string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
-
-            StreamWriter sw = new StreamWriter("games.json");
-
-            sw.WriteLine(jsondata);
-            sw.Close();
-            Console.WriteLine(jsondata);
-        }
-
-        // Creates an image element from the game cover art and adds it to a given StackPanel.
-        // This will be removed and replaced.
-        public void GenCard(string Uri, int HIndex, string game)
-        {
-            // Create a new image which is sourced from the Uri provided
-            Image Img = new Image();
-            Img.Source = new BitmapImage(new Uri(Uri));
-
-            // Set image dimensions
-            Img.MaxHeight = 120;
-            Img.Height = 170;
-            Img.Width = 120;
-            Img.ToolTip = game;
-
-            // Add margin to bottom of each image
-            Img.Margin = new Thickness(0, 0, 0, 5);
-
-            switch (HIndex)
-            {
-                default:
-                    break;
-                case 0:
-                    HorizGameStackPanel0.Children.Add(Img);
-                    break;
-                case 1:
-                    HorizGameStackPanel1.Children.Add(Img);
-                    break;
-                case 2:
-                    HorizGameStackPanel2.Children.Add(Img);
-                    break;
-                case 3:
-                    HorizGameStackPanel3.Children.Add(Img);
-                    break;
-                case 4:
-                    HorizGameStackPanel4.Children.Add(Img);
-                    break;
-                case 5:
-                    HorizGameStackPanel5.Children.Add(Img);
-                    break;
-            }
-        }
-
-        // Uses the game data from the API to place each "Card" in a grid
-        void OccupyHackyGameGrid()
-        {
-            int i = 0;
-            foreach (var game in myGames)
-            {
-                if (i < 5)
-                {
-                    GenCard(game.Image, 0, game.Title);
-                }
-                else if (i < 1)
-                {
-                    GenCard(game.Image, 1, game.Title);
-                }
-                else if (i < 15)
-                {
-                    GenCard(game.Image, 2, game.Title);
-                }
-                else if (i < 20)
-                {
-                    GenCard(game.Image, 3, game.Title);
-                }
-                else if (i < 25)
-                {
-                    GenCard(game.Image, 4, game.Title);
-                }
-                else if (i < 30)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 35)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 40)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 45)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                i++;
-            }
-        }
-
-        // -----------------------------------------------------
         // ------------ End of code to be removed ------------ 
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -251,6 +157,17 @@ namespace WpfApp1
             {
                 //TODO: Filter the list by textbox text
                 //Requires replacing the hacky game cover stuff.
+            }
+        }
+        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            // Get the Game object associated with the clicked item
+            var game = (sender as FrameworkElement)?.DataContext as Game;
+
+            // Do something with the selected game object, such as showing more details in a new window
+            if (game != null)
+            {
+                MessageBox.Show($"You clicked on the game: {game.Title}");
             }
         }
 

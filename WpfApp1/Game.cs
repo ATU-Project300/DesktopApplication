@@ -2,12 +2,12 @@
 {
     public class Game
     {
-        public string Title;
-        public int Year;
-        public string Description;
-        public string Image;
-        public string Consoles;
-        public string Emulator;
-        public string LocalPath; // Only assigned and saved locally, will never be part of API
+        public string Title { get; set; }
+        public int Year { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+        public string Consoles { get; set; }
+        public string Emulator { get; set; }
+        public string LocalPath { get; set; } // Only assigned and saved locally, will never be part of API
     }
 }

@@ -110,15 +110,32 @@
                         VerticalAlignment="Center" Content="Search" />
 
                 <!-- This NEEDS to be replaced with something like GridView or ListView with DataBinding to display only the images. -->
-                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="600">
-                    <StackPanel CanHorizontallyScroll="True" Name="VertGameStackPanel">
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel0" />
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel1" />
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel2" />
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel3" />
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel4" />
-                        <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Name="HorizGameStackPanel5" />
-                    </StackPanel>
+                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="650">
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ItemsControl ItemsSource="{Binding myGames}" Grid.Row="1">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="10" MouseLeftButtonUp="StackPanel_MouseLeftButtonUp">
+                                            <Image Source="{Binding Image}" Width="80" Height="120" />
+                                            <!--
+                                            <TextBlock Text="{Binding Title}" TextAlignment="Center" />
+                                            -->
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </TabPanel>
