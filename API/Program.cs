@@ -12,7 +12,7 @@ namespace API
             //To be left empty
         }
 
-        public static async Task<List<GamesList>> ProcessRepositoriesAsync(HttpClient client)
+        public static async Task<List<GamesList>> ProcessGamesData(HttpClient client)
         {
             await using Stream stream =
                 await client.GetStreamAsync(URL);

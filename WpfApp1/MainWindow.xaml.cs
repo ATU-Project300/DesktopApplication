@@ -28,7 +28,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             LoadSettings();
-            InitializeApi();
+            InitializeApiData();
 
             // Essentially sets the default page to be the Games one.
             // Any new TabPanels should be added here and set to "Collapsed"
@@ -36,61 +36,15 @@ namespace WpfApp1
             Settings.Visibility = Visibility.Collapsed;
         }
 
-        //TODO: Move this method back into the API itself such that we create an instance of the API at the beginning.
-        //      This will be more versatile.
-        public async void InitializeApi()
+
+        // From the API, use the games data to occupy the myGames List
+        // (also runs the hacky game cover grid function)
+        public async void InitializeApiData()
         {
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
+            OccupyListVar(await ProcessGamesData(_client));
 
-            var list = await ProcessRepositoriesAsync(_client);
-
-            OccupyListVar(await ProcessRepositoriesAsync(_client));
-
-            int i = 0;
-
-            //Hacky way to do the game cover grid, this will be removed and replaced.
-            foreach (var game in list)
-            {
-                if (i < 5)
-                {
-                    GenCard(game.Image, 0, game.Title);
-                }
-                else if (i < 1)
-                {
-                    GenCard(game.Image, 1, game.Title);
-                }
-                else if (i < 15)
-                {
-                    GenCard(game.Image, 2, game.Title);
-                }
-                else if (i < 20)
-                {
-                    GenCard(game.Image, 3, game.Title);
-                }
-                else if (i < 25)
-                {
-                    GenCard(game.Image, 4, game.Title);
-                }
-                else if (i < 30)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 35)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 40)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                else if (i < 45)
-                {
-                    GenCard(game.Image, 5, game.Title);
-                }
-                i++;
-            }
+            //To be removed
+            OccupyHackyGameGrid();
         }
 
         // Allow for switching between light and dark themes
@@ -163,18 +117,6 @@ namespace WpfApp1
             }
         }
 
-        //Saves the game to a JSON file (unused but keeping for reference)
-        private void GamesToJson(List<GamesList> list)
-        {
-            string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
-
-            StreamWriter sw = new StreamWriter("games.json");
-
-            sw.WriteLine(jsondata);
-            sw.Close();
-            Console.WriteLine(jsondata);
-        }
-
         // Occupy the local list var "myGames" with the games such that they are truly individually addressable (!!!)
         private void OccupyListVar(List<GamesList> list)
         {
@@ -192,6 +134,21 @@ namespace WpfApp1
                 });
                 i++;
             }
+        }
+
+        // ------------ Start of code to be removed ------------ 
+        // -----------------------------------------------------
+
+        //Saves the game to a JSON file (unused but keeping for reference)
+        private void GamesToJson(List<GamesList> list)
+        {
+            string jsondata = JsonConvert.SerializeObject(list, Formatting.Indented);
+
+            StreamWriter sw = new StreamWriter("games.json");
+
+            sw.WriteLine(jsondata);
+            sw.Close();
+            Console.WriteLine(jsondata);
         }
 
         // Creates an image element from the game cover art and adds it to a given StackPanel.
@@ -236,12 +193,61 @@ namespace WpfApp1
             }
         }
 
+        // Uses the game data from the API to place each "Card" in a grid
+        void OccupyHackyGameGrid()
+        {
+            int i = 0;
+            foreach (var game in myGames)
+            {
+                if (i < 5)
+                {
+                    GenCard(game.Image, 0, game.Title);
+                }
+                else if (i < 1)
+                {
+                    GenCard(game.Image, 1, game.Title);
+                }
+                else if (i < 15)
+                {
+                    GenCard(game.Image, 2, game.Title);
+                }
+                else if (i < 20)
+                {
+                    GenCard(game.Image, 3, game.Title);
+                }
+                else if (i < 25)
+                {
+                    GenCard(game.Image, 4, game.Title);
+                }
+                else if (i < 30)
+                {
+                    GenCard(game.Image, 5, game.Title);
+                }
+                else if (i < 35)
+                {
+                    GenCard(game.Image, 5, game.Title);
+                }
+                else if (i < 40)
+                {
+                    GenCard(game.Image, 5, game.Title);
+                }
+                else if (i < 45)
+                {
+                    GenCard(game.Image, 5, game.Title);
+                }
+                i++;
+            }
+        }
+
+        // -----------------------------------------------------
+        // ------------ End of code to be removed ------------ 
+
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             //If the text box is modified and become empty, let all games be listed
             if (SearchTxBx.Text.Length <= 0)
             {
-                InitializeApi();
+                InitializeApiData();
             }
             else
             {
