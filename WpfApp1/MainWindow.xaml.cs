@@ -13,7 +13,8 @@ namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        public List<Game> myGames = new List<Game>(); //Contains games stored in a sane fashion
+        //Contains games stored in a sane fashion
+        public List<Game> myGames = new List<Game>(); 
 
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
@@ -35,7 +36,9 @@ namespace WpfApp1
         public async void InitializeApiData()
         {
             OccupyListVar(await ProcessGamesData(_client));
-            DataContext = new GameViewModel(myGames); //This goes here only because it loads too early anywhere else
+            
+            //This goes here only because it loads too early anywhere else
+            DataContext = new GameViewModel(myGames); 
         }
 
         // Allow for switching between light and dark themes
@@ -66,7 +69,8 @@ namespace WpfApp1
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
 
-                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                //Change bg colour of buttons and panel grid.
+                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
                 HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
                 AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
                 PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
@@ -97,7 +101,8 @@ namespace WpfApp1
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
 
-                //Change bg colour of buttons and panel grid. Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                //Change bg colour of buttons and panel grid.
+                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
                 HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
                 AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
                 PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
@@ -108,7 +113,8 @@ namespace WpfApp1
             }
         }
 
-        // Occupy the local list var "myGames" with the games such that they are truly individually addressable (!!!)
+        // Occupy the local list var "myGames" with the games
+        // such that they are individually addressable (!!!)
         private void OccupyListVar(List<GamesList> list)
         {
             int i = 0;
@@ -149,7 +155,6 @@ namespace WpfApp1
             // Do something with the selected game object, such as showing more details in a new window
             if (game != null)
             {
-                //MessageBox.Show($"You clicked on: {game.Title}\nReleased in {game.Year} for the {game.Consoles}.");
                 StartGame(game);
             }
         }
@@ -161,6 +166,7 @@ namespace WpfApp1
 
             LaunchCommand += PickEmulator(game) + " ";
 
+            //TODO: Remove this
             MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
             //Process.Start(LaunchCommand);
         }
