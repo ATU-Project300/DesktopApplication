@@ -11,17 +11,6 @@ using static API.API;
 
 namespace WpfApp1
 {
-    public class GameViewModel
-    {
-        //The list read by the XAML binding
-        public List<Game> myGames { get; set; }
-
-        public GameViewModel(List<Game> games)
-        {
-            myGames = games;
-        }
-    }
-
     public partial class MainWindow : Window
     {
         public List<Game> myGames = new List<Game>(); //Contains games stored in a sane fashion
@@ -172,7 +161,8 @@ namespace WpfApp1
 
             LaunchCommand += PickEmulator(game) + " ";
 
-            Process.Start(LaunchCommand);
+            MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
+            //Process.Start(LaunchCommand);
         }
 
         // Returns the path to the correct emulator for a game
