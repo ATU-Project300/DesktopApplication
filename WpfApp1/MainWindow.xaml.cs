@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Odyssey;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static API.API;
+using System;
 
 namespace WpfApp1
 {
@@ -67,6 +69,7 @@ namespace WpfApp1
                 pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
                 pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathGameFolder.Foreground = new SolidColorBrush(Colors.White);
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
 
                 //Change bg colour of buttons and panel grid.
@@ -99,6 +102,7 @@ namespace WpfApp1
                 RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
                 pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
                 GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathGameFolder.Foreground = new SolidColorBrush(Colors.Black);
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
 
                 //Change bg colour of buttons and panel grid.
@@ -165,6 +169,7 @@ namespace WpfApp1
             string LaunchCommand = "";
 
             LaunchCommand += PickEmulator(game) + " ";
+            LaunchCommand += FindGame(game);
 
             //TODO: Remove this
             MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
@@ -195,7 +200,10 @@ namespace WpfApp1
         //TODO: Function to search the game directory for the provided game and return its path as a string
         private string FindGame(Game game)
         {
-            return "";
+            if (game == null) return null;
+            if (pathGameFolder.Text.Length < 4) return null;
+
+            return FindFile(pathGameFolder.Text, game.Title);
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -216,6 +224,7 @@ namespace WpfApp1
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
             Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
             Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
 
@@ -244,6 +253,11 @@ namespace WpfApp1
                 pathXeniaTxtBx.Text = "Unset";
             else
                 pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia;
+
+            if (Odyssey.Properties.Settings.Default.pathGameFolder is null)
+                pathGameFolder.Text = "Unset";
+            else
+                pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder;
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
@@ -277,9 +291,9 @@ namespace WpfApp1
             FilePicker(pathXeniaTxtBx);
         }
 
-        /*
-         Display file picker. Expected arg is the textbox which contains the property being modified.
-        */
+        //TODO: Folder picker
+
+        // Generic function to open a file picker and store the result in a text box
         private void FilePicker(TextBox t)
         {
             var ofd = new OpenFileDialog();
@@ -288,10 +302,63 @@ namespace WpfApp1
             t.Text = ofd.FileName;
         }
 
+        // Open a folder picker, store the resulting path in the text box
+        private void PathGameFolder_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathGameFolder);
+        }
+
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //TODO: Find a way to pick a FOLDER instead of a file
-            FilePicker(GameFolderPath);
+            //TODO: Replace this with a folder picker
+            FilePicker(pathGameFolder);
+        }
+
+        // Generic function to compare two strings and return a likeness percentage
+        public static double CompareStrings(string str1, string str2)
+        {
+            // Split the strings into words
+            var words1 = str1.Split(' ', '-', '_', '.');
+            var words2 = str2.Split(' ', '-', '_', '.');
+
+            // Create a list to store the matching words
+            var matchingWords = new List<string>();
+
+            // Loop through the words and compare them
+            foreach (var word1 in words1)
+            {
+                foreach (var word2 in words2)
+                {
+                    // If the words match, add them to the list, the check also ignores case
+                    if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matchingWords.Add(word1);
+                    }
+                }
+            }
+
+            // Set a max length for the strings
+            var maxLength = Math.Max(words1.Length, words2.Length);
+
+            // Calculate the likeness percentage
+            var likeness = (double)matchingWords.Count / maxLength * 100;
+
+            return likeness;
+        }
+
+        // Generic function to search a directory for a file
+        public static string FindFile(string directory, string fileName)
+        {
+            var directoryInfo = new DirectoryInfo(directory);
+            var files = directoryInfo.GetFiles();
+
+            foreach (var file in files)
+            {
+                if(CompareStrings(file.Name, fileName) > 70)
+                    return file.FullName;
+            }
+
+            return null;
         }
     }
 }
