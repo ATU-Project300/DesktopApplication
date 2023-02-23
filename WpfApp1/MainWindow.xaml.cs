@@ -63,12 +63,21 @@ namespace WpfApp1
                 MainGrid.Background = myLinearGradientBrush;
 
                 //Changes colour of all text to white so its easier to read text with dark mode
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
                 RPCS3txtblk.Foreground = new SolidColorBrush(Colors.White);
                 pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
+
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
                 pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
-                GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
+
+                PPSSPPtxtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathPPSSPPTxtBx.Foreground = new SolidColorBrush(Colors.White);
+
+                PCSX2txtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathPCSX2TxtBx.Foreground = new SolidColorBrush(Colors.White);
+
+                GameFoldertxtblk.Foreground = new SolidColorBrush(Colors.White);
                 pathGameFolder.Foreground = new SolidColorBrush(Colors.White);
+
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
 
                 //Change bg colour of buttons and panel grid.
@@ -97,11 +106,21 @@ namespace WpfApp1
                 MainGrid.Background = myLinearGradientBrush;
 
                 //Changes colour of all text to Black so its easier to read text with light mode
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
                 RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
                 pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
-                GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
+
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.Black);
+
+                PPSSPPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathPPSSPPTxtBx.Foreground = new SolidColorBrush(Colors.Black);
+
+                PCSX2txtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathPCSX2TxtBx.Foreground = new SolidColorBrush(Colors.Black);
+
+                GameFoldertxtblk.Foreground = new SolidColorBrush(Colors.Black);
                 pathGameFolder.Foreground = new SolidColorBrush(Colors.Black);
+
                 darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
 
                 //Change bg colour of buttons and panel grid.
@@ -191,7 +210,11 @@ namespace WpfApp1
                     break;
                 case "PPSSPP":
                     if(retEmulator) return "PPSSPP";
-                    //TODO: PPSSPP setting
+                    return Odyssey.Properties.Settings.Default.pathPPSSPP;
+                    break;
+                case "PCSX2":
+                    if(retEmulator) return "PCSX2";
+                    return Odyssey.Properties.Settings.Default.pathPCSX2;
                     break;
                 default:
                     return "";
@@ -221,43 +244,22 @@ namespace WpfApp1
         //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
         private bool VerifySettings()
         {
-            //Check if the text boxes are empty
-            if (pathRPCS3TxtBx.Text.Length < 4)
+            // Check if the text boxes are empty
+            bool TxtBxLengthCheck(TextBox t, string emulator)
             {
-                MessageBox.Show("The RPCS3 path is quite short. Is the path valid?");
-                return false;
+                if (t.Text.Length < 4)
+                {
+                    MessageBox.Show($"The {emulator} path is quite short. Is the path valid?");
+                    return false;
+                }
+                return true;
             }
 
-            if (pathXeniaTxtBx.Text.Length < 4)
-            {
-                MessageBox.Show("The Xenia path is quite short. Is the path valid?");
-                return false;
-            }
-
-            if (pathGameFolder.Text.Length < 4)
-            {
-                MessageBox.Show("The game folder path is quite short. Is the path valid?");
-                return false;
-            }
-
-            //Check if the paths are valid
-            if (!File.Exists(pathRPCS3TxtBx.Text))
-            {
-                MessageBox.Show("The RPCS3 path is invalid as the file does not exist. Please enter a valid path.");
-                return false;
-            }
-
-            if (!File.Exists(pathXeniaTxtBx.Text))
-            {
-                MessageBox.Show("The Xenia path is invalid as the file does not exist. Please enter a valid path.");
-                return false;
-            }
-
-            if (pathGameFolder.Text.Length < 4)
-            {
-                MessageBox.Show("The game folder path is invalid as the file does not exist. Please enter a valid path.");
-                return false;
-            }
+            if (!TxtBxLengthCheck(pathRPCS3TxtBx, "RPSC3")) return false;
+            if (!TxtBxLengthCheck(pathXeniaTxtBx, "Xenia")) return false;
+            if (!TxtBxLengthCheck(pathPPSSPPTxtBx, "PPSSPP")) return false;
+            if (!TxtBxLengthCheck(pathPCSX2TxtBx, "PCSX2")) return false;
+            if (!TxtBxLengthCheck(pathGameFolder, "game folder")) return false;
 
             return true;
         }
@@ -268,6 +270,8 @@ namespace WpfApp1
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
             Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
             Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathPPSSPP = pathPPSSPPTxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathPCSX2 = pathPCSX2TxtBx.Text;
             Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
@@ -297,6 +301,16 @@ namespace WpfApp1
                 pathXeniaTxtBx.Text = "Unset";
             else
                 pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia;
+
+            if (Odyssey.Properties.Settings.Default.pathPPSSPP is null)
+                pathPPSSPPTxtBx.Text = "Unset";
+            else
+                pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP;
+
+            if (Odyssey.Properties.Settings.Default.pathPCSX2 is null)
+                pathPCSX2TxtBx.Text = "Unset";
+            else
+                pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2;
 
             if (Odyssey.Properties.Settings.Default.pathGameFolder is null)
                 pathGameFolder.Text = "Unset";
@@ -336,7 +350,15 @@ namespace WpfApp1
             FilePicker(pathXeniaTxtBx);
         }
 
-        //TODO: Folder picker
+        private void pathPPSSPPTxtBx_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathPPSSPPTxtBx);
+        }
+
+        private void pathPCSX2TxtBx_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathPCSX2TxtBx);
+        }
 
         // Generic function to open a file picker and store the result in a text box
         private void FilePicker(TextBox t)
@@ -425,5 +447,6 @@ namespace WpfApp1
 
             return null;
         }
+
     }
 }

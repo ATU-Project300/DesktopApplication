@@ -82,5 +82,17 @@ namespace Odyssey.Properties {
                 this["pathGameFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathPCSX2 {
+            get {
+                return ((string)(this["pathPCSX2"]));
+            }
+            set {
+                this["pathPCSX2"] = value;
+            }
+        }
     }
 }
