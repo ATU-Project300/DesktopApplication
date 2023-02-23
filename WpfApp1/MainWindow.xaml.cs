@@ -226,7 +226,6 @@ namespace WpfApp1
         private string FindGame(Game game)
         {
             if (game == null) return null;
-            if (pathGameFolder.Text.Length < 4) return null; //TODO: Remove this when we implement proper settings verification
 
             //RPCS3 takes the folder as the game path, while the other emulators take the file
             if(PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, $"{game.Title}");
