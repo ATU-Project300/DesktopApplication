@@ -1,22 +1,21 @@
 ﻿using Microsoft.Win32;
 using Odyssey;
-using System.IO;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static API.API;
-using System;
 
 namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
         //Contains games stored in a sane fashion
-        public List<Game> myGames = new List<Game>(); 
+        public List<Game> myGames = new List<Game>();
 
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
@@ -38,9 +37,9 @@ namespace WpfApp1
         public async void InitializeApiData()
         {
             OccupyListVar(await ProcessGamesData(_client));
-            
+
             //This goes here only because it loads too early anywhere else
-            DataContext = new GameViewModel(myGames); 
+            DataContext = new GameViewModel(myGames);
         }
 
         // Allow for switching between light and dark themes
@@ -168,7 +167,7 @@ namespace WpfApp1
         {
             string LaunchCommand = "";
 
-            LaunchCommand += PickEmulator(game) + " ";
+            LaunchCommand += PickEmulator(game, false) + " ";
             LaunchCommand += FindGame(game);
 
             //TODO: Remove this
@@ -176,19 +175,23 @@ namespace WpfApp1
             //Process.Start(LaunchCommand);
         }
 
-        // Returns the path to the correct emulator for a game
+        // Returns the path to the correct emulator for a game OR return the emulator name for a game
         //TODO: Add support for the other emulators in our database (Also in the XAML)
-        private string PickEmulator(Game game)
+        private string PickEmulator(Game game, bool retEmulator)
         {
             switch (game.Emulator)
             {
                 case "RPCS3":
+                    if(retEmulator) return "RPCS3";
                     return Odyssey.Properties.Settings.Default.pathRPCS3;
                     break;
                 case "Xenia":
+                    if(retEmulator) return "Xenia";
                     return Odyssey.Properties.Settings.Default.pathXenia;
                     break;
                 case "PPSSPP":
+                    if(retEmulator) return "PPSSPP";
+                    //TODO: PPSSPP setting
                     break;
                 default:
                     return "";
@@ -197,13 +200,16 @@ namespace WpfApp1
             return "";
         }
 
-        //TODO: Function to search the game directory for the provided game and return its path as a string
+        // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
         private string FindGame(Game game)
         {
             if (game == null) return null;
-            if (pathGameFolder.Text.Length < 4) return null;
+            if (pathGameFolder.Text.Length < 4) return null; //TODO: Remove this when we implement proper settings verification
 
-            return FindFile(pathGameFolder.Text, game.Title);
+            //RPCS3 takes the folder as the game path, while the other emulators take the file
+            if(PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, game.Title);
+            //For any other emulator, return the file path
+            else return FindFile(pathGameFolder.Text, game.Title);
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -213,9 +219,47 @@ namespace WpfApp1
         }
 
         //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
-        private void VerifySettings()
+        private bool VerifySettings()
         {
-            // Some basic checks such as if the text is shorter than 5 chars or is null etc.
+            //Check if the text boxes are empty
+            if (pathRPCS3TxtBx.Text.Length < 4)
+            {
+                MessageBox.Show("The RPCS3 path is quite short. Is the path valid?");
+                return false;
+            }
+
+            if (pathXeniaTxtBx.Text.Length < 4)
+            {
+                MessageBox.Show("The Xenia path is quite short. Is the path valid?");
+                return false;
+            }
+
+            if (pathGameFolder.Text.Length < 4)
+            {
+                MessageBox.Show("The game folder path is quite short. Is the path valid?");
+                return false;
+            }
+
+            //Check if the paths are valid
+            if (!File.Exists(pathRPCS3TxtBx.Text))
+            {
+                MessageBox.Show("The RPCS3 path is invalid as the file does not exist. Please enter a valid path.");
+                return false;
+            }
+
+            if (!File.Exists(pathXeniaTxtBx.Text))
+            {
+                MessageBox.Show("The Xenia path is invalid as the file does not exist. Please enter a valid path.");
+                return false;
+            }
+
+            if (pathGameFolder.Text.Length < 4)
+            {
+                MessageBox.Show("The game folder path is invalid as the file does not exist. Please enter a valid path.");
+                return false;
+            }
+
+            return true;
         }
 
         //Save settings
@@ -275,6 +319,7 @@ namespace WpfApp1
         //Settings Apply Button
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
+            VerifySettings();
             SaveSettings();
             LoadSettings();
         }
@@ -351,11 +396,31 @@ namespace WpfApp1
         {
             var directoryInfo = new DirectoryInfo(directory);
             var files = directoryInfo.GetFiles();
+            double expectedLikeness = 70;
+
+            //If the file name is short, reduce the expected likeness such
+            //that we are more likely to get a match. (See "Halo 3")
+            if (fileName.Length < 7) expectedLikeness -= 20;
 
             foreach (var file in files)
             {
-                if(CompareStrings(file.Name, fileName) > 70)
+                if (CompareStrings(file.Name, fileName) > expectedLikeness)
                     return file.FullName;
+            }
+
+            return null;
+        }
+
+        //Generic function to search a directory for another directory
+        public static string FindFolder(string directory, string folderName)
+        {
+            var folderInfo = new DirectoryInfo(directory);
+            var folder = folderInfo.GetDirectories();
+
+            foreach (var dir in folder)
+            {
+                if(CompareStrings(dir.Name, folderName) > 70)
+                    return dir.FullName;
             }
 
             return null;
