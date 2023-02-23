@@ -5,10 +5,16 @@
     <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="RPCS3" Type="System.String" Scope="User">
+    <Setting Name="pathRPCS3" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Xenia" Type="System.String" Scope="User">
+    <Setting Name="pathXenia" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="pathPPSSPP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="pathGameFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

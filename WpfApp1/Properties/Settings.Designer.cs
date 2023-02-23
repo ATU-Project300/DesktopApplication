@@ -12,7 +12,7 @@ namespace Odyssey.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -38,24 +38,48 @@ namespace Odyssey.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RPCS3 {
+        public string pathRPCS3 {
             get {
-                return ((string)(this["RPCS3"]));
+                return ((string)(this["pathRPCS3"]));
             }
             set {
-                this["RPCS3"] = value;
+                this["pathRPCS3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Xenia {
+        public string pathXenia {
             get {
-                return ((string)(this["Xenia"]));
+                return ((string)(this["pathXenia"]));
             }
             set {
-                this["Xenia"] = value;
+                this["pathXenia"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathPPSSPP {
+            get {
+                return ((string)(this["pathPPSSPP"]));
+            }
+            set {
+                this["pathPPSSPP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathGameFolder {
+            get {
+                return ((string)(this["pathGameFolder"]));
+            }
+            set {
+                this["pathGameFolder"] = value;
             }
         }
     }

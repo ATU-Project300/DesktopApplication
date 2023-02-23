@@ -1,130 +1,139 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Odyssey;
+using System.IO;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media.Imaging;
-using MahApps.Metro.Controls;
+using System.Windows.Media;
 using static API.API;
-using static System.Net.Mime.MediaTypeNames;
-using Image = System.Windows.Controls.Image;
+using System;
 
 namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        private Object games;
+        //Contains games stored in a sane fashion
+        public List<Game> myGames = new List<Game>(); 
+
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient _client = new HttpClient();
 
         public MainWindow()
         {
             InitializeComponent();
-            InitializeApi();
+            LoadSettings();
+            InitializeApiData();
+
+            // Essentially sets the default page to be the Games one.
+            // Any new TabPanels should be added here and set to "Collapsed"
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
         }
 
 
-        public async void InitializeApi()
+        // From the API, use the games data to occupy the myGames List
+        public async void InitializeApiData()
         {
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            _client.DefaultRequestHeaders.Add("User-Agent", "Odyssey Desktop Client");
-            var list = await ProcessRepositoriesAsync(_client);
-            games = list;
-
-            DataGrid.ItemsSource = list;
-
-            /*
-            int i = 0;
-            //Testing
-            foreach (var game in list)
-            {
-                if (i < 5)
-                {
-                    GenCard(game.Image, 0, game.Title.Substring(0,3));
-                }
-                else if (i < 10)
-                {
-                    GenCard(game.Image, 1, game.Title.Substring(0,3));
-                }
-                else if (i < 15)
-                {
-                    GenCard(game.Image, 2, game.Title.Substring(0,3));
-                }
-                else if (i < 20)
-                {
-                    GenCard(game.Image, 3, game.Title.Substring(0,3));
-                }
-                else if (i < 25)
-                {
-                    GenCard(game.Image, 4, game.Title.Substring(0,3));
-                }
-                else if (i < 30)
-                {
-                    GenCard(game.Image, 5, game.Title.Substring(0,3));
-                }
-                i++;
-            }
-            //MessageBox.Show(list[0].Title); //Example of an individually addressed item
-            */
-
+            OccupyListVar(await ProcessGamesData(_client));
+            
+            //This goes here only because it loads too early anywhere else
+            DataContext = new GameViewModel(myGames); 
         }
 
-        /*
-        public void GenCard(string Uri, int HIndex, string game)
+        // Allow for switching between light and dark themes
+        // Must be added soon after InitializeComponent (Currently part of LoadSettings)
+        private void Theming(bool dark)
         {
-            Image Img = new Image();
-            Img.Source = new BitmapImage(new Uri(Uri));
-            Img.MaxHeight = 120;
-            Img.Height = 170;
-            Img.Width = 120;
-            switch (HIndex)
+            if (dark)
             {
-               default:
-                   break;
-                case 0:
-                    HorizGameStackPanel0.Children.Add(Img);
-                    break;
-                case 1:
-                    HorizGameStackPanel1.Children.Add(Img);
-                    break;
-                case 2:
-                    HorizGameStackPanel2.Children.Add(Img);
-                    break;
-                case 3:
-                    HorizGameStackPanel3.Children.Add(Img);
-                    break;
-                case 4:
-                    HorizGameStackPanel4.Children.Add(Img);
-                    break;
-                case 5:
-                    HorizGameStackPanel5.Children.Add(Img);
-                    break;
-            }
-        }
+                //Change Bg Colour to black
+                //Programmatically added gradient for DataGrid
+                LinearGradientBrush myLinearGradientBrush =
+                new LinearGradientBrush();
+                myLinearGradientBrush.StartPoint = new Point(0, 3);
+                myLinearGradientBrush.EndPoint = new Point(1, 1);
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Black, 0.1));
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Gray, 2.5));
 
-        */
+                //Sets background to Gradient
+                MainGrid.Background = myLinearGradientBrush;
 
-        //Spawn settings window?
-        //Hide list and other items and show settings instead?
-        //TODO: Implement persistent settings from previous build
-        private void SettingsButtonClick(object sender, RoutedEventArgs e)
-        {
-            //ToString for safety :)
-            if (SettingsBTN.Content.ToString() == "Back")
-            {
-                MessageBox.Show("Exiting settings");
-                SettingsBTN.Content = "Settings";
+                //Changes colour of all text to white so its easier to read text with dark mode
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
+                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
+                pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
+                GFPtxtblk.Foreground = new SolidColorBrush(Colors.White);
+                pathGameFolder.Foreground = new SolidColorBrush(Colors.White);
+                darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
+
+                //Change bg colour of buttons and panel grid.
+                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
+
             }
             else
             {
-                MessageBox.Show("Entering settings");
-                SettingsBTN.Content = "Back";
+                //Programmatically added gradient for DataGrid
+                LinearGradientBrush myLinearGradientBrush =
+                new LinearGradientBrush();
+                myLinearGradientBrush.StartPoint = new Point(0, 3);
+                myLinearGradientBrush.EndPoint = new Point(1, 1);
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Purple, 0.1));
+                myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Yellow, 2.5));
+
+                // Use the brush to paint the Grid .
+                MainGrid.Background = myLinearGradientBrush;
+
+                //Changes colour of all text to Black so its easier to read text with light mode
+                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
+                GFPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
+                pathGameFolder.Foreground = new SolidColorBrush(Colors.Black);
+                darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
+
+                //Change bg colour of buttons and panel grid.
+                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
+                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
+
+            }
+        }
+
+        // Occupy the local list var "myGames" with the games
+        // such that they are individually addressable (!!!)
+        private void OccupyListVar(List<GamesList> list)
+        {
+            int i = 0;
+            foreach (var x in list)
+            {
+                myGames.Add(new Game()
+                {
+                    Title = x.Title,
+                    Year = x.Year,
+                    Description = x.Description,
+                    Image = x.Image,
+                    Consoles = x.Consoles,
+                    Emulator = x.Emulator
+                });
+                i++;
             }
         }
 
@@ -133,7 +142,7 @@ namespace WpfApp1
             //If the text box is modified and become empty, let all games be listed
             if (SearchTxBx.Text.Length <= 0)
             {
-                InitializeApi();
+                InitializeApiData();
             }
             else
             {
@@ -141,27 +150,215 @@ namespace WpfApp1
             }
         }
 
-        private void DataGrid_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //Essentially the click even for the game covers
+        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            StartGame(DataGrid.SelectedIndex);
+            // Get the Game object associated with the clicked item
+            var game = (sender as FrameworkElement)?.DataContext as Game;
+
+            // Do something with the selected game object, such as showing more details in a new window
+            if (game != null)
+            {
+                StartGame(game);
+            }
         }
 
-        private void StartGame(int gameIndex)
+        //Using other methods, construct a launchCommand to be ran by Process.Start
+        private void StartGame(Game game)
         {
-            switch (DataGrid.SelectedIndex)
+            string LaunchCommand = "";
+
+            LaunchCommand += PickEmulator(game) + " ";
+            LaunchCommand += FindGame(game);
+
+            //TODO: Remove this
+            MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
+            //Process.Start(LaunchCommand);
+        }
+
+        // Returns the path to the correct emulator for a game
+        //TODO: Add support for the other emulators in our database (Also in the XAML)
+        private string PickEmulator(Game game)
+        {
+            switch (game.Emulator)
             {
+                case "RPCS3":
+                    return Odyssey.Properties.Settings.Default.pathRPCS3;
+                    break;
+                case "Xenia":
+                    return Odyssey.Properties.Settings.Default.pathXenia;
+                    break;
+                case "PPSSPP":
+                    break;
                 default:
-                    MessageBox.Show("Game not installed!");
+                    return "";
                     break;
-                case 0: 
-                    MessageBox.Show("Game not installed!");
-                    break;
-                case 1: 
-                    Process.Start("C:\\Games\\RPCS3\\rpcs3.exe", "E:\\Mods\\PS3\\GAMES\\BLUS30418");
-                    break;
-                
+            }
+            return "";
+        }
+
+        //TODO: Function to search the game directory for the provided game and return its path as a string
+        private string FindGame(Game game)
+        {
+            if (game == null) return null;
+            if (pathGameFolder.Text.Length < 4) return null;
+
+            return FindFile(pathGameFolder.Text, game.Title);
+        }
+
+        private void SettingsBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Games.Visibility = Visibility.Collapsed;
+            Settings.Visibility = Visibility.Visible;
+        }
+
+        //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
+        private void VerifySettings()
+        {
+            // Some basic checks such as if the text is shorter than 5 chars or is null etc.
+        }
+
+        //Save settings
+        private void SaveSettings()
+        {
+            Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
+            Odyssey.Properties.Settings.Default.Save();
+        }
+
+        // Load settings
+        private void LoadSettings()
+        {
+            // Check the stored settings to see find the last state of the dark mode setting
+            if (!Odyssey.Properties.Settings.Default.DarkMode)
+            {
+                // if it's false or null, dark mode stays off
+                darkModeChkBx.IsChecked = false;
+                Theming(false);
+            }
+            else // Else it is enabled
+            {
+                darkModeChkBx.IsChecked = true;
+                Theming(true); //Dark mode is enabled
             }
 
+            if (Odyssey.Properties.Settings.Default.pathRPCS3 is null)
+                pathRPCS3TxtBx.Text = "Unset";
+            else
+                pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3;
+
+            if (Odyssey.Properties.Settings.Default.pathXenia is null)
+                pathXeniaTxtBx.Text = "Unset";
+            else
+                pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia;
+
+            if (Odyssey.Properties.Settings.Default.pathGameFolder is null)
+                pathGameFolder.Text = "Unset";
+            else
+                pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder;
+        }
+
+        private void HomeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
+        }
+
+        private void AllGamesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Games.Visibility = Visibility.Visible;
+            Settings.Visibility = Visibility.Collapsed;
+        }
+
+        //Settings Apply Button
+        private void ApplyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettings();
+            LoadSettings();
+        }
+
+        // Open a file picker, store the resulting path in the text box
+        private void PathRPCS3TxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathRPCS3TxtBx);
+        }
+
+        // Open a file picker, store the resulting path in the text box
+        private void PathXeniaTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathXeniaTxtBx);
+        }
+
+        //TODO: Folder picker
+
+        // Generic function to open a file picker and store the result in a text box
+        private void FilePicker(TextBox t)
+        {
+            var ofd = new OpenFileDialog();
+            var result = ofd.ShowDialog();
+            if (result == false) return;
+            t.Text = ofd.FileName;
+        }
+
+        // Open a folder picker, store the resulting path in the text box
+        private void PathGameFolder_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathGameFolder);
+        }
+
+        private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //TODO: Replace this with a folder picker
+            FilePicker(pathGameFolder);
+        }
+
+        // Generic function to compare two strings and return a likeness percentage
+        public static double CompareStrings(string str1, string str2)
+        {
+            // Split the strings into words
+            var words1 = str1.Split(' ', '-', '_', '.');
+            var words2 = str2.Split(' ', '-', '_', '.');
+
+            // Create a list to store the matching words
+            var matchingWords = new List<string>();
+
+            // Loop through the words and compare them
+            foreach (var word1 in words1)
+            {
+                foreach (var word2 in words2)
+                {
+                    // If the words match, add them to the list, the check also ignores case
+                    if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matchingWords.Add(word1);
+                    }
+                }
+            }
+
+            // Set a max length for the strings
+            var maxLength = Math.Max(words1.Length, words2.Length);
+
+            // Calculate the likeness percentage
+            var likeness = (double)matchingWords.Count / maxLength * 100;
+
+            return likeness;
+        }
+
+        // Generic function to search a directory for a file
+        public static string FindFile(string directory, string fileName)
+        {
+            var directoryInfo = new DirectoryInfo(directory);
+            var files = directoryInfo.GetFiles();
+
+            foreach (var file in files)
+            {
+                if(CompareStrings(file.Name, fileName) > 70)
+                    return file.FullName;
+            }
+
+            return null;
         }
     }
 }
