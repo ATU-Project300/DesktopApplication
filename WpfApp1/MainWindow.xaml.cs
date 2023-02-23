@@ -203,24 +203,18 @@ namespace WpfApp1
                 case "RPCS3":
                     if(retEmulator) return "RPCS3";
                     return Odyssey.Properties.Settings.Default.pathRPCS3;
-                    break;
                 case "Xenia":
                     if(retEmulator) return "Xenia";
                     return Odyssey.Properties.Settings.Default.pathXenia;
-                    break;
                 case "PPSSPP":
                     if(retEmulator) return "PPSSPP";
                     return Odyssey.Properties.Settings.Default.pathPPSSPP;
-                    break;
                 case "PCSX2":
                     if(retEmulator) return "PCSX2";
                     return Odyssey.Properties.Settings.Default.pathPCSX2;
-                    break;
                 default:
                     return "";
-                    break;
             }
-            return "";
         }
 
         // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
