@@ -186,10 +186,15 @@ namespace WpfApp1
         {
             string LaunchCommand = "";
 
-            LaunchCommand += PickEmulator(game, false) + " ";
-            LaunchCommand += FindGame(game);
+            // If PickEmulator fails, return
+            if (PickEmulator(game, false) != "Invalid") LaunchCommand += PickEmulator(game, false) + " ";
+            else return;
 
-            //TODO: Remove this
+            // If FindGame fails, return
+            if (FindGame(game) != "Invalid") LaunchCommand += FindGame(game);
+            else return;
+
+            //TODO: Remove this and uncomment Process.Start
             MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
             //Process.Start(LaunchCommand);
         }
@@ -213,7 +218,7 @@ namespace WpfApp1
                     if(retEmulator) return "PCSX2";
                     return Odyssey.Properties.Settings.Default.pathPCSX2;
                 default:
-                    return "";
+                    return "Invalid";
             }
         }
 
@@ -224,7 +229,8 @@ namespace WpfApp1
             if (pathGameFolder.Text.Length < 4) return null; //TODO: Remove this when we implement proper settings verification
 
             //RPCS3 takes the folder as the game path, while the other emulators take the file
-            if(PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, game.Title);
+            if(PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, $"{game.Title}");
+
             //For any other emulator, return the file path
             else return FindFile(pathGameFolder.Text, game.Title);
         }
@@ -424,7 +430,7 @@ namespace WpfApp1
                     return file.FullName;
             }
 
-            return null;
+            return "Invalid";
         }
 
         //Generic function to search a directory for another directory
@@ -432,10 +438,15 @@ namespace WpfApp1
         {
             var folderInfo = new DirectoryInfo(directory);
             var folder = folderInfo.GetDirectories();
+            double expectedLikeness = 90;
+
+            //If the file name is short, reduce the expected likeness such
+            //that we are more likely to get a match. (See "Halo 3")
+            if (folderName.Length < 7) expectedLikeness -= 20;
 
             foreach (var dir in folder)
             {
-                if(CompareStrings(dir.Name, folderName) > 70)
+                if(CompareStrings(dir.Name, folderName) > expectedLikeness)
                     return dir.FullName;
             }
 
