@@ -19,22 +19,6 @@ namespace API
                 await JsonSerializer.DeserializeAsync<List<GamesList>>(stream);
             return games ?? new();
         }
-
-        //TODO: Utilise this
-        public bool Online()
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                using (var stream = client.GetStreamAsync(URL))
-                    return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
     }
 }
 
