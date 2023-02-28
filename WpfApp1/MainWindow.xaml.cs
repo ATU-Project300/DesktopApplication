@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using static API.API;
@@ -30,6 +31,7 @@ namespace WpfApp1
             // Any new TabPanels should be added here and set to "Collapsed"
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
+            About.Visibility = Visibility.Collapsed;
         }
 
 
@@ -46,92 +48,89 @@ namespace WpfApp1
         // Must be added soon after InitializeComponent (Currently part of LoadSettings)
         private void Theming(bool dark)
         {
+            // Our colour schemes are defined here, so we can easily change them
+
+            //Dark theme colours:
+            LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush();
+            darkLinearGradientBrush.StartPoint = new Point(0, 3);
+            darkLinearGradientBrush.EndPoint = new Point(1, 1);
+            darkLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Black, 0.1));
+            darkLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Gray, 2.5));
+
+            Color darkColour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
+            Color darkColourText = Colors.White;
+
+            //Light theme colours:
+            LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush();
+            myLinearGradientBrush.StartPoint = new Point(0, 3);
+            myLinearGradientBrush.EndPoint = new Point(1, 1);
+            myLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Purple, 0.1));
+            myLinearGradientBrush.GradientStops.Add(
+            new GradientStop(Colors.Yellow, 2.5));
+
+            Color lightColour = (Color)ColorConverter.ConvertFromString("#b06050");
+            Color lightColourText = Colors.Black;
+
+            // Below is the code that actually changes the colours
+            // it loops through all the elements and changes their colours
+
             if (dark)
             {
-                //Change Bg Colour to black
-                //Programmatically added gradient for DataGrid
-                LinearGradientBrush myLinearGradientBrush =
-                new LinearGradientBrush();
-                myLinearGradientBrush.StartPoint = new Point(0, 3);
-                myLinearGradientBrush.EndPoint = new Point(1, 1);
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Black, 0.1));
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Gray, 2.5));
-
-                //Sets background to Gradient
-                MainGrid.Background = myLinearGradientBrush;
-
-                //Changes colour of all text to white so its easier to read text with dark mode
-                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.White);
-                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.White);
-
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.White);
-                pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.White);
-
-                PPSSPPtxtblk.Foreground = new SolidColorBrush(Colors.White);
-                pathPPSSPPTxtBx.Foreground = new SolidColorBrush(Colors.White);
-
-                PCSX2txtblk.Foreground = new SolidColorBrush(Colors.White);
-                pathPCSX2TxtBx.Foreground = new SolidColorBrush(Colors.White);
-
-                GameFoldertxtblk.Foreground = new SolidColorBrush(Colors.White);
-                pathGameFolder.Foreground = new SolidColorBrush(Colors.White);
-
-                darkModeChkBx.Foreground = new SolidColorBrush(Colors.White);
-
-                //Change bg colour of buttons and panel grid.
-                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
-                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5A5A5A"));
-
+                MainGrid.Background = darkLinearGradientBrush;
+                LogoButtonsGrid.Background = new SolidColorBrush(darkColour);
+                HomeBtn.Background = new SolidColorBrush(darkColour);
+                AllGamesBtn.Background = new SolidColorBrush(darkColour);
+                AboutBTN.Background = new SolidColorBrush(darkColour);
+                SettingsBTN.Background = new SolidColorBrush(darkColour);
+                RecentBtn.Background = new SolidColorBrush(darkColour);
             }
             else
             {
-                //Programmatically added gradient for DataGrid
-                LinearGradientBrush myLinearGradientBrush =
-                new LinearGradientBrush();
-                myLinearGradientBrush.StartPoint = new Point(0, 3);
-                myLinearGradientBrush.EndPoint = new Point(1, 1);
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Purple, 0.1));
-                myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Yellow, 2.5));
-
-                // Use the brush to paint the Grid .
                 MainGrid.Background = myLinearGradientBrush;
+                LogoButtonsGrid.Background = new SolidColorBrush(lightColour);
+                HomeBtn.Background = new SolidColorBrush(lightColour);
+                AllGamesBtn.Background = new SolidColorBrush(lightColour);
+                AboutBTN.Background = new SolidColorBrush(lightColour);
+                SettingsBTN.Background = new SolidColorBrush(lightColour);
+                RecentBtn.Background = new SolidColorBrush(lightColour);
+            }
 
-                //Changes colour of all text to Black so its easier to read text with light mode
-                RPCS3txtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathRPCS3TxtBx.Foreground = new SolidColorBrush(Colors.Black);
+            //For each tabpanel, change each child items colour to white if dark mode is enabled
+            foreach (var x in MainGrid.Children)
+            {
+                if (x is TabPanel tabPanel)
+                {
+                    foreach (var y in tabPanel.Children)
+                    {
+                        if (y is Grid grid)
+                        {
+                            foreach (var z in grid.Children)
+                            {
+                        if (z is TextBlock textBlock)
+                            if (dark)
+                                textBlock.Foreground = new SolidColorBrush(darkColourText);
+                            else
+                                textBlock.Foreground = new SolidColorBrush(lightColourText);
 
-                Xeniatxtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathXeniaTxtBx.Foreground = new SolidColorBrush(Colors.Black);
+                        if (z is TextBox textBox)
+                            if (dark)
+                                textBox.Foreground = new SolidColorBrush(darkColourText);
+                            else
+                                textBox.Foreground = new SolidColorBrush(lightColourText);
 
-                PPSSPPtxtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathPPSSPPTxtBx.Foreground = new SolidColorBrush(Colors.Black);
+                        if (z is CheckBox checkBox)
+                            if (dark)
+                                checkBox.Foreground = new SolidColorBrush(darkColourText);
+                            else
+                                checkBox.Foreground = new SolidColorBrush(lightColourText);
+                            }
+                        }
 
-                PCSX2txtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathPCSX2TxtBx.Foreground = new SolidColorBrush(Colors.Black);
-
-                GameFoldertxtblk.Foreground = new SolidColorBrush(Colors.Black);
-                pathGameFolder.Foreground = new SolidColorBrush(Colors.Black);
-
-                darkModeChkBx.Foreground = new SolidColorBrush(Colors.Black);
-
-                //Change bg colour of buttons and panel grid.
-                //Used Color Converter so that we can use Hex values opposed to Windows Default Colours
-                HomeBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                AllGamesBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                PlayBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                SettingsBTN.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                RecentBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-                LogoButtonsGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b06050"));
-
+                    }
+                }
             }
         }
 
@@ -206,16 +205,16 @@ namespace WpfApp1
             switch (game.Emulator)
             {
                 case "RPCS3":
-                    if(retEmulator) return "RPCS3";
+                    if (retEmulator) return "RPCS3";
                     return Odyssey.Properties.Settings.Default.pathRPCS3;
                 case "Xenia":
-                    if(retEmulator) return "Xenia";
+                    if (retEmulator) return "Xenia";
                     return Odyssey.Properties.Settings.Default.pathXenia;
                 case "PPSSPP":
-                    if(retEmulator) return "PPSSPP";
+                    if (retEmulator) return "PPSSPP";
                     return Odyssey.Properties.Settings.Default.pathPPSSPP;
                 case "PCSX2":
-                    if(retEmulator) return "PCSX2";
+                    if (retEmulator) return "PCSX2";
                     return Odyssey.Properties.Settings.Default.pathPCSX2;
                 default:
                     return "Invalid";
@@ -228,7 +227,7 @@ namespace WpfApp1
             if (game == null) return null;
 
             //RPCS3 takes the folder as the game path, while the other emulators take the file
-            if(PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, $"{game.Title}");
+            if (PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, $"{game.Title}");
 
             //For any other emulator, return the file path
             else return FindFile(pathGameFolder.Text, game.Title);
@@ -236,8 +235,9 @@ namespace WpfApp1
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
         {
-            Games.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Visible;
+            About.Visibility = Visibility.Collapsed;
+            Games.Visibility = Visibility.Collapsed;
         }
 
         //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
@@ -320,6 +320,7 @@ namespace WpfApp1
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
         {
             Games.Visibility = Visibility.Visible;
+            About.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Collapsed;
         }
 
@@ -327,6 +328,7 @@ namespace WpfApp1
         {
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
+            About.Visibility = Visibility.Collapsed;
         }
 
         //Settings Apply Button
@@ -445,12 +447,18 @@ namespace WpfApp1
 
             foreach (var dir in folder)
             {
-                if(CompareStrings(dir.Name, folderName) > expectedLikeness)
+                if (CompareStrings(dir.Name, folderName) > expectedLikeness)
                     return dir.FullName;
             }
 
             return null;
         }
 
+        private void AboutBTN_OnClick(object sender, RoutedEventArgs e)
+        {
+            Games.Visibility = Visibility.Collapsed;
+            Settings.Visibility = Visibility.Collapsed;
+            About.Visibility = Visibility.Visible;
+        }
     }
 }

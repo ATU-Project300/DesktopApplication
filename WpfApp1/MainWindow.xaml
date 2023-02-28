@@ -71,12 +71,13 @@
                         Background="#b06050"
                         BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click" />
 
-                <Button Content="Play"
-                        Name="PlayBTN"
+                <Button Content="About"
+                        Name="AboutBTN"
                         Height="50"
                         FontSize="14"
                         Background="#b06050"
                         BorderThickness="0"
+                        Click="AboutBTN_OnClick"
                         BorderBrush="#00000000" Foreground="White" ClipToBounds="True" />
             </StackPanel>
         </Grid>
@@ -188,6 +189,20 @@
                 <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
                         Grid.Row="6" Width="150" />
 
+            </Grid>
+        </TabPanel>
+
+        <!-- Last panel, "About" -->
+        <TabPanel Grid.Column="1" Name="About">
+            <Grid Margin="10" Width="580" Height="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
             </Grid>
         </TabPanel>
     </Grid>
