@@ -239,27 +239,36 @@ namespace WpfApp1
             Games.Visibility = Visibility.Collapsed;
         }
 
-        //TODO: Verify settings - Check if the contents of the settings text boxes are valid as settings
-        private bool VerifySettings()
+        // Verify each setting we have
+        private void VerifySettings()
         {
-            // Check if the text boxes are empty
-            bool TxtBxLengthCheck(TextBox t, string emulator)
+            VerifySetting(pathRPCS3TxtBx, "RPSC3", true, "rpcs3.exe");
+            VerifySetting(pathXeniaTxtBx, "Xenia", true, "xenia.exe");
+            VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "ppsspp.exe");
+            VerifySetting(pathPCSX2TxtBx, "PCSX2", true, "pcsx2.exe");
+            VerifySetting(pathGameFolder, "game folder", false);
+        }
+
+        // Generic method to allow for simple verification of individual settings
+        private void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
+        {
+            Color errorColour = Color.FromArgb(80,255,0,0);
+            Color noColour = Color.FromArgb(00,0,0,0);
+            bool TxtBxCheck(TextBox t, string emulator, bool executable, string executableName = "")
             {
-                if (t.Text.Length < 4)
-                {
-                    MessageBox.Show($"The {emulator} path is quite short. Is the path valid?");
-                    return false;
-                }
+                // Some checks
+                if (t.Text.Length < 4) return false; // No actual path should be less characters than this
+                if (executable && !t.Text.EndsWith(".exe")) return false; // If we expect an executable, make sure we get one
+                if (executable && !t.Text.EndsWith(executableName)) return false; // Also make sure we have the correct executable
+                if (!executable && t.Text.EndsWith(".exe")) return false; // If we don't expect an executable but get one anyway
+
                 return true;
             }
 
-            if (!TxtBxLengthCheck(pathRPCS3TxtBx, "RPSC3")) return false;
-            if (!TxtBxLengthCheck(pathXeniaTxtBx, "Xenia")) return false;
-            if (!TxtBxLengthCheck(pathPPSSPPTxtBx, "PPSSPP")) return false;
-            if (!TxtBxLengthCheck(pathPCSX2TxtBx, "PCSX2")) return false;
-            if (!TxtBxLengthCheck(pathGameFolder, "game folder")) return false;
-
-            return true;
+            if (!TxtBxCheck(t, emulator, executable, executableName))
+                t.Background = new SolidColorBrush(errorColour);
+            else
+                t.Background = new SolidColorBrush(noColour);
         }
 
         //Save settings
@@ -290,30 +299,11 @@ namespace WpfApp1
                 Theming(true); //Dark mode is enabled
             }
 
-            if (Odyssey.Properties.Settings.Default.pathRPCS3 is null)
-                pathRPCS3TxtBx.Text = "Unset";
-            else
-                pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3;
-
-            if (Odyssey.Properties.Settings.Default.pathXenia is null)
-                pathXeniaTxtBx.Text = "Unset";
-            else
-                pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia;
-
-            if (Odyssey.Properties.Settings.Default.pathPPSSPP is null)
-                pathPPSSPPTxtBx.Text = "Unset";
-            else
-                pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP;
-
-            if (Odyssey.Properties.Settings.Default.pathPCSX2 is null)
-                pathPCSX2TxtBx.Text = "Unset";
-            else
-                pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2;
-
-            if (Odyssey.Properties.Settings.Default.pathGameFolder is null)
-                pathGameFolder.Text = "Unset";
-            else
-                pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder;
+            pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathRPCS3;
+            pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia is null ? "Unset" : Odyssey.Properties.Settings.Default.pathXenia;
+            pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPPSSPP;
+            pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPCSX2;
+            pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder is null ? "Unset" : Odyssey.Properties.Settings.Default.pathGameFolder;
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
