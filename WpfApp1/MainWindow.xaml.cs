@@ -109,26 +109,25 @@ namespace WpfApp1
                         {
                             foreach (var z in grid.Children)
                             {
-                        if (z is TextBlock textBlock)
-                            if (dark)
-                                textBlock.Foreground = new SolidColorBrush(darkColourText);
-                            else
-                                textBlock.Foreground = new SolidColorBrush(lightColourText);
+                                if (z is TextBlock textBlock)
+                                    textBlock.Foreground =
+                                        dark
+                                            ? new SolidColorBrush(darkColourText)
+                                            : new SolidColorBrush(lightColourText);
 
-                        if (z is TextBox textBox)
-                            if (dark)
-                                textBox.Foreground = new SolidColorBrush(darkColourText);
-                            else
-                                textBox.Foreground = new SolidColorBrush(lightColourText);
+                                if (z is TextBox textBox)
+                                    textBox.Foreground =
+                                        dark
+                                            ? new SolidColorBrush(darkColourText)
+                                            : new SolidColorBrush(lightColourText);
+                                if (z is CheckBox checkBox)
+                                    checkBox.Foreground =
+                                        dark
+                                            ? new SolidColorBrush(darkColourText)
+                                            : new SolidColorBrush(lightColourText);
 
-                        if (z is CheckBox checkBox)
-                            if (dark)
-                                checkBox.Foreground = new SolidColorBrush(darkColourText);
-                            else
-                                checkBox.Foreground = new SolidColorBrush(lightColourText);
                             }
                         }
-
                     }
                 }
             }
