@@ -109,11 +109,9 @@ for the "Apply" button in the settings panel.
 The `LoadSettings` function checks the WPF managed
 settings for values and applies them as necessary.
 
-The `VerifySettings` function uses a local function named
-`TxBxLengthCheck` to check the length of aTextBox (passed as argument "t")
-for a given emulator (passed as argument "emulator").
-If the length of `t` is less than 4 characters, we display
-a message that something may be incorrect with the provided path.
+The `VerifySettings` function passes information about
+each setting to the `VerifySetting` function which runs
+a series of checks on the provided settings and acts accordingly.
 
 ### Theming
 
