@@ -37,7 +37,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
         public string pathRPCS3 {
             get {
                 return ((string)(this["pathRPCS3"]));
@@ -49,7 +49,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
         public string pathXenia {
             get {
                 return ((string)(this["pathXenia"]));
@@ -61,7 +61,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
         public string pathPPSSPP {
             get {
                 return ((string)(this["pathPPSSPP"]));
@@ -73,7 +73,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
         public string pathGameFolder {
             get {
                 return ((string)(this["pathGameFolder"]));
@@ -85,7 +85,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
         public string pathPCSX2 {
             get {
                 return ((string)(this["pathPCSX2"]));

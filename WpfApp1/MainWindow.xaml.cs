@@ -252,19 +252,26 @@ namespace WpfApp1
         // Generic method to allow for simple verification of individual settings
         private void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
         {
+            // Colours for the text boxes for case of error or no error
             Color errorColour = Color.FromArgb(80,255,0,0);
             Color noColour = Color.FromArgb(00,0,0,0);
+
+            // Do some checks on the provided data, return false upon failure, else true
             bool TxtBxCheck(TextBox t, string emulator, bool executable, string executableName = "")
             {
                 // Some checks
                 if (t.Text.Length < 4) return false; // No actual path should be less characters than this
                 if (executable && !t.Text.EndsWith(".exe")) return false; // If we expect an executable, make sure we get one
                 if (executable && !t.Text.EndsWith(executableName)) return false; // Also make sure we have the correct executable
-                if (!executable && t.Text.EndsWith(".exe")) return false; // If we don't expect an executable but get one anyway
+                if (!executable && t.Text.EndsWith(".*")) return false; // If we don't expect an executable but get one anyway
+                if(!Path.Exists(t.Text)) return false; // If the path or executable doesn't exist
 
                 return true;
             }
 
+            // If the method above returns false for any of its checks,
+            // highlight the textbox with the error colour specific at the beginning of this method
+            // else apply the noColour colour (this exists to undo errorColour)
             if (!TxtBxCheck(t, emulator, executable, executableName))
                 t.Background = new SolidColorBrush(errorColour);
             else
