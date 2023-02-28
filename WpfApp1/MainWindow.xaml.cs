@@ -3,6 +3,7 @@ using Odyssey;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,6 +43,7 @@ namespace WpfApp1
 
             //This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(myGames);
+            GameListView.ItemsSource = myGames;
         }
 
         // Allow for switching between light and dark themes
@@ -153,31 +155,6 @@ namespace WpfApp1
             }
         }
 
-        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            //If the text box is modified and become empty, let all games be listed
-            if (SearchTxBx.Text.Length <= 0)
-            {
-                InitializeApiData();
-            }
-            else
-            {
-                //TODO: Filter the list by textbox text
-            }
-        }
-
-        //Essentially the click even for the game covers
-        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            // Get the Game object associated with the clicked item
-            var game = (sender as FrameworkElement)?.DataContext as Game;
-
-            // Do something with the selected game object, such as showing more details in a new window
-            if (game != null)
-            {
-                StartGame(game);
-            }
-        }
 
         //Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
@@ -253,8 +230,8 @@ namespace WpfApp1
         private void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
         {
             // Colours for the text boxes for case of error or no error
-            Color errorColour = Color.FromArgb(80,255,0,0);
-            Color noColour = Color.FromArgb(00,0,0,0);
+            Color errorColour = Color.FromArgb(80, 255, 0, 0);
+            Color noColour = Color.FromArgb(00, 0, 0, 0);
 
             // Do some checks on the provided data, return false upon failure, else true
             bool TxtBxCheck(TextBox t, string emulator, bool executable, string executableName = "")
@@ -264,7 +241,7 @@ namespace WpfApp1
                 if (executable && !t.Text.EndsWith(".exe")) return false; // If we expect an executable, make sure we get one
                 if (executable && !t.Text.EndsWith(executableName)) return false; // Also make sure we have the correct executable
                 if (!executable && t.Text.EndsWith(".*")) return false; // If we don't expect an executable but get one anyway
-                if(!Path.Exists(t.Text)) return false; // If the path or executable doesn't exist
+                if (!Path.Exists(t.Text)) return false; // If the path or executable doesn't exist
 
                 return true;
             }
@@ -455,6 +432,36 @@ namespace WpfApp1
             Games.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Collapsed;
             About.Visibility = Visibility.Visible;
+        }
+
+        private void SearchBTN_OnClick(object sender, RoutedEventArgs e)
+        {
+            GameListView.ItemsSource = null;
+            string searchTerm = SearchTxtBx.Text.ToLower();
+
+            var filteredList = new List<Game>();
+            foreach (Game game in myGames)
+            {
+                if (game.Title.ToLower().Contains(searchTerm))
+                    filteredList.Add(game);
+            }
+
+            //Add the filtered list to the listview
+            GameListView.ItemsSource = filteredList;
+            DataContext = filteredList;
+        }
+
+        //Essentially the click even for the game covers
+        private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            // Get the Game object associated with the clicked item
+            var game = (sender as FrameworkElement)?.DataContext as Game;
+
+            // Do something with the selected game object, such as showing more details in a new window
+            if (game != null)
+            {
+                StartGame(game);
+            }
         }
     }
 }
