@@ -121,7 +121,8 @@ Themes are managed through a `Theming` function which currently
 takes a bool to enable or disable the dark theme.
 
 Either the light or dark theme could be customised or
-replaced through this function.
+replaced through this function as the colours in use
+are defined in variables.
 
 
 # Credits
