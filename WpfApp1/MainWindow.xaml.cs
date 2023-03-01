@@ -10,17 +10,17 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using static API.API;
+using static API.Api;
 
 namespace WpfApp1
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         //Contains games stored in a sane fashion
-        public List<Game> myGames = new List<Game>();
+        public List<Game> MyGames = new();
 
         //Static client because it is thread safe and we don't need more than one
-        private static readonly HttpClient _client = new HttpClient();
+        private static readonly HttpClient Client = new();
 
         public MainWindow()
         {
@@ -39,11 +39,11 @@ namespace WpfApp1
         // From the API, use the games data to occupy the myGames List
         public async void InitializeApiData()
         {
-            OccupyListVar(await ProcessGamesData(_client));
+            OccupyListVar(await ProcessGamesData(Client));
 
             //This goes here only because it loads too early anywhere else
-            DataContext = new GameViewModel(myGames);
-            GameListView.ItemsSource = myGames;
+            DataContext = new GameViewModel(MyGames);
+            GameListView.ItemsSource = MyGames;
         }
 
         // Allow for switching between light and dark themes
@@ -53,9 +53,11 @@ namespace WpfApp1
             // Our colour schemes are defined here, so we can easily change them
 
             //Dark theme colours:
-            LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush();
-            darkLinearGradientBrush.StartPoint = new Point(0, 3);
-            darkLinearGradientBrush.EndPoint = new Point(1, 1);
+            LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 3),
+                EndPoint = new Point(1, 1)
+            };
             darkLinearGradientBrush.GradientStops.Add(
             new GradientStop(Colors.Black, 0.1));
             darkLinearGradientBrush.GradientStops.Add(
@@ -65,9 +67,11 @@ namespace WpfApp1
             Color darkColourText = Colors.White;
 
             //Light theme colours:
-            LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush();
-            myLinearGradientBrush.StartPoint = new Point(0, 3);
-            myLinearGradientBrush.EndPoint = new Point(1, 1);
+            LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 3),
+                EndPoint = new Point(1, 1)
+            };
             myLinearGradientBrush.GradientStops.Add(
             new GradientStop(Colors.Purple, 0.1));
             myLinearGradientBrush.GradientStops.Add(
@@ -101,33 +105,36 @@ namespace WpfApp1
             }
 
             //For each tabpanel, change each child items colour to white if dark mode is enabled
+            //TODO: Improve variable naming here
             foreach (var x in MainGrid.Children)
             {
                 if (x is TabPanel tabPanel)
                 {
                     foreach (var y in tabPanel.Children)
                     {
-                        if (y is Grid grid)
+                        if (y is not Grid grid) continue;
+                        foreach (var z in grid.Children)
                         {
-                            foreach (var z in grid.Children)
+                            switch (z)
                             {
-                                if (z is TextBlock textBlock)
+                                case TextBlock textBlock:
                                     textBlock.Foreground =
                                         dark
                                             ? new SolidColorBrush(darkColourText)
                                             : new SolidColorBrush(lightColourText);
-
-                                if (z is TextBox textBox)
+                                    break;
+                                case TextBox textBox:
                                     textBox.Foreground =
                                         dark
                                             ? new SolidColorBrush(darkColourText)
                                             : new SolidColorBrush(lightColourText);
-                                if (z is CheckBox checkBox)
+                                    break;
+                                case CheckBox checkBox:
                                     checkBox.Foreground =
                                         dark
                                             ? new SolidColorBrush(darkColourText)
                                             : new SolidColorBrush(lightColourText);
-
+                                    break;
                             }
                         }
                     }
@@ -137,12 +144,12 @@ namespace WpfApp1
 
         // Occupy the local list var "myGames" with the games
         // such that they are individually addressable (!!!)
+        // This is only called once
         private void OccupyListVar(List<GamesList> list)
         {
-            int i = 0;
             foreach (var x in list)
             {
-                myGames.Add(new Game()
+                MyGames.Add(new Game()
                 {
                     Title = x.Title,
                     Year = x.Year,
@@ -151,7 +158,6 @@ namespace WpfApp1
                     Consoles = x.Consoles,
                     Emulator = x.Emulator
                 });
-                i++;
             }
         }
 
@@ -159,54 +165,51 @@ namespace WpfApp1
         //Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
         {
-            string LaunchCommand = "";
+            var launchCommand = "";
+            bool a = false, b = false;
+            string msg1 = "Emulator valid", msg2 = "Game file present";
 
             // If PickEmulator fails, return
-            if (PickEmulator(game, false) != "Invalid") LaunchCommand += PickEmulator(game, false) + " ";
-            else return;
+            if (PickEmulator(game) != "Invalid") launchCommand += PickEmulator(game) + " ";
+            else a = true;
 
             // If FindGame fails, return
-            if (FindGame(game) != "Invalid") LaunchCommand += FindGame(game);
-            else return;
+            if (FindGame(game) != "Invalid") launchCommand += FindGame(game);
+            else b = true;
 
-            //TODO: Remove this and uncomment Process.Start
-            MessageBox.Show($"You clicked {game.Title}.\nLaunch command: {LaunchCommand}");
+            if (a)
+                msg1 = $"Emulator {game.Emulator} not found.";
+
+            if (b)
+                msg2 = $"Game file for {game.Title} not found.";
+
+            //TODO: Uncomment Process.Start
+            System.Diagnostics.Trace.WriteLine($"Game clicked: {game.Title}. Launch command {launchCommand}. {msg1}, {msg2}");
             //Process.Start(LaunchCommand);
         }
 
         // Returns the path to the correct emulator for a game OR return the emulator name for a game
         //TODO: Add support for the other emulators in our database (Also in the XAML)
-        private string PickEmulator(Game game, bool retEmulator)
+        private static string PickEmulator(Game game)
         {
-            switch (game.Emulator)
+            return game.Emulator.ToLower() switch
             {
-                case "RPCS3":
-                    if (retEmulator) return "RPCS3";
-                    return Odyssey.Properties.Settings.Default.pathRPCS3;
-                case "Xenia":
-                    if (retEmulator) return "Xenia";
-                    return Odyssey.Properties.Settings.Default.pathXenia;
-                case "PPSSPP":
-                    if (retEmulator) return "PPSSPP";
-                    return Odyssey.Properties.Settings.Default.pathPPSSPP;
-                case "PCSX2":
-                    if (retEmulator) return "PCSX2";
-                    return Odyssey.Properties.Settings.Default.pathPCSX2;
-                default:
-                    return "Invalid";
-            }
+                "rpcs3" => Odyssey.Properties.Settings.Default.pathRPCS3,
+                "xenia" => Odyssey.Properties.Settings.Default.pathXenia,
+                "ppsspp" => Odyssey.Properties.Settings.Default.pathPPSSPP,
+                "pcsx2" => Odyssey.Properties.Settings.Default.pathPCSX2,
+                "epsxe" => Odyssey.Properties.Settings.Default.pathEPSXE,
+                _ => "Invalid",
+            };
         }
 
         // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
         private string FindGame(Game game)
         {
-            if (game == null) return null;
-
             //RPCS3 takes the folder as the game path, while the other emulators take the file
-            if (PickEmulator(game, true) == "RPCS3") return FindFolder(pathGameFolder.Text, $"{game.Title}");
-
-            //For any other emulator, return the file path
-            else return FindFile(pathGameFolder.Text, game.Title);
+            return game.Emulator == "RPCS3" ? FindFolder(pathGameFolder.Text, $"{game.Title}") :
+                //For any other emulator, return the file path
+                FindFile(pathGameFolder.Text, game.Title);
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -221,38 +224,42 @@ namespace WpfApp1
         {
             VerifySetting(pathRPCS3TxtBx, "RPSC3", true, "rpcs3.exe");
             VerifySetting(pathXeniaTxtBx, "Xenia", true, "xenia.exe");
-            VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "ppsspp.exe");
+            VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "PPSSPPWindows64.exe");
             VerifySetting(pathPCSX2TxtBx, "PCSX2", true, "pcsx2.exe");
-            VerifySetting(pathGameFolder, "game folder", false);
+            VerifySetting(pathESPXETxtBx, "EPSXE", true, "ePSXe.exe");
+            VerifySetting(pathGameFolder, "game folder");
         }
 
         // Generic method to allow for simple verification of individual settings
-        private void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
+        //TODO: Verify that the emulator name is valid or remove the emulator parameter
+        private static void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
         {
             // Colours for the text boxes for case of error or no error
             Color errorColour = Color.FromArgb(80, 255, 0, 0);
             Color noColour = Color.FromArgb(00, 0, 0, 0);
 
             // Do some checks on the provided data, return false upon failure, else true
-            bool TxtBxCheck(TextBox t, string emulator, bool executable, string executableName = "")
+            bool TxtBxCheck()
             {
                 // Some checks
                 if (t.Text.Length < 4) return false; // No actual path should be less characters than this
-                if (executable && !t.Text.EndsWith(".exe")) return false; // If we expect an executable, make sure we get one
-                if (executable && !t.Text.EndsWith(executableName)) return false; // Also make sure we have the correct executable
-                if (!executable && t.Text.EndsWith(".*")) return false; // If we don't expect an executable but get one anyway
-                if (!Path.Exists(t.Text)) return false; // If the path or executable doesn't exist
-
-                return true;
+                switch (executable)
+                {
+                    case true when !t.Text.EndsWith(".exe"):
+                    // Also make sure we have the correct executable
+                    case true when !t.Text.EndsWith(executableName):
+                    // If we don't expect an executable but get one anyway
+                    case false when t.Text.EndsWith(".*"):
+                        return false; // If we expect an executable, make sure we get one
+                    default:
+                        return Path.Exists(t.Text); // If the path or executable doesn't exist
+                }
             }
 
             // If the method above returns false for any of its checks,
             // highlight the textbox with the error colour specific at the beginning of this method
             // else apply the noColour colour (this exists to undo errorColour)
-            if (!TxtBxCheck(t, emulator, executable, executableName))
-                t.Background = new SolidColorBrush(errorColour);
-            else
-                t.Background = new SolidColorBrush(noColour);
+            t.Background = !TxtBxCheck() ? new SolidColorBrush(errorColour) : new SolidColorBrush(noColour);
         }
 
         //Save settings
@@ -263,6 +270,7 @@ namespace WpfApp1
             Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
             Odyssey.Properties.Settings.Default.pathPPSSPP = pathPPSSPPTxtBx.Text;
             Odyssey.Properties.Settings.Default.pathPCSX2 = pathPCSX2TxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathEPSXE = pathESPXETxtBx.Text;
             Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
@@ -287,6 +295,7 @@ namespace WpfApp1
             pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia is null ? "Unset" : Odyssey.Properties.Settings.Default.pathXenia;
             pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPPSSPP;
             pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPCSX2;
+            pathESPXETxtBx.Text = Odyssey.Properties.Settings.Default.pathEPSXE is null ? "Unset" : Odyssey.Properties.Settings.Default.pathEPSXE;
             pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder is null ? "Unset" : Odyssey.Properties.Settings.Default.pathGameFolder;
         }
 
@@ -344,11 +353,6 @@ namespace WpfApp1
         }
 
         // Open a folder picker, store the resulting path in the text box
-        private void PathGameFolder_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathGameFolder);
-        }
-
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //TODO: Replace this with a folder picker
@@ -367,16 +371,10 @@ namespace WpfApp1
 
             // Loop through the words and compare them
             foreach (var word1 in words1)
-            {
                 foreach (var word2 in words2)
-                {
                     // If the words match, add them to the list, the check also ignores case
                     if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
-                    {
                         matchingWords.Add(word1);
-                    }
-                }
-            }
 
             // Set a max length for the strings
             var maxLength = Math.Max(words1.Length, words2.Length);
@@ -412,19 +410,17 @@ namespace WpfApp1
         {
             var folderInfo = new DirectoryInfo(directory);
             var folder = folderInfo.GetDirectories();
-            double expectedLikeness = 90;
+            double expectedLikeness = 85;
 
             //If the file name is short, reduce the expected likeness such
             //that we are more likely to get a match. (See "Halo 3")
             if (folderName.Length < 7) expectedLikeness -= 20;
 
             foreach (var dir in folder)
-            {
                 if (CompareStrings(dir.Name, folderName) > expectedLikeness)
                     return dir.FullName;
-            }
 
-            return null;
+            return "";
         }
 
         private void AboutBTN_OnClick(object sender, RoutedEventArgs e)
@@ -434,34 +430,68 @@ namespace WpfApp1
             About.Visibility = Visibility.Visible;
         }
 
-        private void SearchBTN_OnClick(object sender, RoutedEventArgs e)
-        {
-            GameListView.ItemsSource = null;
-            string searchTerm = SearchTxtBx.Text.ToLower();
-
-            var filteredList = new List<Game>();
-            foreach (Game game in myGames)
-            {
-                if (game.Title.ToLower().Contains(searchTerm))
-                    filteredList.Add(game);
-            }
-
-            //Add the filtered list to the listview
-            GameListView.ItemsSource = filteredList;
-            DataContext = filteredList;
-        }
-
         //Essentially the click even for the game covers
         private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
-            var game = (sender as FrameworkElement)?.DataContext as Game;
-
             // Do something with the selected game object, such as showing more details in a new window
-            if (game != null)
+            if ((sender as FrameworkElement)?.DataContext is Game game)
             {
                 StartGame(game);
             }
+        }
+
+        private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            TitleFilter(SearchTxtBx.Text);
+        }
+
+        //TODO: Better filtering system with more generic functions
+
+        //Filters the listview based on the search term (title)
+        private void TitleFilter(string term = "")
+        {
+            var filteredList = MyGames.Where(game => game.Title.ToLower().Contains(term.ToLower())).ToList();
+            ApplyFilteredList(filteredList);
+        }
+
+        //Filter the listview based on the emulator
+        private void EmulatorFilter(string emulator = "")
+        {
+            var filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
+            ApplyFilteredList(filteredList);
+        }
+
+        //Filter the listview based on the console
+        private void ConsoleFilter(string console = "")
+        {
+            var filteredList = MyGames.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
+            ApplyFilteredList(filteredList);
+        }
+
+        //Add the filtered list to the listview
+        private void ApplyFilteredList(List<Game> filteredList)
+        {
+            GameListView.ItemsSource = null;
+            GameListView.ItemsSource = filteredList;
+            DataContext = filteredList;
+        }
+
+        //TODO: Clean this up
+        private void EmulatorCbBx_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string? a = EmulatorCbBx.SelectedValue.ToString();
+            var b = a?.Split(':', 2);
+            var c = b[1].Substring(1);
+            if(c == "All")
+                TitleFilter();
+            else
+                EmulatorFilter(c);
+        }
+
+        private void PathESPXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathESPXETxtBx);
         }
     }
 }

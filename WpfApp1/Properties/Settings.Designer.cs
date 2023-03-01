@@ -37,7 +37,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathRPCS3 {
             get {
                 return ((string)(this["pathRPCS3"]));
@@ -49,7 +49,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathXenia {
             get {
                 return ((string)(this["pathXenia"]));
@@ -61,7 +61,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathPPSSPP {
             get {
                 return ((string)(this["pathPPSSPP"]));
@@ -73,7 +73,7 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathGameFolder {
             get {
                 return ((string)(this["pathGameFolder"]));
@@ -85,13 +85,25 @@ namespace Odyssey.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unset")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathPCSX2 {
             get {
                 return ((string)(this["pathPCSX2"]));
             }
             set {
                 this["pathPCSX2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathEPSXE {
+            get {
+                return ((string)(this["pathEPSXE"]));
+            }
+            set {
+                this["pathEPSXE"] = value;
             }
         }
     }

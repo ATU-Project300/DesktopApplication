@@ -101,9 +101,16 @@
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
-                <TextBox Name="SearchTxtBx" Width="400" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="16" Grid.Column="0"></TextBox>
-                <Button x:Name="SearchBTN" Grid.Row="0" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right"
-                        VerticalAlignment="Center" Content="Search" Click="SearchBTN_OnClick" />
+                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"></TextBox>
+                <ComboBox Name="EmulatorCbBx" Grid.Column="0" Width="60" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" SelectionChanged="EmulatorCbBx_OnSelectionChanged">
+                    <ComboBoxItem>All</ComboBoxItem>
+                    <ComboBoxItem>RPCS3</ComboBoxItem>
+                    <ComboBoxItem>Xenia</ComboBoxItem>
+                    <ComboBoxItem>XEMU</ComboBoxItem>
+                    <ComboBoxItem>PCSX2</ComboBoxItem>
+                    <ComboBoxItem>PPSSPP</ComboBoxItem>
+                    <ComboBoxItem>EPSXE</ComboBoxItem>
+                </ComboBox>
 
                 <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="600">
                     <Grid>
@@ -114,12 +121,12 @@
                         <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Name="GamesUniformGrid" Columns="5" Rows="10"/>
+                                    <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12"/>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Height="100" Width="80" Stretch="Uniform" />
+                                    <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Height="120" Width="100" Stretch="Uniform" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -134,6 +141,7 @@
             <Grid Margin="10" Width="600" Height="400">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
@@ -170,13 +178,19 @@
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
                          Width="350" Grid.Row="4" />
 
+                <TextBlock Name="EPSXEtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="EPSXE File Path:" FontSize="20" Grid.Row="5" />
+                <TextBox x:Name="pathESPXETxtBx" MouseDoubleClick="PathESPXETxtBx_OnMouseDoubleClick"
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
+                         Width="350" Grid.Row="5" />
+
                 <TextBlock Name="GameFoldertxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Width="364" />
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Width="364" />
                 <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" Width="350" HorizontalAlignment="Right"
-                         VerticalAlignment="Center" Height="25" Grid.Row="5" />
+                         VerticalAlignment="Center" Height="25" Grid.Row="6" />
 
                 <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
-                        Grid.Row="6" Width="150" />
+                        Grid.Row="7" Width="150" />
 
             </Grid>
         </TabPanel>
