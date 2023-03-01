@@ -91,7 +91,7 @@
         -->
 
         <!-- First panel, "Games" -->
-        <TabPanel Grid.Column="1" Name="Games">
+        <TabPanel Grid.Column="1" Name="Games" Height="420">
             <!-- Contains its own grid in which we position the search elements and the games covers -->
             <Grid>
                 <Grid.RowDefinitions>
@@ -136,7 +136,7 @@
         </TabPanel>
 
         <!-- Second panel, "Settings" -->
-        <TabPanel Grid.Column="1" Name="Settings">
+        <TabPanel Grid.Column="1" Name="Settings" Height="420">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
             <Grid Margin="10" Width="600" Height="400">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
@@ -197,7 +197,7 @@
                          VerticalAlignment="Center" Height="25" Grid.Row="7" />
 
                 <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
-                        Grid.Row="8" Width="150" />
+                        Grid.Row="8" Width="150" Height="30" />
 
             </Grid>
         </TabPanel>
