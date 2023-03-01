@@ -145,6 +145,7 @@ namespace Odyssey
         // Occupy the local list var "myGames" with the games
         // such that they are individually addressable (!!!)
         // This is only called once
+        //TODO: More efficient way of doing this?
         private void OccupyListVar(List<GamesList> list)
         {
             foreach (var x in list)
@@ -160,7 +161,6 @@ namespace Odyssey
                 });
             }
         }
-
 
         //Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
@@ -221,6 +221,10 @@ namespace Odyssey
             Settings.Visibility = Visibility.Visible;
             About.Visibility = Visibility.Collapsed;
             Games.Visibility = Visibility.Collapsed;
+
+            //This shouldn't really be here but it allows the user to see if the settings are valid
+            //as the user opens the settings page
+            VerifySettings(); 
         }
 
         // Verify each setting we have
@@ -230,8 +234,8 @@ namespace Odyssey
             VerifySetting(pathXeniaTxtBx, "Xenia", true, "xenia.exe");
             VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "PPSSPPWindows64.exe");
             VerifySetting(pathPCSX2TxtBx, "PCSX2", true, "pcsx2.exe");
-            VerifySetting(pathESPXETxtBx, "EPSXE", true, "epsxe.exe");
-            VerifySetting(pathESPXETxtBx, "SNES9x", true, "snes9x-x64.exe");
+            VerifySetting(pathEPSXETxtBx, "EPSXE", true, "epsxe.exe");
+            VerifySetting(pathEPSXETxtBx, "SNES9x", true, "snes9x-x64.exe");
             VerifySetting(pathGameFolder, "game folder");
         }
 
@@ -271,15 +275,27 @@ namespace Odyssey
         private void SaveSettings()
         {
             Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
-            Odyssey.Properties.Settings.Default.pathRPCS3 = pathRPCS3TxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathXenia = pathXeniaTxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathPPSSPP = pathPPSSPPTxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathPCSX2 = pathPCSX2TxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathEPSXE = pathESPXETxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathSNES9x = pathSNES9xTxtBx.Text;
-            Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
+
+            //For each textbox named "path*TxtBx", assign the text to the corresponding setting
+            foreach (var g in Settings.Children)
+            {
+                if(g is Grid grid)
+                    foreach (var t in grid.Children.OfType<TextBox>())
+                    {
+                        if (t.Name.StartsWith("path"))
+                        {
+                            if(t.Name.EndsWith("TxtBx"))
+                                t.Name = t.Name.Remove(t.Name.Length - 5);
+
+                            Odyssey.Properties.Settings.Default[t.Name] = t.Text;
+                        }
+                    }
+            }
+
             Odyssey.Properties.Settings.Default.Save();
+
         }
+
 
         // Load settings
         private void LoadSettings()
@@ -301,7 +317,7 @@ namespace Odyssey
             pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia is null ? "Unset" : Odyssey.Properties.Settings.Default.pathXenia;
             pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPPSSPP;
             pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPCSX2;
-            pathESPXETxtBx.Text = Odyssey.Properties.Settings.Default.pathEPSXE is null ? "Unset" : Odyssey.Properties.Settings.Default.pathEPSXE;
+            pathEPSXETxtBx.Text = Odyssey.Properties.Settings.Default.pathEPSXE is null ? "Unset" : Odyssey.Properties.Settings.Default.pathEPSXE;
             pathSNES9xTxtBx.Text = Odyssey.Properties.Settings.Default.pathSNES9x is null ? "Unset" : Odyssey.Properties.Settings.Default.pathSNES9x;
             pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder is null ? "Unset" : Odyssey.Properties.Settings.Default.pathGameFolder;
         }
@@ -510,14 +526,14 @@ namespace Odyssey
                 EmulatorFilter(c);
         }
 
-        private void PathESPXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathESPXETxtBx);
-        }
-
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FilePicker(pathSNES9xTxtBx);
+        }
+
+        private void PathEPSXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathEPSXETxtBx);
         }
     }
 }

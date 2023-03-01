@@ -181,7 +181,7 @@
 
                 <TextBlock Name="EPSXEtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="EPSXE File Path:" FontSize="20" Grid.Row="5" />
-                <TextBox x:Name="pathESPXETxtBx" MouseDoubleClick="PathESPXETxtBx_OnMouseDoubleClick"
+                <TextBox x:Name="pathEPSXETxtBx" MouseDoubleClick="PathEPSXETxtBx_OnMouseDoubleClick"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
                          Width="350" Grid.Row="5" />
 
