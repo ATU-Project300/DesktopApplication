@@ -2,13 +2,19 @@
 
 A Windows desktop application to help find the right emulator for your games.
 
+## Screenshots
+
+![Application as of March 1st 2023](./media/01.03.23.png)
+
 ## For Users
 
 ### Setup
 
 1. Download latest version
 
-1. Profit
+1. Put all your ROMs/ISOs into a folder making sure they are named similar to the game title.
+
+1. Configure the paths to your emulators in the settings and start playing.
 
 ## For Developers
 
