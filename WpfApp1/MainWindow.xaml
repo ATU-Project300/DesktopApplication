@@ -100,6 +100,7 @@
                     <!-- Game covers go here -->
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
+                <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
                 <TextBox Name="SearchTxtBx" Width="400" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"></TextBox>
                 <Button x:Name="SearchBTN" Grid.Row="0" Width="80" Margin="10,0,10,0" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Content="Search" Click="SearchBTN_OnClick" />
