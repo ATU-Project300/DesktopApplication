@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace UI_Application.Core
+namespace Odyssey.Core
 {
     class ObservableObject : INotifyPropertyChanged
     {

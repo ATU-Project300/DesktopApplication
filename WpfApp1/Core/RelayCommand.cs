@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace UI_Application.Core
+namespace Odyssey.Core
 {
     class RelayCommand : ICommand
     {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using Odyssey;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,9 +8,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using API;
+using Microsoft.Win32;
 using static API.Api;
 
-namespace WpfApp1
+namespace Odyssey
 {
     public partial class MainWindow
     {

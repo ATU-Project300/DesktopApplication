@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+namespace API;
+
 public sealed record class GamesList(
 
     [property: JsonPropertyName("title")] string Title,
