@@ -166,25 +166,27 @@ namespace Odyssey
         private void StartGame(Game game)
         {
             var launchCommand = "";
-            bool a = false, b = false;
-            string msg1 = "Emulator valid", msg2 = "Game file present";
+            bool pickEmulatorFailed = false, findGameFailed = false;
+            string msg1 = "Emulator valid.", msg2 = "Game file present";
 
             // If PickEmulator fails, return
-            if (PickEmulator(game) != "Invalid") launchCommand += PickEmulator(game) + " ";
-            else a = true;
+            string lEmulator = PickEmulator(game); // Prevents calling the method twice
+            if (lEmulator != "Invalid") launchCommand += lEmulator + " ";
+            else pickEmulatorFailed = true;
 
             // If FindGame fails, return
-            if (FindGame(game) != "Invalid") launchCommand += FindGame(game);
-            else b = true;
+            string lGame = FindGame(game).ToString(); // Prevents calling the method twice
+            if (lGame != "Invalid") launchCommand += lGame;
+            else findGameFailed = true;
 
-            if (a)
+            if (pickEmulatorFailed)
                 msg1 = $"Emulator {game.Emulator} not found.";
 
-            if (b)
-                msg2 = $"Game file for {game.Title} not found.";
+            if (findGameFailed)
+                msg2 = $"Game file not found.";
 
             //TODO: Uncomment Process.Start
-            System.Diagnostics.Trace.WriteLine($"Game clicked: {game.Title}. Launch command {launchCommand}. {msg1}, {msg2}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command {launchCommand}. {msg1} {msg2}");
             //Process.Start(LaunchCommand);
         }
 
@@ -207,9 +209,10 @@ namespace Odyssey
         private string FindGame(Game game)
         {
             //RPCS3 takes the folder as the game path, while the other emulators take the file
-            return game.Emulator == "RPCS3" ? FindFolder(pathGameFolder.Text, $"{game.Title}") :
-                //For any other emulator, return the file path
-                FindFile(pathGameFolder.Text, game.Title);
+            if (game.Emulator == "RPCS3")
+                return FindFolder(pathGameFolder.Text, game.Title);
+
+            return FindFile(pathGameFolder.Text, game.Title);
         }
 
         private void SettingsBTN_Click(object sender, RoutedEventArgs e)
@@ -246,8 +249,8 @@ namespace Odyssey
                 switch (executable)
                 {
                     case true when !t.Text.EndsWith(".exe"):
-                    // Also make sure we have the correct executable
-                    case true when !t.Text.EndsWith(executableName):
+                    // Also make sure we have the correct executable (case insensitive)
+                    case true when !t.Text.ToLower().EndsWith(executableName.ToLower()):
                     // If we don't expect an executable but get one anyway
                     case false when t.Text.EndsWith(".*"):
                         return false; // If we expect an executable, make sure we get one
@@ -390,11 +393,12 @@ namespace Odyssey
         {
             var directoryInfo = new DirectoryInfo(directory);
             var files = directoryInfo.GetFiles();
-            double expectedLikeness = 70;
+            double expectedLikeness = 60;
 
             //If the file name is short, reduce the expected likeness such
             //that we are more likely to get a match. (See "Halo 3")
-            if (fileName.Length < 7) expectedLikeness -= 20;
+            if (fileName.Length < 7) expectedLikeness -= 40;
+            if (fileName.Length < 4) expectedLikeness -= 30;
 
             foreach (var file in files)
             {
@@ -410,11 +414,12 @@ namespace Odyssey
         {
             var folderInfo = new DirectoryInfo(directory);
             var folder = folderInfo.GetDirectories();
-            double expectedLikeness = 85;
+            double expectedLikeness = 60;
 
             //If the file name is short, reduce the expected likeness such
             //that we are more likely to get a match. (See "Halo 3")
-            if (folderName.Length < 7) expectedLikeness -= 20;
+            if (folderName.Length < 7) expectedLikeness -= 30;
+            if (folderName.Length < 4) expectedLikeness -= 40;
 
             foreach (var dir in folder)
                 if (CompareStrings(dir.Name, folderName) > expectedLikeness)
