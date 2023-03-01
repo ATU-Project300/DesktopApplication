@@ -148,6 +148,7 @@
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
 
@@ -184,13 +185,19 @@
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
                          Width="350" Grid.Row="5" />
 
+                <TextBlock Name="SNES9xtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="SNES9x File Path:" FontSize="20" Grid.Row="6" />
+                <TextBox x:Name="pathSNES9xTxtBx" MouseDoubleClick="PathSNES9xTxtBx_OnMouseDoubleClick"
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
+                         Width="350" Grid.Row="6" />
+
                 <TextBlock Name="GameFoldertxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Width="364" />
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Width="364" />
                 <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" Width="350" HorizontalAlignment="Right"
-                         VerticalAlignment="Center" Height="25" Grid.Row="6" />
+                         VerticalAlignment="Center" Height="25" Grid.Row="7" />
 
                 <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
-                        Grid.Row="7" Width="150" />
+                        Grid.Row="8" Width="150" />
 
             </Grid>
         </TabPanel>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using API;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,8 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using API;
-using Microsoft.Win32;
 using static API.Api;
 
 namespace Odyssey
@@ -186,7 +186,7 @@ namespace Odyssey
                 msg2 = $"Game file not found.";
 
             //TODO: Uncomment Process.Start
-            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command {launchCommand}. {msg1} {msg2}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\". {msg1} {msg2}");
             //Process.Start(LaunchCommand);
         }
 
@@ -201,6 +201,7 @@ namespace Odyssey
                 "ppsspp" => Odyssey.Properties.Settings.Default.pathPPSSPP,
                 "pcsx2" => Odyssey.Properties.Settings.Default.pathPCSX2,
                 "epsxe" => Odyssey.Properties.Settings.Default.pathEPSXE,
+                "snes9x" => Odyssey.Properties.Settings.Default.pathSNES9x,
                 _ => "Invalid",
             };
         }
@@ -229,7 +230,8 @@ namespace Odyssey
             VerifySetting(pathXeniaTxtBx, "Xenia", true, "xenia.exe");
             VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "PPSSPPWindows64.exe");
             VerifySetting(pathPCSX2TxtBx, "PCSX2", true, "pcsx2.exe");
-            VerifySetting(pathESPXETxtBx, "EPSXE", true, "ePSXe.exe");
+            VerifySetting(pathESPXETxtBx, "EPSXE", true, "epsxe.exe");
+            VerifySetting(pathESPXETxtBx, "SNES9x", true, "snes9x-x64.exe");
             VerifySetting(pathGameFolder, "game folder");
         }
 
@@ -274,6 +276,7 @@ namespace Odyssey
             Odyssey.Properties.Settings.Default.pathPPSSPP = pathPPSSPPTxtBx.Text;
             Odyssey.Properties.Settings.Default.pathPCSX2 = pathPCSX2TxtBx.Text;
             Odyssey.Properties.Settings.Default.pathEPSXE = pathESPXETxtBx.Text;
+            Odyssey.Properties.Settings.Default.pathSNES9x = pathSNES9xTxtBx.Text;
             Odyssey.Properties.Settings.Default.pathGameFolder = pathGameFolder.Text;
             Odyssey.Properties.Settings.Default.Save();
         }
@@ -299,6 +302,7 @@ namespace Odyssey
             pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPPSSPP;
             pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPCSX2;
             pathESPXETxtBx.Text = Odyssey.Properties.Settings.Default.pathEPSXE is null ? "Unset" : Odyssey.Properties.Settings.Default.pathEPSXE;
+            pathSNES9xTxtBx.Text = Odyssey.Properties.Settings.Default.pathSNES9x is null ? "Unset" : Odyssey.Properties.Settings.Default.pathSNES9x;
             pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder is null ? "Unset" : Odyssey.Properties.Settings.Default.pathGameFolder;
         }
 
@@ -380,10 +384,13 @@ namespace Odyssey
                         matchingWords.Add(word1);
 
             // Set a max length for the strings
-            var maxLength = Math.Max(words1.Length, words2.Length);
+            var maxLength = Math.Min(words1.Length, words2.Length);
 
             // Calculate the likeness percentage
             var likeness = (double)matchingWords.Count / maxLength * 100;
+
+            if(likeness > 0)
+                System.Diagnostics.Trace.WriteLine($"[INFO]: Likeness: {likeness}. {str1} VS {str2}");
 
             return likeness;
         }
@@ -393,12 +400,17 @@ namespace Odyssey
         {
             var directoryInfo = new DirectoryInfo(directory);
             var files = directoryInfo.GetFiles();
-            double expectedLikeness = 60;
 
             //If the file name is short, reduce the expected likeness such
             //that we are more likely to get a match. (See "Halo 3")
-            if (fileName.Length < 7) expectedLikeness -= 40;
-            if (fileName.Length < 4) expectedLikeness -= 30;
+            double expectedLikeness = fileName.Length switch
+            {
+                < 3 => 55,
+                < 4 => 60,
+                < 7 => 65,
+                > 12 => 70,
+                _ => 60
+            };
 
             foreach (var file in files)
             {
@@ -414,18 +426,22 @@ namespace Odyssey
         {
             var folderInfo = new DirectoryInfo(directory);
             var folder = folderInfo.GetDirectories();
-            double expectedLikeness = 60;
 
             //If the file name is short, reduce the expected likeness such
             //that we are more likely to get a match. (See "Halo 3")
-            if (folderName.Length < 7) expectedLikeness -= 30;
-            if (folderName.Length < 4) expectedLikeness -= 40;
+            double expectedLikeness = folderName.Length switch
+            {
+                < 4 => 20,
+                < 7 => 30,
+                > 12 => 80,
+                _ => 60
+            };
 
             foreach (var dir in folder)
                 if (CompareStrings(dir.Name, folderName) > expectedLikeness)
                     return dir.FullName;
 
-            return "";
+            return "Invalid";
         }
 
         private void AboutBTN_OnClick(object sender, RoutedEventArgs e)
@@ -488,7 +504,7 @@ namespace Odyssey
             string? a = EmulatorCbBx.SelectedValue.ToString();
             var b = a?.Split(':', 2);
             var c = b[1].Substring(1);
-            if(c == "All")
+            if (c == "All")
                 TitleFilter();
             else
                 EmulatorFilter(c);
@@ -497,6 +513,11 @@ namespace Odyssey
         private void PathESPXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FilePicker(pathESPXETxtBx);
+        }
+
+        private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FilePicker(pathSNES9xTxtBx);
         }
     }
 }

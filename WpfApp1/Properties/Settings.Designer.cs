@@ -106,5 +106,17 @@ namespace Odyssey.Properties {
                 this["pathEPSXE"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathSNES9x {
+            get {
+                return ((string)(this["pathSNES9x"]));
+            }
+            set {
+                this["pathSNES9x"] = value;
+            }
+        }
     }
 }
