@@ -12,9 +12,44 @@ A Windows desktop application to help find the right emulator for your games.
 
 ## For Developers
 
+Please feel free to create an issue and/or PR if you notice anything incorrect here :)
+
 ### Trello
 
 [Link](https://trello.com/b/0Fzksv3i/desktop-application-tasks)
+
+### Adding Emulators
+
+Note: Settings are added in pairs of `TextBlock` and `TextBox`, which will both be in the same Grid Row.
+
+1. In the XAML (code view), locate the `TabPanel` named "Settings".
+
+1. In the `Grid.RowDefinitions` tags, add another row of height `1*` (Above the one of height `2*`).
+
+
+1. Duplicate the last emulator's pair of settings and increase the `Grid.Row` by 1 for the new pair of elements.
+
+1. For any of the elements below the new settings (which are within the same Grid) increase the `Grid.Row` also.
+
+1. In the newly created settings pair, replace any instances of an emulator name with that of your new emulator.
+
+    Example, replacing `PPSSPPtxtbx` with `Xeniatxtbx`. Also `pathPPSSPPTxtBx` with `pathXeniaTxtBx`.
+
+1. For the `MouseDoubleClick` event, create a new function following the naming scheme of the others.
+
+1. In the new function, call the `FilePicker` method and pass it the parameter of your new `TextBox` name.
+
+    Example:
+
+    ```
+    private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        FilePicker(pathSNES9xTxtBx);
+    }
+    ```
+
+1. From here, add your games to your NoSQL database.
+
 
 ### API Data Handling
 
@@ -99,6 +134,19 @@ framework provided by WPF.
 
 Some functions were written to allow for saving
 and restoring of settings along with verification of settings.
+
+Measures have been taken to avoid hardcoding settings for saving
+and loading. An example of this is for emulator paths where each
+path related setting is expected to have the following naming structure:
+
+`path[EmulatorName]` for the `Settings.settings` file.
+
+`path[EmulatorName]TxtBx` for the text box which will contain the
+value of the setting.
+
+This is also considered in the game path setting which follows similar rules:
+
+`pathGameFolder` for the `Settings.settings` file.
 
 The `SaveSettings` function simply takes the values
 from the checkboxes, text boxes etc. and assigns them

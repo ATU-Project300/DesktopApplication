@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -191,25 +192,21 @@ namespace Odyssey
         }
 
         // Returns the path to the correct emulator for a game OR return the emulator name for a game
-        //TODO: Add support for the other emulators in our database (Also in the XAML)
         private static string PickEmulator(Game game)
         {
-            return game.Emulator.ToLower() switch
-            {
-                "rpcs3" => Odyssey.Properties.Settings.Default.pathRPCS3,
-                "xenia" => Odyssey.Properties.Settings.Default.pathXenia,
-                "ppsspp" => Odyssey.Properties.Settings.Default.pathPPSSPP,
-                "pcsx2" => Odyssey.Properties.Settings.Default.pathPCSX2,
-                "epsxe" => Odyssey.Properties.Settings.Default.pathEPSXE,
-                "snes9x" => Odyssey.Properties.Settings.Default.pathSNES9x,
-                _ => "Invalid",
-            };
+            //Odyssey.Properties.Settings.Default[t.Name] = t.Text;
+            string setting = "path" + game.Emulator;
+            //verify the setting exists before returning it
+            if (Odyssey.Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
+                return (string)Odyssey.Properties.Settings.Default[setting];
+            else return "Invalid";
         }
 
         // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
         private string FindGame(Game game)
         {
             //RPCS3 takes the folder as the game path, while the other emulators take the file
+            //TODO: Find a different way about this such that we aren't hardcoding the emulator name
             if (game.Emulator == "RPCS3")
                 return FindFolder(pathGameFolder.Text, game.Title);
 
@@ -228,6 +225,8 @@ namespace Odyssey
         }
 
         // Verify each setting we have
+        //TODO: Make this loop through the settings instead of hardcoding each one 
+        // (This is the last place that needs to be changed!!!)
         private void VerifySettings()
         {
             VerifySetting(pathRPCS3TxtBx, "RPSC3", true, "rpcs3.exe");
@@ -402,7 +401,7 @@ namespace Odyssey
             var likeness = (double)matchingWords.Count / maxLength * 100;
 
             if(likeness > 0)
-                System.Diagnostics.Trace.WriteLine($"[INFO]: Likeness: {likeness}. {str1} VS {str2}");
+                System.Diagnostics.Trace.WriteLine($"[INFO]: Likeness: {likeness}. {str1} VS {str2}.");
 
             return likeness;
         }
