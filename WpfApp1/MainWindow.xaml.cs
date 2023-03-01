@@ -296,30 +296,26 @@ namespace Odyssey
 
         }
 
-
-        // Load settings
         private void LoadSettings()
         {
-            // Check the stored settings to see find the last state of the dark mode setting
-            if (!Odyssey.Properties.Settings.Default.DarkMode)
-            {
-                // if it's false or null, dark mode stays off
-                darkModeChkBx.IsChecked = false;
-                Theming(false);
-            }
-            else // Else it is enabled
-            {
-                darkModeChkBx.IsChecked = true;
-                Theming(true); //Dark mode is enabled
-            }
+            darkModeChkBx.IsChecked = Odyssey.Properties.Settings.Default.DarkMode;
+            Theming(darkModeChkBx.IsChecked.Value);
 
-            pathRPCS3TxtBx.Text = Odyssey.Properties.Settings.Default.pathRPCS3 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathRPCS3;
-            pathXeniaTxtBx.Text = Odyssey.Properties.Settings.Default.pathXenia is null ? "Unset" : Odyssey.Properties.Settings.Default.pathXenia;
-            pathPPSSPPTxtBx.Text = Odyssey.Properties.Settings.Default.pathPPSSPP is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPPSSPP;
-            pathPCSX2TxtBx.Text = Odyssey.Properties.Settings.Default.pathPCSX2 is null ? "Unset" : Odyssey.Properties.Settings.Default.pathPCSX2;
-            pathEPSXETxtBx.Text = Odyssey.Properties.Settings.Default.pathEPSXE is null ? "Unset" : Odyssey.Properties.Settings.Default.pathEPSXE;
-            pathSNES9xTxtBx.Text = Odyssey.Properties.Settings.Default.pathSNES9x is null ? "Unset" : Odyssey.Properties.Settings.Default.pathSNES9x;
-            pathGameFolder.Text = Odyssey.Properties.Settings.Default.pathGameFolder is null ? "Unset" : Odyssey.Properties.Settings.Default.pathGameFolder;
+            //For each textbox named "path*TxtBx", assign the text to the corresponding setting
+            foreach (var g in Settings.Children)
+            {
+                if(g is Grid grid)
+                    foreach (var t in grid.Children.OfType<TextBox>())
+                    {
+                        if (t.Name.StartsWith("path"))
+                        {
+                            if(t.Name.EndsWith("TxtBx"))
+                                t.Name = t.Name.Remove(t.Name.Length - 5);
+
+                            t.Text = Odyssey.Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Odyssey.Properties.Settings.Default[t.Name].ToString();
+                        }
+                    }
+            }
         }
 
         private void HomeBtn_Click(object sender, RoutedEventArgs e)
