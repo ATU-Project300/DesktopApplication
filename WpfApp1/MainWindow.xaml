@@ -112,26 +112,18 @@
                     <ComboBoxItem>EPSXE</ComboBoxItem>
                 </ComboBox>
 
-                <ScrollViewer Name="GamesScrollViewer" Grid.Row="1" Margin="2" Width="600">
-                    <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                        <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView">
+                        <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12"/>
+                                    <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" Width="590" Height="2000"/>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Height="120" Width="100" Stretch="Uniform" />
+                                    <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="10,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                    </Grid>
-                </ScrollViewer>
             </Grid>
         </TabPanel>
 

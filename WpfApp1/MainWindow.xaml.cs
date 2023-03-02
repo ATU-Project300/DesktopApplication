@@ -234,7 +234,7 @@ namespace Odyssey
             VerifySetting(pathPPSSPPTxtBx, "PPSSPP", true, "PPSSPPWindows64.exe");
             VerifySetting(pathPCSX2TxtBx, "PCSX2", true, "pcsx2.exe");
             VerifySetting(pathEPSXETxtBx, "EPSXE", true, "epsxe.exe");
-            VerifySetting(pathEPSXETxtBx, "SNES9x", true, "snes9x-x64.exe");
+            VerifySetting(pathSNES9xTxtBx, "SNES9x", true, "snes9x-x64.exe");
             VerifySetting(pathGameFolder, "game folder");
         }
 
@@ -529,6 +529,30 @@ namespace Odyssey
         private void PathEPSXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FilePicker(pathEPSXETxtBx);
+        }
+
+        // Scale image on hover
+        private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Image image = sender as Image;
+            if (image != null)
+            {
+                image.Margin = new Thickness(4,2,2,2);
+                image.Width *= 1.25;
+                image.Height *= 1.25;
+            }
+        }
+
+        // Scale image back to normal on mouse leave
+        private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Image image = sender as Image;
+            if (image != null)
+            {
+                image.Margin = new Thickness(12,5,5,5);
+                image.Width = 100;
+                image.Height = 120;
+            }
         }
     }
 }
