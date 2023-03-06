@@ -494,6 +494,13 @@ namespace Odyssey
             ApplyFilteredList(filteredList);
         }
 
+        //Filter the listview based on release year
+        private void YearFilter(int year = 0)
+        {
+            var filteredList = MyGames.Where(game => game.Year.Equals(year)).ToList();
+            ApplyFilteredList(filteredList);
+        }
+
         //Filter the listview based on the console
         private void ConsoleFilter(string console = "")
         {
@@ -534,7 +541,7 @@ namespace Odyssey
         // Scale image on hover
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Image image = sender as Image;
+            Image ?image = sender as Image;
             if (image != null)
             {
                 image.Margin = new Thickness(4,2,2,2);
@@ -546,7 +553,7 @@ namespace Odyssey
         // Scale image back to normal on mouse leave
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            Image image = sender as Image;
+            Image ?image = sender as Image;
             if (image != null)
             {
                 image.Margin = new Thickness(12,5,5,5);
