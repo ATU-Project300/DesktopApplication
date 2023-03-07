@@ -8,6 +8,5 @@
         public string Image { get; set; }
         public string Consoles { get; set; }
         public string Emulator { get; set; }
-        public string LocalPath { get; set; } // Only assigned and saved locally, will never be part of API
     }
 }
