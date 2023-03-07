@@ -493,6 +493,12 @@ namespace Odyssey
             var filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
             ApplyFilteredList(filteredList);
         }
+        //Filter the listview based on the Year
+        private void YearFilter(string year="")
+        {
+            var filteredList = MyGames.Where(game => game.Year.ToString().Equals(year)).ToList();
+            ApplyFilteredList(filteredList);
+        }
 
         //Filter the listview based on the console
         private void ConsoleFilter(string console = "")
@@ -519,6 +525,30 @@ namespace Odyssey
                 TitleFilter();
             else
                 EmulatorFilter(c);
+        }
+
+        private void YearCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string? a = YearCbBx.SelectedValue.ToString();
+            var b = a?.Split(':', 2);
+            var c = b[1].Substring(1);
+            if (c == "All")
+                TitleFilter();
+            else
+                YearFilter(c);
+
+        }
+
+        private void ConsoleCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string? a = ConsoleCbBx.SelectedValue.ToString();
+            var b = a?.Split(':', 2);
+            var c = b[1].Substring(1);
+            if (c == "All")
+                TitleFilter();
+            else
+                ConsoleFilter(c);
+
         }
 
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -554,5 +584,7 @@ namespace Odyssey
                 image.Height = 120;
             }
         }
+
+        
     }
 }
