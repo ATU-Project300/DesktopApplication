@@ -609,27 +609,33 @@ namespace Odyssey
         }
 
 
+        // When the Emulator ComboBox loads
         private void EmulatorCbBx_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<string> emuList = new List<string>();
-            emuList.Add("All");
+            List<string> emuList = new List<string>(); // Create a new list of strings
+            emuList.Add("All"); // Add the "All" option to the list
 
+            // Loop through all the games and add the emulator to the list if it doesn't already exist
             foreach (var game in MyGames)
             {
                 if(!emuList.Contains(game.Emulator))
                     emuList.Add(game.Emulator);
             }
 
+            // Sort the list alphabetically
             emuList.Sort();
 
+            // Set the ComboBox's items source to the list
             EmulatorCbBx.ItemsSource = emuList;
         }
 
+        // When the Year ComboBox loads
         private void YearCbBx_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<string> yearList = new List<string>();
-            yearList.Add("All");
+            List<string> yearList = new List<string>(); // Create a new list of strings
+            yearList.Add("All"); // Add the "All" option to the list
 
+            // Loop through all the games and add the year to the list if it doesn't already exist
             foreach (var game in MyGames)
             {
                 if(!yearList.Contains(game.Year.ToString()))
@@ -640,21 +646,27 @@ namespace Odyssey
             yearList.Sort();
             yearList.Reverse();
 
+            // Set the ComboBox's items source to the list
             YearCbBx.ItemsSource = yearList;
         }
 
+        // When the Console ComboBox loads
         private void ConsoleCbBx_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<string> consoleList = new List<string>();
-            consoleList.Add("All");
+            List<string> consoleList = new List<string>(); // Create a new list of strings
+            consoleList.Add("All"); // Add the "All" option to the list
 
+            // Loop through all the games and add the console to the list if it doesn't already exist
             foreach (var game in MyGames)
             {
                 if(!consoleList.Contains(game.Consoles))
                     consoleList.Add(game.Consoles);
             }
 
+            // Sort the list alphabetically
             consoleList.Sort();
+
+            // Set the ComboBox's items source to the list
             ConsoleCbBx.ItemsSource = consoleList;
         }
     }
