@@ -114,34 +114,32 @@ namespace Odyssey
             //TODO: Improve variable naming here
             foreach (var x in MainGrid.Children)
             {
-                if (x is TabPanel tabPanel)
+                if (x is not TabPanel tabPanel) continue;
+                foreach (var y in tabPanel.Children)
                 {
-                    foreach (var y in tabPanel.Children)
+                    if (y is not Grid grid) continue;
+                    foreach (var z in grid.Children)
                     {
-                        if (y is not Grid grid) continue;
-                        foreach (var z in grid.Children)
+                        switch (z)
                         {
-                            switch (z)
-                            {
-                                case TextBlock textBlock:
-                                    textBlock.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                                case TextBox textBox:
-                                    textBox.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                                case CheckBox checkBox:
-                                    checkBox.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                            }
+                            case TextBlock textBlock:
+                                textBlock.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
+                            case TextBox textBox:
+                                textBox.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
+                            case CheckBox checkBox:
+                                checkBox.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
                         }
                     }
                 }
@@ -487,6 +485,7 @@ namespace Odyssey
 
         private void BigFilter()
         {
+            return;
             var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':',2)[1];
             var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[1];
             var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':', 2)[1];
