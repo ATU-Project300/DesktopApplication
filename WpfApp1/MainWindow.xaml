@@ -101,9 +101,9 @@
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
-                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"></TextBox>
+                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"/>
                 <ComboBox Grid.Column="0" Width="60" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
-                   <!-- Emulator Filter-->
+                    <!-- Emulator Filter-->
                     <ComboBoxItem >
                         <ComboBox  Name="EmulatorCbBx"  SelectionChanged="EmulatorCbBx_OnSelectionChanged">
                             <ComboBoxItem>All</ComboBoxItem>
@@ -146,20 +146,20 @@
                     </ComboBoxItem>
 
                 </ComboBox>
-               
 
-                        <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" Width="590" Height="2000"/>
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="10,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+
+                <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" Width="590" Height="2000"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="10,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </TabPanel>
 
@@ -233,14 +233,14 @@
         <!-- Last panel, "About" -->
         <TabPanel Grid.Column="1" Name="About">
             <Grid Margin="10" Width="580" Height="400">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
-            <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="7*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
             </Grid>
         </TabPanel>
     </Grid>
