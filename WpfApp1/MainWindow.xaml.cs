@@ -480,24 +480,24 @@ namespace Odyssey
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
-            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
-            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
-
-            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
+            BigFilter();
         }
 
         //TODO: Better filtering system with more generic functions
 
-        private void BigFilter(string text, string emulator, string console, string year = "")
+        private void BigFilter()
         {
+            var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':',2)[1];
+            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[1];
+            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':', 2)[1];
+
             var filteredList = new List<Game>();
             bool bSearch = false, bEmulator = false, bYear = false, bConsole = false;
 
             //First filter by title
             if (SearchTxtBx.Text.Length > 1)
             {
-                filteredList = MyGames.Where(game => game.Title.ToLower().Contains(text.ToLower())).ToList();
+                filteredList = MyGames.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
                 bSearch = true;
             }
             else
@@ -547,29 +547,17 @@ namespace Odyssey
         //TODO: Clean this up
         private void EmulatorCbBx_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var emu = EmulatorCbBx.SelectedValue.ToString()?.Split(':',2);
-            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2);
-            var con = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2);
-
-            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
+            BigFilter();
         }
 
         private void YearCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
-            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
-            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
-
-            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
+            BigFilter();
         }
 
         private void ConsoleCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
-            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
-            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
-
-            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
+            BigFilter();
         }
 
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
