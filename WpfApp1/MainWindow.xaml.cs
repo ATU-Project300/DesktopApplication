@@ -341,28 +341,6 @@ namespace Odyssey
             LoadSettings();
         }
 
-        // Open a file picker, store the resulting path in the text box
-        private void PathRPCS3TxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathRPCS3TxtBx);
-        }
-
-        // Open a file picker, store the resulting path in the text box
-        private void PathXeniaTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathXeniaTxtBx);
-        }
-
-        private void pathPPSSPPTxtBx_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathPPSSPPTxtBx);
-        }
-
-        private void pathPCSX2TxtBx_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathPCSX2TxtBx);
-        }
-
         // Generic function to open a file picker and store the result in a text box
         private void FilePicker(TextBox t)
         {
@@ -558,14 +536,10 @@ namespace Odyssey
             DataContext = filteredList;
         }
 
-        private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //TODO: Better name for this
+        private void SummonFilePicker(object sender, MouseButtonEventArgs e)
         {
-            FilePicker(pathSNES9xTxtBx);
-        }
-
-        private void PathEPSXETxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            FilePicker(pathEPSXETxtBx);
+            FilePicker(sender as TextBox);
         }
 
         // Scale image on hover
