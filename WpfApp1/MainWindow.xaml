@@ -34,7 +34,7 @@
             </Grid.RowDefinitions>
 
             <!-- Logo image -->
-            <Image Source="images/light_final_png.png" Height="80" HorizontalAlignment="Center" Margin="0,1,0,10"
+            <Image Source="images/light.png" Height="80" HorizontalAlignment="Center" Margin="0,1,0,10"
                    Grid.Row="0" />
 
             <!-- Stack panel of buttons -->
