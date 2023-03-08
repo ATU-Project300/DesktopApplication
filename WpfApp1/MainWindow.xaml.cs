@@ -23,6 +23,8 @@ namespace Odyssey
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient Client = new();
 
+        public bool ready = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,6 +47,7 @@ namespace Odyssey
             //This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(MyGames);
             GameListView.ItemsSource = MyGames;
+            ready = true;
         }
 
         // Allow for switching between light and dark themes
@@ -480,50 +483,61 @@ namespace Odyssey
 
         private void BigFilter()
         {
-            return;
-            var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':',2)[1];
-            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[1];
-            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':', 2)[1];
+            if (!ready)
+            {
+                return;
+            }
 
+            var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
+            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[0];
+            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2)[0];
 
-            var filteredList = new List<Game>();
+            var filteredList = MyGames;
             bool bSearch, bEmulator, bYear, bConsole;
 
             //First filter by title
             if (SearchTxtBx.Text.Length > 1)
             {
-                filteredList = MyGames.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
+                filteredList = filteredList.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
                 bSearch = true;
             }
             else
                 bSearch = false;
 
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
             //Then filter by emulator
             if (emulator != "All")
             {
-                filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
+                filteredList = filteredList.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
                 bEmulator = true;
             }
             else
                 bEmulator = false;
 
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
             //Then filter by year provided one is selected
             if (year != "All")
             {
-                filteredList = MyGames.Where(game => game.Year.ToString().Equals(year)).ToList();
+                filteredList = filteredList.Where(game => game.Year.ToString().Equals(year)).ToList();
                 bYear = true;
             }
             else
                 bYear = false;
 
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
             //Then filter by console
             if (console != "All")
             {
-                filteredList = MyGames.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
+                filteredList = filteredList.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
                 bConsole = true;
             }
             else
                 bConsole = false;
+
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
 
             if(!bSearch && !bEmulator && !bConsole && !bYear)
                 ApplyFilteredList(MyGames);
@@ -589,6 +603,56 @@ namespace Odyssey
             }
         }
 
-        
+
+        private void EmulatorCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> emuList = new List<string>();
+            emuList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!emuList.Contains(game.Emulator))
+                    emuList.Add(game.Emulator);
+            }
+
+            emuList.Sort();
+            emuList.Reverse();
+
+            EmulatorCbBx.ItemsSource = emuList;
+        }
+
+        private void YearCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> yearList = new List<string>();
+            yearList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!yearList.Contains(game.Year.ToString()))
+                    yearList.Add(game.Year.ToString());
+            }
+
+            //sort the year list in descending order excluding the "All" option
+            yearList.Sort();
+            yearList.Reverse();
+
+            YearCbBx.ItemsSource = yearList;
+        }
+
+        private void ConsoleCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> consoleList = new List<string>();
+            consoleList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!consoleList.Contains(game.Consoles))
+                    consoleList.Add(game.Consoles);
+            }
+
+            consoleList.Sort();
+            consoleList.Reverse();
+            ConsoleCbBx.ItemsSource = consoleList;
+        }
     }
 }

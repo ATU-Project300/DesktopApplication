@@ -102,47 +102,18 @@
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
                 <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"/>
-                <!-- TODO: Don't hard code combobox items -->
                 <ComboBox Grid.Column="0" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem >
-                        <ComboBox  Name="EmulatorCbBx"  SelectionChanged="EmulatorCbBx_OnSelectionChanged" SelectedIndex="0">
-                            <ComboBoxItem>All</ComboBoxItem>
-                            <ComboBoxItem>RPCS3</ComboBoxItem>
-                            <ComboBoxItem>Xenia</ComboBoxItem>
-                            <ComboBoxItem>XEMU</ComboBoxItem>
-                            <ComboBoxItem>PCSX2</ComboBoxItem>
-                            <ComboBoxItem>PPSSPP</ComboBoxItem>
-                            <ComboBoxItem>EPSXE</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox  Name="EmulatorCbBx" Loaded="EmulatorCbBx_OnLoaded"  SelectionChanged="EmulatorCbBx_OnSelectionChanged" SelectedIndex="0"/>
                     </ComboBoxItem>
                     <!-- Year Filter -->
                     <ComboBoxItem>
-                        <ComboBox Name="YearCbBx" SelectionChanged="YearCbBx_SelectionChanged" SelectedIndex="0">
-                            <ComboBoxItem>All</ComboBoxItem>
-                            <ComboBoxItem>1993</ComboBoxItem>
-                            <ComboBoxItem>1998</ComboBoxItem>
-                            <ComboBoxItem>2003</ComboBoxItem>
-                            <ComboBoxItem>2005</ComboBoxItem>
-                            <ComboBoxItem>2006</ComboBoxItem>
-                            <ComboBoxItem>2007</ComboBoxItem>
-                            <ComboBoxItem>2008</ComboBoxItem>
-                            <ComboBoxItem>2009</ComboBoxItem>
-                            <ComboBoxItem>2010</ComboBoxItem>
-                            <ComboBoxItem>2011</ComboBoxItem>
-                            <ComboBoxItem>2012</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Name="YearCbBx" Loaded="YearCbBx_OnLoaded" SelectionChanged="YearCbBx_SelectionChanged" SelectedIndex="0"/>
                     </ComboBoxItem>
                     <!-- Console Filter -->
                     <ComboBoxItem>
-                        <ComboBox Name="ConsoleCbBx" SelectionChanged="ConsoleCbBx_SelectionChanged" SelectedIndex="0">
-                            <ComboBoxItem>All</ComboBoxItem>
-                            <ComboBoxItem>PlayStation 3</ComboBoxItem>
-                            <ComboBoxItem>PlayStation 2</ComboBoxItem>
-                            <ComboBoxItem>PlayStation Portable</ComboBoxItem>
-                            <ComboBoxItem>Xbox 360</ComboBoxItem>
-                            <ComboBoxItem>SNES</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Name="ConsoleCbBx" Loaded="ConsoleCbBx_OnLoaded" SelectionChanged="ConsoleCbBx_SelectionChanged" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
 
