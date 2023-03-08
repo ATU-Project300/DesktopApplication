@@ -477,12 +477,12 @@ namespace Odyssey
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            BigFilter();
+            BigFilter(sender, null);
         }
 
         //TODO: Better filtering system with more generic functions
 
-        private void BigFilter()
+        private void BigFilter(object sender, SelectionChangedEventArgs e)
         {
             if (!ready)
             {
@@ -556,22 +556,6 @@ namespace Odyssey
             GameListView.ItemsSource = null;
             GameListView.ItemsSource = filteredList;
             DataContext = filteredList;
-        }
-
-        //TODO: Clean this up
-        private void EmulatorCbBx_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BigFilter();
-        }
-
-        private void YearCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BigFilter();
-        }
-
-        private void ConsoleCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BigFilter();
         }
 
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)

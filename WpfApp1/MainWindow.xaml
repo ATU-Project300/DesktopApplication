@@ -105,15 +105,15 @@
                 <ComboBox Grid.Column="0" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem >
-                        <ComboBox  Name="EmulatorCbBx" Loaded="EmulatorCbBx_OnLoaded"  SelectionChanged="EmulatorCbBx_OnSelectionChanged" SelectedIndex="0"/>
+                        <ComboBox  Name="EmulatorCbBx" Loaded="EmulatorCbBx_OnLoaded"  SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                     <!-- Year Filter -->
                     <ComboBoxItem>
-                        <ComboBox Name="YearCbBx" Loaded="YearCbBx_OnLoaded" SelectionChanged="YearCbBx_SelectionChanged" SelectedIndex="0"/>
+                        <ComboBox Name="YearCbBx" Loaded="YearCbBx_OnLoaded" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                     <!-- Console Filter -->
                     <ComboBoxItem>
-                        <ComboBox Name="ConsoleCbBx" Loaded="ConsoleCbBx_OnLoaded" SelectionChanged="ConsoleCbBx_SelectionChanged" SelectedIndex="0"/>
+                        <ComboBox Name="ConsoleCbBx" Loaded="ConsoleCbBx_OnLoaded" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
 
