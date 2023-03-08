@@ -34,6 +34,11 @@ namespace Odyssey
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
             About.Visibility = Visibility.Collapsed;
+
+            //Set all the comboboxes to the first item
+            EmulatorCbBx.SelectedIndex = 0;
+            ConsoleCbBx.SelectedIndex = 0;
+            YearCbBx.SelectedIndex = 0;
         }
 
 
@@ -475,43 +480,60 @@ namespace Odyssey
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TitleFilter(SearchTxtBx.Text);
+            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
+            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
+            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
+
+            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
         }
 
         //TODO: Better filtering system with more generic functions
 
-        //Filters the listview based on the search term (title)
-        private void TitleFilter(string term = "")
+        private void BigFilter(string text, string emulator, string console, string year = "")
         {
-            var filteredList = MyGames.Where(game => game.Title.ToLower().Contains(term.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            var filteredList = new List<Game>();
+            bool bSearch = false, bEmulator = false, bYear = false, bConsole = false;
 
-        //Filter the listview based on the emulator
-        private void EmulatorFilter(string emulator = "")
-        {
-            var filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
-        }
-        //Filter the listview based on the Year
-        private void YearFilter(string year="")
-        {
-            var filteredList = MyGames.Where(game => game.Year.ToString().Equals(year)).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            //First filter by title
+            if (SearchTxtBx.Text.Length > 1)
+            {
+                filteredList = MyGames.Where(game => game.Title.ToLower().Contains(text.ToLower())).ToList();
+                bSearch = true;
+            }
+            else
+                bSearch = false;
 
-        //Filter the listview based on release year
-        private void YearFilter(int year = 0)
-        {
-            var filteredList = MyGames.Where(game => game.Year.Equals(year)).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            //Then filter by emulator
+            if (emulator != "All")
+            {
+                filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
+                bEmulator = true;
+            }
+            else
+                bEmulator = false;
 
-        //Filter the listview based on the console
-        private void ConsoleFilter(string console = "")
-        {
-            var filteredList = MyGames.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
+            //Then filter by year provided one is selected
+            if (year != "All")
+            {
+                filteredList = MyGames.Where(game => game.Year.ToString().Equals(year)).ToList();
+                bYear = true;
+            }
+            else
+                bYear = false;
+
+            //Then filter by console
+            if (console != "All")
+            {
+                filteredList = MyGames.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
+                bConsole = true;
+            }
+            else
+                bConsole = false;
+
+            if(!bSearch && !bEmulator && !bConsole && !bYear)
+                ApplyFilteredList(MyGames);
+            else
+                ApplyFilteredList(filteredList);
         }
 
         //Add the filtered list to the listview
@@ -525,37 +547,29 @@ namespace Odyssey
         //TODO: Clean this up
         private void EmulatorCbBx_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = EmulatorCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                EmulatorFilter(c);
+            var emu = EmulatorCbBx.SelectedValue.ToString()?.Split(':',2);
+            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2);
+            var con = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2);
+
+            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
         }
 
         private void YearCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = YearCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                YearFilter(c);
+            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
+            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
+            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
 
+            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
         }
 
         private void ConsoleCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = ConsoleCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                ConsoleFilter(c);
+            var emu = EmulatorCbBx.SelectedValue.ToString().Split(':',2);
+            var year = YearCbBx.SelectedValue.ToString().Split(':',2);
+            var con = ConsoleCbBx.SelectedValue.ToString().Split(':',2);
 
+            BigFilter(SearchTxtBx.Text, emu[1].Substring(1), con[1].Substring(1), year[1].Substring(1));
         }
 
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
