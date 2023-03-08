@@ -487,7 +487,7 @@ namespace Odyssey
             else
                 bSearch = false;
 
-            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage text search {filteredList.Count}");
 
             //Then filter by emulator
             if (emulator != "All")
@@ -498,7 +498,7 @@ namespace Odyssey
             else
                 bEmulator = false;
 
-            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage emulator filter {filteredList.Count}");
 
             //Then filter by year provided one is selected
             if (year != "All")
@@ -509,7 +509,7 @@ namespace Odyssey
             else
                 bYear = false;
 
-            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage year filter {filteredList.Count}");
 
             //Then filter by console
             if (console != "All")
@@ -520,7 +520,7 @@ namespace Odyssey
             else
                 bConsole = false;
 
-            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage console filter {filteredList.Count}");
 
             if(!bSearch && !bEmulator && !bConsole && !bYear)
                 ApplyFilteredList(MyGames);
