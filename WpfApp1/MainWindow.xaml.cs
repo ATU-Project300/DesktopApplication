@@ -181,7 +181,7 @@ namespace Odyssey
             else pickEmulatorFailed = true;
 
             // If FindGame fails, return
-            string lGame = FindGame(game).ToString(); // Prevents calling the method twice
+            string lGame = FindGame(game); // Prevents calling the method twice
             if (lGame != "Invalid") launchCommand += lGame;
             else findGameFailed = true;
 
@@ -189,7 +189,7 @@ namespace Odyssey
                 msg1 = $"Emulator {game.Emulator} not found.";
 
             if (findGameFailed)
-                msg2 = $"Game file not found.";
+                msg2 = "Game file not found.";
 
             //TODO: Uncomment Process.Start
             System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\". {msg1} {msg2}");
@@ -202,8 +202,8 @@ namespace Odyssey
             //Odyssey.Properties.Settings.Default[t.Name] = t.Text;
             string setting = "path" + game.Emulator;
             //verify the setting exists before returning it
-            if (Odyssey.Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
-                return (string)Odyssey.Properties.Settings.Default[setting];
+            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
+                return (string)Properties.Settings.Default[setting];
             else return "Invalid";
         }
 
@@ -278,7 +278,7 @@ namespace Odyssey
         //Save settings
         private void SaveSettings()
         {
-            Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
 
             //For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
@@ -291,18 +291,18 @@ namespace Odyssey
                             if(t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
-                            Odyssey.Properties.Settings.Default[t.Name] = t.Text;
+                            Properties.Settings.Default[t.Name] = t.Text;
                         }
                     }
             }
 
-            Odyssey.Properties.Settings.Default.Save();
+            Properties.Settings.Default.Save();
 
         }
 
         private void LoadSettings()
         {
-            darkModeChkBx.IsChecked = Odyssey.Properties.Settings.Default.DarkMode;
+            darkModeChkBx.IsChecked = Properties.Settings.Default.DarkMode;
             Theming(darkModeChkBx.IsChecked.Value);
 
             //For each textbox named "path*TxtBx", assign the text to the corresponding setting
@@ -316,7 +316,7 @@ namespace Odyssey
                             if(t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
-                            t.Text = Odyssey.Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Odyssey.Properties.Settings.Default[t.Name].ToString();
+                            t.Text = Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Properties.Settings.Default[t.Name].ToString();
                         }
                     }
             }
@@ -491,8 +491,9 @@ namespace Odyssey
             var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[1];
             var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':', 2)[1];
 
+
             var filteredList = new List<Game>();
-            bool bSearch = false, bEmulator = false, bYear = false, bConsole = false;
+            bool bSearch, bEmulator, bYear, bConsole;
 
             //First filter by title
             if (SearchTxtBx.Text.Length > 1)
