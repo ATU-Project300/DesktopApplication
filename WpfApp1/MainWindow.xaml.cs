@@ -492,6 +492,10 @@ namespace Odyssey
             var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[0];
             var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2)[0];
 
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Emulator {emulator}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Year {year}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Console {console}");
+
             var filteredList = MyGames;
             bool bSearch, bEmulator, bYear, bConsole;
 
@@ -616,7 +620,6 @@ namespace Odyssey
             }
 
             emuList.Sort();
-            emuList.Reverse();
 
             EmulatorCbBx.ItemsSource = emuList;
         }
@@ -651,7 +654,6 @@ namespace Odyssey
             }
 
             consoleList.Sort();
-            consoleList.Reverse();
             ConsoleCbBx.ItemsSource = consoleList;
         }
     }
