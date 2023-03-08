@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using static API.Api;
 
 namespace Odyssey
@@ -22,6 +23,8 @@ namespace Odyssey
 
         //Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient Client = new();
+
+        public bool ready = false;
 
         public MainWindow()
         {
@@ -45,6 +48,7 @@ namespace Odyssey
             //This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(MyGames);
             GameListView.ItemsSource = MyGames;
+            ready = true;
         }
 
         // Allow for switching between light and dark themes
@@ -109,34 +113,32 @@ namespace Odyssey
             //TODO: Improve variable naming here
             foreach (var x in MainGrid.Children)
             {
-                if (x is TabPanel tabPanel)
+                if (x is not TabPanel tabPanel) continue;
+                foreach (var y in tabPanel.Children)
                 {
-                    foreach (var y in tabPanel.Children)
+                    if (y is not Grid grid) continue;
+                    foreach (var z in grid.Children)
                     {
-                        if (y is not Grid grid) continue;
-                        foreach (var z in grid.Children)
+                        switch (z)
                         {
-                            switch (z)
-                            {
-                                case TextBlock textBlock:
-                                    textBlock.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                                case TextBox textBox:
-                                    textBox.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                                case CheckBox checkBox:
-                                    checkBox.Foreground =
-                                        dark
-                                            ? new SolidColorBrush(darkColourText)
-                                            : new SolidColorBrush(lightColourText);
-                                    break;
-                            }
+                            case TextBlock textBlock:
+                                textBlock.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
+                            case TextBox textBox:
+                                textBox.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
+                            case CheckBox checkBox:
+                                checkBox.Foreground =
+                                    dark
+                                        ? new SolidColorBrush(darkColourText)
+                                        : new SolidColorBrush(lightColourText);
+                                break;
                         }
                     }
                 }
@@ -176,7 +178,7 @@ namespace Odyssey
             else pickEmulatorFailed = true;
 
             // If FindGame fails, return
-            string lGame = FindGame(game).ToString(); // Prevents calling the method twice
+            string lGame = FindGame(game); // Prevents calling the method twice
             if (lGame != "Invalid") launchCommand += lGame;
             else findGameFailed = true;
 
@@ -184,7 +186,7 @@ namespace Odyssey
                 msg1 = $"Emulator {game.Emulator} not found.";
 
             if (findGameFailed)
-                msg2 = $"Game file not found.";
+                msg2 = "Game file not found.";
 
             //TODO: Uncomment Process.Start
             System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\". {msg1} {msg2}");
@@ -197,8 +199,8 @@ namespace Odyssey
             //Odyssey.Properties.Settings.Default[t.Name] = t.Text;
             string setting = "path" + game.Emulator;
             //verify the setting exists before returning it
-            if (Odyssey.Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
-                return (string)Odyssey.Properties.Settings.Default[setting];
+            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
+                return (string)Properties.Settings.Default[setting];
             else return "Invalid";
         }
 
@@ -273,7 +275,7 @@ namespace Odyssey
         //Save settings
         private void SaveSettings()
         {
-            Odyssey.Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
 
             //For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
@@ -286,18 +288,18 @@ namespace Odyssey
                             if(t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
-                            Odyssey.Properties.Settings.Default[t.Name] = t.Text;
+                            Properties.Settings.Default[t.Name] = t.Text;
                         }
                     }
             }
 
-            Odyssey.Properties.Settings.Default.Save();
+            Properties.Settings.Default.Save();
 
         }
 
         private void LoadSettings()
         {
-            darkModeChkBx.IsChecked = Odyssey.Properties.Settings.Default.DarkMode;
+            darkModeChkBx.IsChecked = Properties.Settings.Default.DarkMode;
             Theming(darkModeChkBx.IsChecked.Value);
 
             //For each textbox named "path*TxtBx", assign the text to the corresponding setting
@@ -311,7 +313,7 @@ namespace Odyssey
                             if(t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
-                            t.Text = Odyssey.Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Odyssey.Properties.Settings.Default[t.Name].ToString();
+                            t.Text = Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Properties.Settings.Default[t.Name].ToString();
                         }
                     }
             }
@@ -475,43 +477,77 @@ namespace Odyssey
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TitleFilter(SearchTxtBx.Text);
+            BigFilter();
         }
 
         //TODO: Better filtering system with more generic functions
 
-        //Filters the listview based on the search term (title)
-        private void TitleFilter(string term = "")
+        private void BigFilter()
         {
-            var filteredList = MyGames.Where(game => game.Title.ToLower().Contains(term.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            if (!ready)
+            {
+                return;
+            }
 
-        //Filter the listview based on the emulator
-        private void EmulatorFilter(string emulator = "")
-        {
-            var filteredList = MyGames.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
-        }
-        //Filter the listview based on the Year
-        private void YearFilter(string year="")
-        {
-            var filteredList = MyGames.Where(game => game.Year.ToString().Equals(year)).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
+            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[0];
+            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2)[0];
 
-        //Filter the listview based on release year
-        private void YearFilter(int year = 0)
-        {
-            var filteredList = MyGames.Where(game => game.Year.Equals(year)).ToList();
-            ApplyFilteredList(filteredList);
-        }
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Emulator {emulator}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Year {year}");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Console {console}");
 
-        //Filter the listview based on the console
-        private void ConsoleFilter(string console = "")
-        {
-            var filteredList = MyGames.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
-            ApplyFilteredList(filteredList);
+            var filteredList = MyGames;
+            bool bSearch, bEmulator, bYear, bConsole;
+
+            //First filter by title
+            if (SearchTxtBx.Text.Length > 1)
+            {
+                filteredList = filteredList.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
+                bSearch = true;
+            }
+            else
+                bSearch = false;
+
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
+            //Then filter by emulator
+            if (emulator != "All")
+            {
+                filteredList = filteredList.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
+                bEmulator = true;
+            }
+            else
+                bEmulator = false;
+
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
+            //Then filter by year provided one is selected
+            if (year != "All")
+            {
+                filteredList = filteredList.Where(game => game.Year.ToString().Equals(year)).ToList();
+                bYear = true;
+            }
+            else
+                bYear = false;
+
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
+            //Then filter by console
+            if (console != "All")
+            {
+                filteredList = filteredList.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
+                bConsole = true;
+            }
+            else
+                bConsole = false;
+
+            System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList {filteredList.Count}");
+
+            if(!bSearch && !bEmulator && !bConsole && !bYear)
+                ApplyFilteredList(MyGames);
+            else
+                ApplyFilteredList(filteredList);
         }
 
         //Add the filtered list to the listview
@@ -525,37 +561,17 @@ namespace Odyssey
         //TODO: Clean this up
         private void EmulatorCbBx_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = EmulatorCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                EmulatorFilter(c);
+            BigFilter();
         }
 
         private void YearCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = YearCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                YearFilter(c);
-
+            BigFilter();
         }
 
         private void ConsoleCbBx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? a = ConsoleCbBx.SelectedValue.ToString();
-            var b = a?.Split(':', 2);
-            var c = b[1].Substring(1);
-            if (c == "All")
-                TitleFilter();
-            else
-                ConsoleFilter(c);
-
+            BigFilter();
         }
 
         private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -592,6 +608,54 @@ namespace Odyssey
             }
         }
 
-        
+
+        private void EmulatorCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> emuList = new List<string>();
+            emuList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!emuList.Contains(game.Emulator))
+                    emuList.Add(game.Emulator);
+            }
+
+            emuList.Sort();
+
+            EmulatorCbBx.ItemsSource = emuList;
+        }
+
+        private void YearCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> yearList = new List<string>();
+            yearList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!yearList.Contains(game.Year.ToString()))
+                    yearList.Add(game.Year.ToString());
+            }
+
+            //sort the year list in descending order excluding the "All" option
+            yearList.Sort();
+            yearList.Reverse();
+
+            YearCbBx.ItemsSource = yearList;
+        }
+
+        private void ConsoleCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<string> consoleList = new List<string>();
+            consoleList.Add("All");
+
+            foreach (var game in MyGames)
+            {
+                if(!consoleList.Contains(game.Consoles))
+                    consoleList.Add(game.Consoles);
+            }
+
+            consoleList.Sort();
+            ConsoleCbBx.ItemsSource = consoleList;
+        }
     }
 }
