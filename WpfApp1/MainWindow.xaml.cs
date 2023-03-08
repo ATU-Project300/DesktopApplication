@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using static API.Api;
 
 namespace Odyssey
