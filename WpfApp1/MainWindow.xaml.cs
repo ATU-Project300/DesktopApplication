@@ -34,11 +34,6 @@ namespace Odyssey
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
             About.Visibility = Visibility.Collapsed;
-
-            //Set all the comboboxes to the first item
-            EmulatorCbBx.SelectedIndex = 0;
-            ConsoleCbBx.SelectedIndex = 0;
-            YearCbBx.SelectedIndex = 0;
         }
 
 
