@@ -90,7 +90,7 @@
             present properly before the games were loaded.
         -->
 
-        <!-- First panel, "Games" -->
+        <!-- "Games" panel -->
         <TabPanel Grid.Column="1" Name="Games" Height="420">
             <!-- Contains its own grid in which we position the search elements and the games covers -->
             <Grid>
@@ -133,7 +133,7 @@
             </Grid>
         </TabPanel>
 
-        <!-- Second panel, "Settings" -->
+        <!-- "Settings" panel -->
         <TabPanel Grid.Column="1" Name="Settings" Height="420">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
             <Grid Margin="10" Width="600" Height="400">
@@ -200,7 +200,7 @@
             </Grid>
         </TabPanel>
 
-        <!-- Last panel, "About" -->
+        <!-- "About" panel -->
         <TabPanel Grid.Column="1" Name="About">
             <Grid Margin="10" Width="580" Height="400">
                 <Grid.RowDefinitions>
