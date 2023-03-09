@@ -14,7 +14,7 @@
     mc:Ignorable="d"
     ResizeMode="NoResize"
     Title="Odyssey" Height="450" Width="800"
-    MinHeight="425" MinWidth="750">
+    MinHeight="425" MinWidth="750" Icon="/icon.png">
     <Grid Name="MainGrid">
         <!-- Layout -->
         <Grid.ColumnDefinitions>
