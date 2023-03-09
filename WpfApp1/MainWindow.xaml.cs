@@ -202,8 +202,7 @@ namespace Odyssey
             else
             {
                 lGame.Trim();
-                lGame.Replace(" ","\\");
-                Process.Start(lEmulator, lGame);
+                Process.Start($"\"{lEmulator}\"", $"\"{lGame}\"");
             }
         }
 
@@ -421,10 +420,8 @@ namespace Odyssey
 
             foreach (var file in files)
             {
-                if (CompareStrings(file.Name, fileName) > expectedLikeness) 
-                    return file.FullName.Replace(@"\", @"\\");
-                    // ^ replace each backslash in the file FullName with two backslashes
-                    // this is because the backslash is an escape character in C#
+                if (CompareStrings(file.Name, fileName) > expectedLikeness)
+                    return file.FullName;
             }
 
             return "Invalid";
