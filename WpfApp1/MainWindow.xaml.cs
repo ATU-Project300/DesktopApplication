@@ -18,13 +18,17 @@ namespace Odyssey
 {
     public partial class MainWindow
     {
-        //Contains games stored in a sane fashion
+        // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
 
-        //Static client because it is thread safe and we don't need more than one
+        // Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient Client = new();
 
+        // Reflect the state of the application
         public bool ready = false;
+
+        // For image scaling
+        ScaleTransform scaleTransform = new ScaleTransform();
 
         public MainWindow()
         {
@@ -45,7 +49,7 @@ namespace Odyssey
         {
             OccupyListVar(await ProcessGamesData(Client));
 
-            //This goes here only because it loads too early anywhere else
+            // This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(MyGames);
             GameListView.ItemsSource = MyGames;
             ready = true;
@@ -57,7 +61,7 @@ namespace Odyssey
         {
             // Our colour schemes are defined here, so we can easily change them
 
-            //Dark theme colours:
+            // Dark theme colours:
             LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 3),
@@ -71,7 +75,7 @@ namespace Odyssey
             Color darkColour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
             Color darkColourText = Colors.White;
 
-            //Light theme colours:
+            // Light theme colours:
             LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 3),
@@ -109,8 +113,8 @@ namespace Odyssey
                 RecentBtn.Background = new SolidColorBrush(lightColour);
             }
 
-            //For each tabpanel, change each child items colour to white if dark mode is enabled
-            //TODO: Improve variable naming here
+            // For each tabpanel, change each child items colour to white if dark mode is enabled
+            // TODO: Improve variable naming here
             foreach (var x in MainGrid.Children)
             {
                 if (x is not TabPanel tabPanel) continue;
@@ -148,7 +152,7 @@ namespace Odyssey
         // Occupy the local list var "myGames" with the games
         // such that they are individually addressable (!!!)
         // This is only called once
-        //TODO: More efficient way of doing this?
+        // TODO: More efficient way of doing this?
         private void OccupyListVar(List<GamesList> list)
         {
             foreach (var x in list)
@@ -166,7 +170,7 @@ namespace Odyssey
             }
         }
 
-        //Using other methods, construct a launchCommand to be ran by Process.Start
+        // Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
         {
             var launchCommand = "";
@@ -189,7 +193,7 @@ namespace Odyssey
             if (findGameFailed)
                 msg2 = "Game file not found.";
 
-            //TODO: Uncomment Process.Start
+            // TODO: Uncomment Process.Start
             System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\". {msg1} {msg2}");
             //Process.Start(LaunchCommand);
         }
@@ -197,9 +201,8 @@ namespace Odyssey
         // Returns the path to the correct emulator for a game OR return the emulator name for a game
         private static string PickEmulator(Game game)
         {
-            //Odyssey.Properties.Settings.Default[t.Name] = t.Text;
             string setting = "path" + game.Emulator;
-            //verify the setting exists before returning it
+            // Verify the setting exists before returning it
             if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
                 return (string)Properties.Settings.Default[setting];
             else return "Invalid";
@@ -208,8 +211,8 @@ namespace Odyssey
         // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
         private string FindGame(Game game)
         {
-            //RPCS3 takes the folder as the game path, while the other emulators take the file
-            //TODO: Find a different way about this such that we aren't hardcoding the emulator name
+            // RPCS3 takes the folder as the game path, while the other emulators take the file
+            // TODO: Find a different way about this such that we aren't hardcoding the emulator name
             if (game.Emulator == "RPCS3")
                 return FindFolder(pathGameFolder.Text, game.Title);
 
@@ -222,13 +225,13 @@ namespace Odyssey
             About.Visibility = Visibility.Collapsed;
             Games.Visibility = Visibility.Collapsed;
 
-            //This shouldn't really be here but it allows the user to see if the settings are valid
-            //as the user opens the settings page
+            // This shouldn't really be here but it allows the user to see if the settings are valid
+            // as the user opens the settings page
             VerifySettings(); 
         }
 
         // Verify each setting we have
-        //TODO: Make this loop through the settings instead of hardcoding each one 
+        // TODO: Make this loop through the settings instead of hardcoding each one 
         // (This is the last place that needs to be changed!!!)
         private void VerifySettings()
         {
@@ -242,7 +245,7 @@ namespace Odyssey
         }
 
         // Generic method to allow for simple verification of individual settings
-        //TODO: Verify that the emulator name is valid or remove the emulator parameter
+        // TODO: Verify that the emulator name is valid or remove the emulator parameter
         private static void VerifySetting(TextBox t, string emulator, bool executable = false, string executableName = "")
         {
             // Colours for the text boxes for case of error or no error
@@ -273,12 +276,12 @@ namespace Odyssey
             t.Background = !TxtBxCheck() ? new SolidColorBrush(errorColour) : new SolidColorBrush(noColour);
         }
 
-        //Save settings
+        // Save settings
         private void SaveSettings()
         {
             Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
 
-            //For each textbox named "path*TxtBx", assign the text to the corresponding setting
+            // For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
             {
                 if(g is Grid grid)
@@ -303,7 +306,7 @@ namespace Odyssey
             darkModeChkBx.IsChecked = Properties.Settings.Default.DarkMode;
             Theming(darkModeChkBx.IsChecked.Value);
 
-            //For each textbox named "path*TxtBx", assign the text to the corresponding setting
+            // For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
             {
                 if(g is Grid grid)
@@ -334,7 +337,7 @@ namespace Odyssey
             About.Visibility = Visibility.Collapsed;
         }
 
-        //Settings Apply Button
+        // Settings Apply Button
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
             VerifySettings();
@@ -354,7 +357,7 @@ namespace Odyssey
         // Open a folder picker, store the resulting path in the text box
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //TODO: Replace this with a folder picker
+            // TODO: Replace this with a folder picker
             FilePicker(pathGameFolder);
         }
 
@@ -393,8 +396,8 @@ namespace Odyssey
             var directoryInfo = new DirectoryInfo(directory);
             var files = directoryInfo.GetFiles();
 
-            //If the file name is short, reduce the expected likeness such
-            //that we are more likely to get a match. (See "Halo 3")
+            // If the file name is short, reduce the expected likeness such
+            // that we are more likely to get a match. (See "Halo 3")
             double expectedLikeness = fileName.Length switch
             {
                 < 3 => 55,
@@ -413,14 +416,14 @@ namespace Odyssey
             return "Invalid";
         }
 
-        //Generic function to search a directory for another directory
+        // Generic function to search a directory for another directory
         public static string FindFolder(string directory, string folderName)
         {
             var folderInfo = new DirectoryInfo(directory);
             var folder = folderInfo.GetDirectories();
 
-            //If the file name is short, reduce the expected likeness such
-            //that we are more likely to get a match. (See "Halo 3")
+            // If the file name is short, reduce the expected likeness such
+            // that we are more likely to get a match. (See "Halo 3")
             double expectedLikeness = folderName.Length switch
             {
                 < 4 => 20,
@@ -443,7 +446,7 @@ namespace Odyssey
             About.Visibility = Visibility.Visible;
         }
 
-        //Essentially the click even for the game covers
+        // Essentially the click even for the game covers
         private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
@@ -459,7 +462,7 @@ namespace Odyssey
             BigFilter(sender, null);
         }
 
-        //TODO: Better filtering system with more generic functions
+        // TODO: Better filtering system with more generic functions
 
         private void BigFilter(object sender, SelectionChangedEventArgs e)
         {
@@ -479,7 +482,7 @@ namespace Odyssey
             var filteredList = MyGames;
             bool bSearch, bEmulator, bYear, bConsole;
 
-            //First filter by title
+            // First filter by title
             if (SearchTxtBx.Text.Length > 1)
             {
                 filteredList = filteredList.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
@@ -490,7 +493,7 @@ namespace Odyssey
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage text search {filteredList.Count}");
 
-            //Then filter by emulator
+            // Then filter by emulator
             if (emulator != "All")
             {
                 filteredList = filteredList.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
@@ -501,7 +504,7 @@ namespace Odyssey
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage emulator filter {filteredList.Count}");
 
-            //Then filter by year provided one is selected
+            // Then filter by year provided one is selected
             if (year != "All")
             {
                 filteredList = filteredList.Where(game => game.Year.ToString().Equals(year)).ToList();
@@ -512,7 +515,7 @@ namespace Odyssey
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage year filter {filteredList.Count}");
 
-            //Then filter by console
+            // Then filter by console
             if (console != "All")
             {
                 filteredList = filteredList.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
@@ -529,7 +532,7 @@ namespace Odyssey
                 ApplyFilteredList(filteredList);
         }
 
-        //Add the filtered list to the listview
+        // Add the filtered list to the listview
         private void ApplyFilteredList(List<Game> filteredList)
         {
             GameListView.ItemsSource = null;
@@ -537,7 +540,7 @@ namespace Odyssey
             DataContext = filteredList;
         }
 
-        //TODO: Better name for this
+        // TODO: Better name for this
         private void SummonFilePicker(object sender, MouseButtonEventArgs e)
         {
             FilePicker(sender as TextBox);
@@ -549,8 +552,7 @@ namespace Odyssey
             Image ?image = sender as Image;
             if (image != null)
             {
-                //image.Margin = new Thickness(4,2,2,2);
-                var scaleTransform = new ScaleTransform(1, 1);
+                scaleTransform = new ScaleTransform(1, 1);
                 image.RenderTransformOrigin = new Point(0.5, 0.5);
                 image.RenderTransform = scaleTransform;
 
@@ -570,8 +572,7 @@ namespace Odyssey
             Image ?image = sender as Image;
             if (image != null)
             {
-                //image.Margin = new Thickness(12,5,5,5);
-                var scaleTransform = new ScaleTransform(1.25, 1.25);
+                scaleTransform = new ScaleTransform(1.25, 1.25);
                 image.RenderTransformOrigin = new Point(0.5, 0.5);
                 image.RenderTransform = scaleTransform;
 
@@ -619,7 +620,7 @@ namespace Odyssey
                     yearList.Add(game.Year.ToString());
             }
 
-            //sort the year list in descending order excluding the "All" option
+            // Sort the year list in descending order excluding the "All" option
             yearList.Sort();
             yearList.Reverse();
 
