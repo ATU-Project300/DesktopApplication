@@ -12,6 +12,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using static API.Api;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -21,6 +22,8 @@ namespace Odyssey
     {
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
+
+        public Game SelectedGame;
 
         // Static client because it is thread safe and we don't need more than one
         private static readonly HttpClient Client = new();
@@ -36,12 +39,6 @@ namespace Odyssey
             InitializeComponent();
             LoadSettings();
             InitializeApiData();
-
-            // Essentially sets the default page to be the Games one.
-            // Any new TabPanels should be added here and set to "Collapsed"
-            Games.Visibility = Visibility.Visible;
-            Settings.Visibility = Visibility.Collapsed;
-            About.Visibility = Visibility.Collapsed;
         }
 
 
@@ -225,6 +222,7 @@ namespace Odyssey
             Settings.Visibility = Visibility.Visible;
             About.Visibility = Visibility.Collapsed;
             Games.Visibility = Visibility.Collapsed;
+            DetailsView.Visibility = Visibility.Collapsed;
 
             // This shouldn't really be here but it allows the user to see if the settings are valid
             // as the user opens the settings page
@@ -329,6 +327,7 @@ namespace Odyssey
             Games.Visibility = Visibility.Visible;
             About.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Collapsed;
+            DetailsView.Visibility = Visibility.Collapsed;
         }
 
         private void AllGamesBtn_Click(object sender, RoutedEventArgs e)
@@ -336,6 +335,7 @@ namespace Odyssey
             Games.Visibility = Visibility.Visible;
             Settings.Visibility = Visibility.Collapsed;
             About.Visibility = Visibility.Collapsed;
+            DetailsView.Visibility = Visibility.Collapsed;
         }
 
         // Settings Apply Button
@@ -445,6 +445,7 @@ namespace Odyssey
             Games.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Collapsed;
             About.Visibility = Visibility.Visible;
+            DetailsView.Visibility = Visibility.Collapsed;
         }
 
         // Essentially the click even for the game covers
@@ -454,7 +455,19 @@ namespace Odyssey
             // Do something with the selected game object, such as showing more details in a new window
             if ((sender as FrameworkElement)?.DataContext is Game game)
             {
-                StartGame(game);
+                SelectedGame = game;
+                DetailsView.Visibility = Visibility.Visible;
+                Games.Visibility = Visibility.Collapsed;
+                Settings.Visibility = Visibility.Collapsed;
+                About.Visibility = Visibility.Collapsed;
+
+                DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
+                DetailsGameImage.Width = 250;
+                DetailsGameTitle.Text = SelectedGame.Title;
+                DetailsGameYear.Text = SelectedGame.Year.ToString();
+                DetailsGameConsole.Text = SelectedGame.Console;
+                DetailsGameDescription.Text = SelectedGame.Description;
+                DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
             }
         }
 
@@ -645,5 +658,17 @@ namespace Odyssey
             YearCbBx.ItemsSource = yearList;
         }
 
+        private void DetailsCloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Games.Visibility = Visibility.Visible;
+            About.Visibility = Visibility.Collapsed;
+            Settings.Visibility = Visibility.Collapsed;
+            DetailsView.Visibility = Visibility.Collapsed;
+        }
+
+        private void DetailsGamePlayButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            StartGame(SelectedGame);
+        }
     }
 }

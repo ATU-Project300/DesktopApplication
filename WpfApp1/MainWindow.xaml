@@ -91,7 +91,7 @@
         -->
 
         <!-- "Games" panel -->
-        <TabPanel Grid.Column="1" Name="Games" Height="420">
+        <TabPanel Grid.Column="1" Name="Games" Height="420" Visibility="Visible">
             <!-- Contains its own grid in which we position the search elements and the games covers -->
             <Grid>
                 <Grid.RowDefinitions>
@@ -134,7 +134,7 @@
         </TabPanel>
 
         <!-- "Settings" panel -->
-        <TabPanel Grid.Column="1" Name="Settings" Height="420">
+        <TabPanel Grid.Column="1" Name="Settings" Height="420" Visibility="Collapsed">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
             <Grid Margin="10" Width="600" Height="400">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
@@ -201,7 +201,7 @@
         </TabPanel>
 
         <!-- "About" panel -->
-        <TabPanel Grid.Column="1" Name="About">
+        <TabPanel Grid.Column="1" Name="About" Visibility="Collapsed">
             <Grid Margin="10" Width="580" Height="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -211,6 +211,32 @@
                 <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
                 <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
+            </Grid>
+        </TabPanel>
+        <!-- "More details" view for selected game  -->
+        <TabPanel Grid.Column="1" Name="DetailsView" Height="450" Visibility="Collapsed">
+            <Grid Name="DetailsGrid" Height="430" Width="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition> <!-- Image starts here -->
+                    <RowDefinition Height="35*"></RowDefinition> <!-- Title -->
+                    <RowDefinition Height="10*"></RowDefinition> <!-- Year -->
+                    <RowDefinition Height="10*"></RowDefinition> <!-- Console -->
+                    <RowDefinition Height="65*"></RowDefinition> <!-- Description -->
+                    <RowDefinition Height="30*"></RowDefinition> <!-- Play -->
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="5" Margin="5"></Image>
+                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" Width="30" Height="30" Click="DetailsCloseButton_OnClick">X</Button>
+                <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitle" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYear" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameConsole" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameDescription" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
+                <Button Grid.Row="5" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Height="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
             </Grid>
         </TabPanel>
     </Grid>
