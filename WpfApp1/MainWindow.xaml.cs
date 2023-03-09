@@ -159,7 +159,8 @@ namespace Odyssey
                     Description = x.Description,
                     Image = x.Image,
                     Consoles = x.Consoles,
-                    Emulator = x.Emulator
+                    Emulator = x.Emulator,
+                    Rating = x.Rating
                 });
             }
         }
