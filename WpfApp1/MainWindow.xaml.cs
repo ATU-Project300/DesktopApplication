@@ -173,14 +173,20 @@ namespace Odyssey
         {
             bool pickEmulatorFailed = false, findGameFailed = false;
             string msg1 = "Emulator valid.", msg2 = "Game file present";
+            string lGame = ""; // Init here because of EPSXE requiring a flag
 
             // If PickEmulator fails, return
             string lEmulator = PickEmulator(game); // Prevents calling the method twice
             if (lEmulator == "Invalid")
                 pickEmulatorFailed = true;
+            else
+            {
+                if (game.Emulator == "ESPXE")
+                    lGame = "-loadbin ";
+            }
 
             // If FindGame fails, return
-            string lGame = FindGame(game); // Prevents calling the method twice
+            lGame = lGame + FindGame(game); // Prevents calling the method twice
             if (lGame == "Invalid")
                 findGameFailed = true;
 
@@ -479,6 +485,7 @@ namespace Odyssey
         }
 
         // Essentially the click even for the game covers
+        // TODO: Make this less bloated
         private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
