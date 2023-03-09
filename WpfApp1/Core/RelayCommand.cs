@@ -5,8 +5,8 @@ namespace Odyssey.Core
 {
     class RelayCommand : ICommand
     {
-        private Action<object> _execute;
-        private Func<object, bool> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public event EventHandler CanExecuteChanged
         {
@@ -22,7 +22,7 @@ namespace Odyssey.Core
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute(parameter);
+            return _canExecute(parameter);
         }
 
         public void Execute(object parameter)

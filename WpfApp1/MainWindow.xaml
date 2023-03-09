@@ -64,7 +64,7 @@
                         BorderThickness="0" ClipToBounds="True" Click="AllGamesBtn_Click" />
 
                 <Button Content="Settings"
-                        Name="SettingsBTN"
+                        Name="SettingsBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
@@ -72,7 +72,7 @@
                         BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click" />
 
                 <Button Content="About"
-                        Name="AboutBTN"
+                        Name="AboutBtn"
                         Height="50"
                         FontSize="14"
                         Background="#b06050"
@@ -102,7 +102,7 @@
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
                 <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"/>
-                <ComboBox Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
+                <ComboBox Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem>
                         <ComboBox  Name="EmulatorCbBx" Loaded="OccupyFilter"  SelectionChanged="BigFilter" SelectedIndex="0"/>
@@ -194,7 +194,7 @@
                 <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" Width="350" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Height="25" Grid.Row="7" />
 
-                <Button Name="applyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
+                <Button Name="ApplyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
                         Grid.Row="8" Width="150" Height="30" />
 
             </Grid>

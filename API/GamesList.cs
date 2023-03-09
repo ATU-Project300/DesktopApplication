@@ -2,7 +2,7 @@
 
 namespace API;
 
-public sealed record class GamesList(
+public sealed record GamesList(
 
     [property: JsonPropertyName("title")] string Title,
     [property: JsonPropertyName("year")] int Year,
@@ -10,5 +10,4 @@ public sealed record class GamesList(
     [property: JsonPropertyName("image")] string Image,
     [property: JsonPropertyName("consoles")] string Console,
     [property: JsonPropertyName("emulator")] string Emulator,
-    [property: JsonPropertyName("averageRating")] int Rating)
-{ }
+    [property: JsonPropertyName("averageRating")] int Rating);

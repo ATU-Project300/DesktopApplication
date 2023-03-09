@@ -9,7 +9,7 @@ namespace Odyssey
 
         public GameViewModel(List<Game> myGames)
         {
-            this.MyGames = myGames;
+            MyGames = myGames;
         }
     }
 }

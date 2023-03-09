@@ -10,8 +10,12 @@
                             Width="200" Height="40">
 
                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
                             <Rectangle StrokeThickness="1"/>
-                            <TextBox Margin="1"
+                            <TextBox Grid.Column="0" Margin="1"
                                      Text="{TemplateBinding Text}"
                                      BorderThickness="0"
                                      Background="Transparent"
