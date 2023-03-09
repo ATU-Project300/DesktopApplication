@@ -8,5 +8,6 @@
         public string Image { get; set; }
         public string Consoles { get; set; }
         public string Emulator { get; set; }
+        public int Rating { get; set; }
     }
 }
