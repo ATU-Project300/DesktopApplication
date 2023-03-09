@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using static API.Api;
 
 namespace Odyssey
@@ -548,9 +549,18 @@ namespace Odyssey
             Image ?image = sender as Image;
             if (image != null)
             {
-                image.Margin = new Thickness(4,2,2,2);
-                image.Width *= 1.25;
-                image.Height *= 1.25;
+                //image.Margin = new Thickness(4,2,2,2);
+                var scaleTransform = new ScaleTransform(1, 1);
+                image.RenderTransformOrigin = new Point(0.5, 0.5);
+                image.RenderTransform = scaleTransform;
+
+                var animation = new DoubleAnimation
+                {
+                    To = 1.25,
+                    Duration = new Duration(TimeSpan.FromSeconds(0.25))
+                };
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
             }
         }
 
@@ -560,9 +570,18 @@ namespace Odyssey
             Image ?image = sender as Image;
             if (image != null)
             {
-                image.Margin = new Thickness(12,5,5,5);
-                image.Width = 100;
-                image.Height = 120;
+                //image.Margin = new Thickness(12,5,5,5);
+                var scaleTransform = new ScaleTransform(1.25, 1.25);
+                image.RenderTransformOrigin = new Point(0.5, 0.5);
+                image.RenderTransform = scaleTransform;
+
+                var animation = new DoubleAnimation
+                {
+                    To = 1,
+                    Duration = new Duration(TimeSpan.FromSeconds(0.25))
+                };
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
             }
         }
 
