@@ -105,7 +105,7 @@
                 <ComboBox Grid.Column="0" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem >
-                        <ComboBox  Name="EmulatorCbBx" Loaded="EmulatorCbBx_OnLoaded"  SelectionChanged="BigFilter" SelectedIndex="0"/>
+                        <ComboBox  Name="EmulatorCbBx" Loaded="OccupyFilter"  SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                     <!-- Year Filter -->
                     <ComboBoxItem>
@@ -113,7 +113,7 @@
                     </ComboBoxItem>
                     <!-- Console Filter -->
                     <ComboBoxItem>
-                        <ComboBox Name="ConsoleCbBx" Loaded="ConsoleCbBx_OnLoaded" SelectionChanged="BigFilter" SelectedIndex="0"/>
+                        <ComboBox Name="ConsoleCbBx" Loaded="OccupyFilter" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
 
@@ -126,7 +126,7 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="10,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="15,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

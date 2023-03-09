@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using static API.Api;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Odyssey
 {
@@ -163,7 +164,7 @@ namespace Odyssey
                     Year = x.Year,
                     Description = x.Description,
                     Image = x.Image,
-                    Consoles = x.Consoles,
+                    Console = x.Console,
                     Emulator = x.Emulator,
                     Rating = x.Rating
                 });
@@ -463,40 +464,49 @@ namespace Odyssey
         }
 
         // TODO: Better filtering system with more generic functions
-
         private void BigFilter(object sender, SelectionChangedEventArgs e)
         {
+            // If the function is called before the UI is ready, return
             if (!ready)
             {
                 return;
             }
 
+            // Get the selected values from the combo boxes
             var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
             var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[0];
             var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2)[0];
 
+            // Display the selected values in the debug console
             System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Emulator {emulator}");
             System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Year {year}");
             System.Diagnostics.Trace.WriteLine($"[INFO]: Selected Console {console}");
 
+            // Filter from the full list of games
             var filteredList = MyGames;
+
+            // Indicate the status of each filter (if it has been applied)
             bool bSearch, bEmulator, bYear, bConsole;
 
-            // First filter by title
+            // Filter by title if the search box is not empty
+            // The comments apply to the rest of the filters
             if (SearchTxtBx.Text.Length > 1)
             {
+                // Use a LINQ query to filter the list
                 filteredList = filteredList.Where(game => game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
+                // Mark the filter as applied
                 bSearch = true;
             }
             else
+                // Mark the filter as not applied
                 bSearch = false;
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage text search {filteredList.Count}");
 
-            // Then filter by emulator
+            // Filter by emulator
             if (emulator != "All")
             {
-                filteredList = filteredList.Where(game => game.Emulator.ToLower().Contains(emulator.ToLower())).ToList();
+                filteredList = filteredList.Where(game => game.Emulator.ToLower().Equals(emulator.ToLower())).ToList();
                 bEmulator = true;
             }
             else
@@ -504,7 +514,7 @@ namespace Odyssey
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage emulator filter {filteredList.Count}");
 
-            // Then filter by year provided one is selected
+            // Filter by year provided one is selected
             if (year != "All")
             {
                 filteredList = filteredList.Where(game => game.Year.ToString().Equals(year)).ToList();
@@ -515,38 +525,41 @@ namespace Odyssey
 
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage year filter {filteredList.Count}");
 
-            // Then filter by console
+            // Filter by console
             if (console != "All")
             {
-                filteredList = filteredList.Where(game => game.Consoles.ToLower().Contains(console.ToLower())).ToList();
+                filteredList = filteredList.Where(game => game.Console.ToLower().Equals(console.ToLower())).ToList();
                 bConsole = true;
             }
             else
                 bConsole = false;
 
+            // Output the number of items in the filtered list
             System.Diagnostics.Trace.WriteLine($"[INFO]: filteredList stage console filter {filteredList.Count}");
 
+            // If no filters have been applied, display the full list
             if(!bSearch && !bEmulator && !bConsole && !bYear)
                 ApplyFilteredList(MyGames);
             else
+                // Else display the list which has been filtered
                 ApplyFilteredList(filteredList);
         }
 
-        // Add the filtered list to the listview
-        private void ApplyFilteredList(List<Game> filteredList)
+        // Apply a List of Games to the ListView
+        private void ApplyFilteredList(List<Game> list)
         {
             GameListView.ItemsSource = null;
-            GameListView.ItemsSource = filteredList;
-            DataContext = filteredList;
+            GameListView.ItemsSource = list;
+            DataContext = list;
         }
 
-        // TODO: Better name for this
+        // TODO: Better name for this (could remove and sacrifice the generic FilePicker function)
         private void SummonFilePicker(object sender, MouseButtonEventArgs e)
         {
             FilePicker(sender as TextBox);
         }
 
-        // Scale image on hover
+        // Animated scaling of image when mouse is over it
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
             Image ?image = sender as Image;
@@ -558,7 +571,7 @@ namespace Odyssey
 
                 var animation = new DoubleAnimation
                 {
-                    To = 1.25,
+                    To = 1.32,
                     Duration = new Duration(TimeSpan.FromSeconds(0.25))
                 };
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
@@ -566,7 +579,7 @@ namespace Odyssey
             }
         }
 
-        // Scale image back to normal on mouse leave
+        // Scale image back to normal on mouse leave (opposite of above)
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {
             Image ?image = sender as Image;
@@ -586,28 +599,32 @@ namespace Odyssey
             }
         }
 
-
-        // When the Emulator ComboBox loads
-        private void EmulatorCbBx_OnLoaded(object sender, RoutedEventArgs e)
+        private void OccupyFilter(object sender, RoutedEventArgs e)
         {
-            List<string> emuList = new List<string>(); // Create a new list of strings
-            emuList.Add("All"); // Add the "All" option to the list
+            // Get the name of the ComboBox from sender
+            var name = (sender as ComboBox)?.Name;
+            var property = name.Substring(0, name.Length - 4);
+            var destinationComboBox = (sender as ComboBox);
 
-            // Loop through all the games and add the emulator to the list if it doesn't already exist
+            var list = new List<string>();
+            list.Add("All");
+
             foreach (var game in MyGames)
             {
-                if(!emuList.Contains(game.Emulator))
-                    emuList.Add(game.Emulator);
+                var a = game.GetType().GetProperty(property).GetValue(game);
+                if (!list.Contains(a))
+                    list.Add((string)a);
             }
 
             // Sort the list alphabetically
-            emuList.Sort();
+            list.Sort();
 
             // Set the ComboBox's items source to the list
-            EmulatorCbBx.ItemsSource = emuList;
+            (sender as ComboBox).ItemsSource = list;
+
         }
 
-        // When the Year ComboBox loads
+        // Upon loading the ComboBox, occupy a list to contain every year present in the MyGames list.
         private void YearCbBx_OnLoaded(object sender, RoutedEventArgs e)
         {
             List<string> yearList = new List<string>(); // Create a new list of strings
@@ -628,24 +645,5 @@ namespace Odyssey
             YearCbBx.ItemsSource = yearList;
         }
 
-        // When the Console ComboBox loads
-        private void ConsoleCbBx_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            List<string> consoleList = new List<string>(); // Create a new list of strings
-            consoleList.Add("All"); // Add the "All" option to the list
-
-            // Loop through all the games and add the console to the list if it doesn't already exist
-            foreach (var game in MyGames)
-            {
-                if(!consoleList.Contains(game.Consoles))
-                    consoleList.Add(game.Consoles);
-            }
-
-            // Sort the list alphabetically
-            consoleList.Sort();
-
-            // Set the ComboBox's items source to the list
-            ConsoleCbBx.ItemsSource = consoleList;
-        }
     }
 }
