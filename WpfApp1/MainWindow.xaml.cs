@@ -197,6 +197,11 @@ namespace Odyssey
 
             if (pickEmulatorFailed || findGameFailed)
             {
+                if(findGameFailed)
+                    MessageBox.Show($"{game.Title} file not found :( \nIs the ROM in your game folder?", "Error");
+                if (pickEmulatorFailed)
+                    MessageBox.Show($"Emulator {game.Emulator} not found :( \nMake sure it is installed and added in settings", "Error");
+
                 System.Diagnostics.Trace.WriteLine($"[ERROR]: {msg1} {msg2}");
             }
             else
@@ -206,13 +211,20 @@ namespace Odyssey
             }
         }
 
-        // Returns the path to the correct emulator for a game OR return the emulator name for a game
+        // Returns the path to the correct emulator for a game
         private static string PickEmulator(Game game)
         {
-            string setting = "path" + game.Emulator;
+            var setting = "path" + game.Emulator;
+            var emu = "";
+
             // Verify the setting exists before returning it
             if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
-                return (string)Properties.Settings.Default[setting];
+            {
+                emu = (string)Properties.Settings.Default[setting];
+                if (Path.Exists(emu))
+                    return emu;
+                else return "Invalid";
+            }
             else return "Invalid";
         }
 
