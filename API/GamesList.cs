@@ -10,5 +10,5 @@ public sealed record class GamesList(
     [property: JsonPropertyName("image")] string Image,
     [property: JsonPropertyName("consoles")] string Consoles,
     [property: JsonPropertyName("emulator")] string Emulator,
-    [property: JsonPropertyName("rating")] int Rating)
+    [property: JsonPropertyName("averageRating")] int Rating)
 { }
