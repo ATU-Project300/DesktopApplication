@@ -492,9 +492,11 @@ namespace Odyssey
                 About.Visibility = Visibility.Collapsed;
 
                 if (SelectedGame.Image != null) DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
+                Trace.WriteLine($"[INFO]: Rating {SelectedGame.Rating}");
                 DetailsGameImage.Width = 250;
                 DetailsGameTitle.Text = SelectedGame.Title;
                 DetailsGameYear.Text = SelectedGame.Year.ToString();
+                DetailsGameRating.Text = SelectedGame.Rating.ToString();
                 DetailsGameConsole.Text = SelectedGame.Console;
                 DetailsGameDescription.Text = SelectedGame.Description;
                 DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
@@ -704,6 +706,37 @@ namespace Odyssey
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ((sender as ComboBox)!).SelectedItem = null;
+        }
+
+        private void radioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton ck = sender as RadioButton;
+            if (ck.IsChecked.Value)
+                Sort(ck?.Name.Substring(0,(ck.Name.Length - 2)));
+
+        }
+
+        private void Sort(string property)
+        {
+            // If the function is called before the UI is ready, return
+            if (!Ready)
+                return;
+
+            //Get the current list items and sort them by the selected sort method
+            if (GameListView.ItemsSource is not List<Game> list) return;
+            list = property switch
+            {
+                "Title" => list.OrderBy(game => game.Title).ToList(),
+                "Year" => list.OrderBy(game => game.Year).ToList(),
+                "Console" => list.OrderBy(game => game.Console).ToList(),
+                "Emulator" => list.OrderBy(game => game.Emulator).ToList(),
+                "Rating" => list.OrderBy(game => game.Rating).ToList(),
+                _ => list
+            };
+
+            // Apply the sorted list to the ListView
+            ApplyFilteredList(list);
+
         }
     }
 }

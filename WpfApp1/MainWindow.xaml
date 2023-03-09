@@ -101,7 +101,7 @@
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
-                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20" FontSize="16" Grid.Column="0"/>
+                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
                 <ComboBox Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem>
@@ -116,7 +116,13 @@
                         <ComboBox Name="ConsoleCbBx" Loaded="OccupyFilter" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
-
+                <ComboBox Grid.Row="0" Grid.Column="0" Width="60" HorizontalAlignment="Right" SelectionChanged="Selector_OnSelectionChanged" Margin="20,20,100,20">
+                    <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="TitleRb">Name</RadioButton>
+                    <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="YearRb">Year</RadioButton>
+                    <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="RatingRb">Rating</RadioButton>
+                    <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="ConsoleRb">Console</RadioButton>
+                    <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="EmulatorRb">Emulator</RadioButton>
+                </ComboBox>
 
                 <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
                     <ListView.ItemsPanel>
@@ -221,22 +227,32 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition> <!-- Image starts here -->
-                    <RowDefinition Height="35*"></RowDefinition> <!-- Title -->
-                    <RowDefinition Height="10*"></RowDefinition> <!-- Year -->
-                    <RowDefinition Height="10*"></RowDefinition> <!-- Console -->
-                    <RowDefinition Height="65*"></RowDefinition> <!-- Description -->
-                    <RowDefinition Height="30*"></RowDefinition> <!-- Play -->
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <!-- Image starts here -->
+                    <RowDefinition Height="35*"></RowDefinition>
+                    <!-- Title -->
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <!-- Year -->
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <!-- Year -->
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <!-- Console -->
+                    <RowDefinition Height="45*"></RowDefinition>
+                    <!-- Description -->
+                    <RowDefinition Height="30*"></RowDefinition>
+                    <!-- Play -->
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="5" Margin="5"></Image>
+                <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="6" Margin="5"></Image>
                 <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" Width="30" Height="30" Click="DetailsCloseButton_OnClick">X</Button>
                 <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitle" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYear" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameConsole" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameDescription" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
-                <Button Grid.Row="5" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Height="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Rating:</TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameRating" Margin="60,6,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameConsole" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="1" Name="DetailsGameDescription" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
+                <Button Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Height="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
             </Grid>
         </TabPanel>
     </Grid>
