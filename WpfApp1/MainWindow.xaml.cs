@@ -172,19 +172,18 @@ namespace Odyssey
         // Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
         {
-            var launchCommand = "";
             bool pickEmulatorFailed = false, findGameFailed = false;
             string msg1 = "Emulator valid.", msg2 = "Game file present";
 
             // If PickEmulator fails, return
             string lEmulator = PickEmulator(game); // Prevents calling the method twice
-            if (lEmulator != "Invalid") launchCommand += lEmulator + " ";
-            else pickEmulatorFailed = true;
+            if (lEmulator == "Invalid")
+                pickEmulatorFailed = true;
 
             // If FindGame fails, return
             string lGame = FindGame(game); // Prevents calling the method twice
-            if (lGame != "Invalid") launchCommand += $" \"{lGame}\" ";
-            else findGameFailed = true;
+            if (lGame == "Invalid")
+                findGameFailed = true;
 
             if (pickEmulatorFailed)
                 msg1 = $"Emulator {game.Emulator} not found.";
@@ -193,13 +192,19 @@ namespace Odyssey
                 msg2 = "Game file not found.";
 
             // TODO: Uncomment Process.Start
-            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\".");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command {lEmulator} {lGame}");
             System.Diagnostics.Trace.WriteLine($"[INFO]: {msg1} {msg2}");
 
-            if(pickEmulatorFailed || findGameFailed)
+            if (pickEmulatorFailed || findGameFailed)
+            {
                 System.Diagnostics.Trace.WriteLine($"[ERROR]: {msg1} {msg2}");
+            }
             else
-                Process.Start($"{launchCommand}");
+            {
+                lGame.Trim();
+                lGame.Replace(" ","\\");
+                Process.Start(lEmulator, lGame);
+            }
         }
 
         // Returns the path to the correct emulator for a game OR return the emulator name for a game
@@ -416,8 +421,10 @@ namespace Odyssey
 
             foreach (var file in files)
             {
-                if (CompareStrings(file.Name, fileName) > expectedLikeness)
-                    return file.FullName;
+                if (CompareStrings(file.Name, fileName) > expectedLikeness) 
+                    return file.FullName.Replace(@"\", @"\\");
+                    // ^ replace each backslash in the file FullName with two backslashes
+                    // this is because the backslash is an escape character in C#
             }
 
             return "Invalid";
