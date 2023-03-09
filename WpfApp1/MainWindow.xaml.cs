@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -182,7 +183,7 @@ namespace Odyssey
 
             // If FindGame fails, return
             string lGame = FindGame(game); // Prevents calling the method twice
-            if (lGame != "Invalid") launchCommand += lGame;
+            if (lGame != "Invalid") launchCommand += $" \"{lGame}\" ";
             else findGameFailed = true;
 
             if (pickEmulatorFailed)
@@ -192,8 +193,13 @@ namespace Odyssey
                 msg2 = "Game file not found.";
 
             // TODO: Uncomment Process.Start
-            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\". {msg1} {msg2}");
-            //Process.Start(LaunchCommand);
+            System.Diagnostics.Trace.WriteLine($"[INFO]: {game.Title}. Launch command \"{launchCommand}\".");
+            System.Diagnostics.Trace.WriteLine($"[INFO]: {msg1} {msg2}");
+
+            if(pickEmulatorFailed || findGameFailed)
+                System.Diagnostics.Trace.WriteLine($"[ERROR]: {msg1} {msg2}");
+            else
+                Process.Start($"{launchCommand}");
         }
 
         // Returns the path to the correct emulator for a game OR return the emulator name for a game
