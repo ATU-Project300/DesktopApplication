@@ -10,11 +10,11 @@ A Windows desktop application to help find the right emulator for your games.
 
 ### Setup
 
-1. Download latest version
+1. [Download latest version](https://github.com/ATU-Project300/DesktopApplication/releases/latest/download/setup.exe)
 
 1. Put all your ROMs/ISOs into a folder making sure they are named similar to the game title.
 
-1. Configure the paths to your emulators in the settings and start playing.
+1. Configure the paths to your emulators and game folder in the settings and start playing.
 
 ## For Developers
 
@@ -168,4 +168,8 @@ are defined in variables.
 
 # Credits
 
-http://materialdesigninxaml.net/
+* http://materialdesigninxaml.net/
+
+* https://mahapps.com/
+
+* https://github.com/jrsoftware/issrc
