@@ -35,24 +35,13 @@ Note: Settings are added in pairs of `TextBlock` and `TextBox`, which will both 
 
 1. Duplicate the last emulator's pair of settings and increase the `Grid.Row` by 1 for the new pair of elements.
 
-1. For any of the elements below the new settings (which are within the same Grid) increase the `Grid.Row` also.
+1. For any of the elements below the new settings (which are within the same Grid) increase the `Grid.Row` by `1` also.
 
 1. In the newly created settings pair, replace any instances of an emulator name with that of your new emulator.
 
     Example, replacing `PPSSPPtxtbx` with `Xeniatxtbx`. Also `pathPPSSPPTxtBx` with `pathXeniaTxtBx`.
-
-1. For the `MouseDoubleClick` event, create a new function following the naming scheme of the others.
-
-1. In the new function, call the `FilePicker` method and pass it the parameter of your new `TextBox` name.
-
-    Example:
-
-    ```
-    private void PathSNES9xTxtBx_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        FilePicker(pathSNES9xTxtBx);
-    }
-    ```
+    
+1. In the `Settings.settings` file, add a setting for your emulator, following the naming convention.
 
 1. From here, add your games to your NoSQL database.
 
