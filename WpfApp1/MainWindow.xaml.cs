@@ -410,28 +410,31 @@ namespace Odyssey
         }
 
         // Generic function to search a directory for a file
-        public static string FindFile(string directory, string? fileName)
+        public static string FindFile(string? directory, string? fileName)
         {
-            var directoryInfo = new DirectoryInfo(directory);
-            var files = directoryInfo.GetFiles();
-
-            // If the file name is short, reduce the expected likeness such
-            // that we are more likely to get a match. (See "Halo 3")
-            if (fileName != null)
+            if (directory != null && directory.Length > 0)
             {
-                double expectedLikeness = fileName.Length switch
-                {
-                    < 3 => 55,
-                    < 4 => 60,
-                    < 7 => 65,
-                    > 12 => 70,
-                    _ => 60
-                };
+                var directoryInfo = new DirectoryInfo(directory);
+                var files = directoryInfo.GetFiles();
 
-                foreach (var file in files)
+                // If the file name is short, reduce the expected likeness such
+                // that we are more likely to get a match. (See "Halo 3")
+                if (fileName != null)
                 {
-                    if (CompareStrings(file.Name, fileName) > expectedLikeness)
-                        return file.FullName;
+                    double expectedLikeness = fileName.Length switch
+                    {
+                        < 3 => 55,
+                        < 4 => 60,
+                        < 7 => 65,
+                        > 12 => 70,
+                        _ => 60
+                    };
+
+                    foreach (var file in files)
+                    {
+                        if (CompareStrings(file.Name, fileName) > expectedLikeness)
+                            return file.FullName;
+                    }
                 }
             }
 
@@ -439,26 +442,29 @@ namespace Odyssey
         }
 
         // Generic function to search a directory for another directory
-        public static string FindFolder(string directory, string? folderName)
+        public static string FindFolder(string? directory, string? folderName)
         {
-            var folderInfo = new DirectoryInfo(directory);
-            var folder = folderInfo.GetDirectories();
-
-            // If the file name is short, reduce the expected likeness such
-            // that we are more likely to get a match. (See "Halo 3")
-            if (folderName != null)
+            if (directory != null && directory.Length > 0)
             {
-                double expectedLikeness = folderName.Length switch
-                {
-                    < 4 => 20,
-                    < 7 => 30,
-                    > 12 => 80,
-                    _ => 60
-                };
+                var folderInfo = new DirectoryInfo(directory);
+                var folder = folderInfo.GetDirectories();
 
-                foreach (var dir in folder)
-                    if (CompareStrings(dir.Name, folderName) > expectedLikeness)
-                        return dir.FullName;
+                // If the file name is short, reduce the expected likeness such
+                // that we are more likely to get a match. (See "Halo 3")
+                if (folderName != null)
+                {
+                    double expectedLikeness = folderName.Length switch
+                    {
+                        < 4 => 20,
+                        < 7 => 30,
+                        > 12 => 80,
+                        _ => 60
+                    };
+
+                    foreach (var dir in folder)
+                        if (CompareStrings(dir.Name, folderName) > expectedLikeness)
+                            return dir.FullName;
+                }
             }
 
             return "Invalid";
