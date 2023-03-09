@@ -50,7 +50,7 @@ namespace Odyssey
 
             // This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(MyGames);
-            GameListView.ItemsSource = MyGames;
+            ApplyFilteredList(MyGames);
             ready = true;
         }
 
@@ -691,6 +691,12 @@ namespace Odyssey
         private void DetailsGamePlayButton_OnClick(object sender, RoutedEventArgs e)
         {
             StartGame(SelectedGame);
+        }
+
+        // Disallow selecting the filters in the ComboBox as items
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (sender as ComboBox).SelectedItem = null;
         }
     }
 }
