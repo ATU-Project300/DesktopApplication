@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Odyssey" xmlns:core="clr-namespace:Odyssey.Core" d:DataContext="{d:DesignInstance Type=core:ObservableObject}"
     x:Class="Odyssey.MainWindow"
     x:Name="Odyssey"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -13,10 +14,14 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     mc:Ignorable="d"
-    ResizeMode="NoResize"
+    ResizeMode="CanResizeWithGrip"
     Title="Odyssey" Height="450" Width="800"
-    MinHeight="460" MinWidth="800" Icon="/icon.png">
-    <Grid Name="MainGrid">
+    MinHeight="460" MinWidth="800" Icon="/icon.png" SizeChanged="Odyssey_SizeChanged">
+    <Window.Resources>
+        <local:WidthToColumnsConverter x:Key="WidthToColumnsConverter" ColumnWidth="100" />
+        <local:HeightToRowsConverter x:Key="HeightToRowsConverter" RowHeight="100" />
+    </Window.Resources>
+    <Grid Name="MainGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!-- Layout -->
         <Grid.ColumnDefinitions>
             <!-- Logo and button grid go here -->
@@ -39,7 +44,7 @@
                    Grid.Row="0" />
 
             <!-- Stack panel of buttons -->
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Name="MainButtonsStkPnl">
                 <Button Content="Home"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="HomeBtn"
@@ -105,9 +110,9 @@
         -->
 
         <!-- "Games" panel -->
-        <TabPanel Grid.Column="1" Name="Games" MinHeight="420" Visibility="Visible">
+        <TabPanel Grid.Column="1" Name="Games" MinHeight="420" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Visible">
             <!-- Contains its own grid in which we position the search elements and the games covers -->
-            <Grid>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <!-- Search elements go here -->
                     <RowDefinition Height="2*" />
@@ -138,15 +143,22 @@
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="EmulatorRb">Emulator</RadioButton>
                 </ComboBox>
 
-                <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
+                <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" MinHeight="323" MinWidth="610" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" MinWidth="590" MinHeight="2000"/>
+                            <UniformGrid
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                                Name="GamesUniformGrid"
+                                Rows="{Binding ActualHeight, Converter={StaticResource HeightToRowsConverter}, ConverterParameter=50}"
+                                Columns="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListView}, Converter={StaticResource WidthToColumnsConverter}}" />
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            <Viewbox Margin="20,8,8,8">
+                                <Image MaxWidth="100" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            </Viewbox>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -154,7 +166,7 @@
         </TabPanel>
 
         <!-- "Settings" panel -->
-        <TabPanel Grid.Column="1" Name="Settings" MinHeight="420" Visibility="Collapsed">
+        <TabPanel Grid.Column="1" Name="Settings" MinHeight="420" Visibility="Collapsed" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
             <Grid Margin="10" MinWidth="600" MinHeight="400">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
@@ -222,15 +234,15 @@
 
         <!-- "About" panel -->
         <TabPanel Grid.Column="1" Name="About" Visibility="Collapsed">
-            <Grid Margin="10" MinWidth="580" MinHeight="400">
+            <Grid Margin="10" x:Name="AboutGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="7*"></RowDefinition>
-                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="30*"></RowDefinition>
+                    <RowDefinition Height="90*"></RowDefinition>
+                    <RowDefinition Height="30*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
-                <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="0" FontSize="48" >About Odyssey</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="1" FontSize="16" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
             </Grid>
         </TabPanel>
         <!-- "More details" view for selected game  -->
