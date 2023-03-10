@@ -98,12 +98,12 @@ namespace Odyssey.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string pathEPSXE {
+        public string pathDuckStation {
             get {
-                return ((string)(this["pathEPSXE"]));
+                return ((string)(this["pathDuckStation"]));
             }
             set {
-                this["pathEPSXE"] = value;
+                this["pathDuckStation"] = value;
             }
         }
         

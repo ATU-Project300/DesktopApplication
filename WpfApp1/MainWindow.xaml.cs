@@ -173,20 +173,15 @@ namespace Odyssey
         {
             bool pickEmulatorFailed = false, findGameFailed = false;
             string msg1 = "Emulator valid.", msg2 = "Game file present";
-            string lGame = ""; // Init here because of EPSXE requiring a flag
+            string lGame;
 
             // If PickEmulator fails, return
             string lEmulator = PickEmulator(game); // Prevents calling the method twice
             if (lEmulator == "Invalid")
                 pickEmulatorFailed = true;
-            else
-            {
-                if (game.Emulator == "ESPXE")
-                    lGame = "-loadbin ";
-            }
 
             // If FindGame fails, return
-            lGame = lGame + FindGame(game); // Prevents calling the method twice
+            lGame = FindGame(game); // Prevents calling the method twice
             if (lGame == "Invalid")
                 findGameFailed = true;
 
@@ -263,7 +258,7 @@ namespace Odyssey
             VerifySetting(pathXeniaTxtBx, true, "xenia.exe");
             VerifySetting(pathPPSSPPTxtBx, true, "PPSSPPWindows64.exe");
             VerifySetting(pathPCSX2TxtBx, true, "pcsx2.exe");
-            VerifySetting(pathEPSXETxtBx, true, "epsxe.exe");
+            VerifySetting(pathDuckStationTxtBx, true, "duckstation-qt-x64-ReleaseLTCG.exe");
             VerifySetting(pathSNES9xTxtBx, true, "snes9x-x64.exe");
             VerifySetting(pathGameFolder, executableName: "game folder");
         }

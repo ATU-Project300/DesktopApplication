@@ -20,7 +20,7 @@
     <Setting Name="pathPCSX2" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="pathEPSXE" Type="System.String" Scope="User">
+    <Setting Name="pathDuckStation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="pathSNES9x" Type="System.String" Scope="User">

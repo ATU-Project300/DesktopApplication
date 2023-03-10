@@ -197,9 +197,9 @@
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          MinWidth="350" Grid.Row="4" />
 
-                <TextBlock Name="EPSXEtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
-                           Text="EPSXE File Path:" FontSize="20" Grid.Row="5" />
-                <TextBox x:Name="pathEPSXETxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBlock Name="DuckStationtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="DuckStation File Path:" FontSize="20" Grid.Row="5" />
+                <TextBox x:Name="pathDuckStationTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          MinWidth="350" Grid.Row="5" />
 
