@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="Odyssey.MainWindow"
+    x:Name="Odyssey"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextElement.FontWeight="Regular"
     TextElement.FontSize="13"
@@ -40,45 +41,58 @@
             <!-- Stack panel of buttons -->
             <StackPanel Grid.Row="1">
                 <Button Content="Home"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="HomeBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
-                        BorderThickness="0" ClipToBounds="True" Click="HomeBtn_Click" />
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        ClipToBounds="False"
+                        Click="HomeBtn_Click" />
                 <Button Content="Recent"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="RecentBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
-                        Width="172"
                         Background="#b06050"
-                        BorderThickness="0" BorderBrush="#00000000" ClipToBounds="True" />
+                        BorderBrush="Transparent"
+                        BorderThickness="0" />
 
                 <Button Content="All Games"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="AllGamesBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
-                        BorderThickness="0" ClipToBounds="True" Click="AllGamesBtn_Click" />
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Click="AllGamesBtn_Click" />
 
                 <Button Content="Settings"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="SettingsBtn"
                         Height="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
-                        BorderThickness="0" ClipToBounds="True" Click="SettingsBTN_Click" />
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Click="SettingsBTN_Click" />
 
                 <Button Content="About"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="AboutBtn"
                         Height="50"
                         FontSize="14"
                         Background="#b06050"
+                        BorderBrush="Transparent"
                         BorderThickness="0"
                         Click="AboutBTN_OnClick"
-                        BorderBrush="#00000000" Foreground="White" ClipToBounds="True" />
+                        Foreground="White"/>
             </StackPanel>
         </Grid>
 
