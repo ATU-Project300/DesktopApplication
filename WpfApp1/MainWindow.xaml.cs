@@ -23,6 +23,8 @@ namespace Odyssey
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
 
+        // The current game selected for DetailsView
+        // Variable exists so that we can access it from other methods
         public Game? SelectedGame;
 
         // Static client because it is thread safe and we don't need more than one
@@ -448,7 +450,12 @@ namespace Odyssey
         {
             // Get the sender as a button, get its name excluding "Btn"
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
-            
+
+            // If our button name is null, assume function was actually called from an Image
+            if (name is null)
+                name = (sender as Image)?.Name.Split("Btn", 2)[0];
+
+
             // Loop through all the TabPanels and hide the ones that aren't associated with the button
             // and show the ones that are
             foreach (var x in MainGrid.Children)
@@ -470,28 +477,31 @@ namespace Odyssey
 
         // Essentially the click even for the game covers
         // TODO: Make this less bloated
-        private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ImageClick(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
             // Do something with the selected game object, such as showing more details in a new window
             if ((sender as FrameworkElement)?.DataContext is Game game)
             {
-                SelectedGame = game;
-                DetailsView.Visibility = Visibility.Visible;
-                Games.Visibility = Visibility.Collapsed;
-                Settings.Visibility = Visibility.Collapsed;
-                About.Visibility = Visibility.Collapsed;
-
-                if (SelectedGame.Image != null) DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
-                Trace.WriteLine($"[INFO]: Rating {SelectedGame.Rating}");
-                DetailsGameImage.Width = 250;
-                DetailsGameTitle.Text = SelectedGame.Title;
-                DetailsGameYear.Text = SelectedGame.Year.ToString();
-                DetailsGameRating.Text = SelectedGame.Rating.ToString();
-                DetailsGameConsole.Text = SelectedGame.Console;
-                DetailsGameDescription.Text = SelectedGame.Description;
-                DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
+                HideOtherPanels(sender, e);
+                GenerateDetailsView(game);
             }
+        }
+
+        // Fill the DetailsView panel with the correct details for the selected game
+        private void GenerateDetailsView(Game game)
+        {
+            if (game == null) return;
+            SelectedGame = game;
+            if (SelectedGame.Image != null) DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
+            Trace.WriteLine($"[INFO]: Rating {SelectedGame.Rating}");
+            DetailsGameImage.Width = 250;
+            DetailsGameTitle.Text = SelectedGame.Title;
+            DetailsGameYear.Text = SelectedGame.Year.ToString();
+            DetailsGameRating.Text = SelectedGame.Rating.ToString();
+            DetailsGameConsole.Text = SelectedGame.Console;
+            DetailsGameDescription.Text = SelectedGame.Description;
+            DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
         }
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -680,14 +690,8 @@ namespace Odyssey
             YearCbBx.ItemsSource = yearList;
         }
 
-        private void DetailsCloseButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Games.Visibility = Visibility.Visible;
-            About.Visibility = Visibility.Collapsed;
-            Settings.Visibility = Visibility.Collapsed;
-            DetailsView.Visibility = Visibility.Collapsed;
-        }
-
+        // Starts the game selected in DetailsView
+        // TODO: Remove this
         private void DetailsGamePlayButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (SelectedGame != null) StartGame(SelectedGame);

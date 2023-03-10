@@ -146,7 +146,7 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            <Image MouseLeftButtonUp="ImageClick" Name="DetailsViewBtn" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -257,7 +257,7 @@
                     <!-- Play -->
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="6" Margin="5"></Image>
-                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" MinWidth="30" MinHeight="30" Click="DetailsCloseButton_OnClick">X</Button>
+                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" MinWidth="30" MinHeight="30" Name="GamesBtnReturn" Click="HideOtherPanels">X</Button>
                 <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitle" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYear" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
