@@ -554,11 +554,11 @@ namespace Odyssey
             {
                 var output = emu.Name;
 
-                if (emu.Uri.EndsWith("zip"))
+                if (emu.Uri.Contains(".zip"))
                     output += ".zip";
-                else if (emu.Uri.EndsWith("7z"))
+                else if (emu.Uri.Contains(".7z"))
                     output += ".7z";
-                else if (emu.Uri.EndsWith("rar"))
+                else if (emu.Uri.Contains(".rar"))
                     output += ".rar";
 
                 if(Path.Exists(output))
