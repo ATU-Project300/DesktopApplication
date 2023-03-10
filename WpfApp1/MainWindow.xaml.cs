@@ -193,7 +193,6 @@ namespace Odyssey
             if (findGameFailed)
                 msg2 = "Game file not found.";
 
-            // TODO: Uncomment Process.Start
             Trace.WriteLine($"[INFO]: {game.Title}. Launch command {lEmulator} {lGame}");
             Trace.WriteLine($"[INFO]: {msg1} {msg2}");
 
@@ -474,9 +473,7 @@ namespace Odyssey
             }
         }
 
-
         // Essentially the click even for the game covers
-        // TODO: Make this less bloated
         private void ImageClick(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
@@ -502,6 +499,40 @@ namespace Odyssey
             DetailsGameConsole.Text = SelectedGame.Console;
             DetailsGameDescription.Text = SelectedGame.Description;
             DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
+        }
+
+        // Handles clicking any of the buttons in the Emulator Management panel
+        private void EmulatorManagementBtnClick(object sender, RoutedEventArgs e)
+        {
+            var name = (sender as Button)?.Name.Split("Btn", 2)[0];
+
+            if (name.Contains("Download"))
+            {
+                // TODO: Download (a portable version of) the emulator using WebClient, then set the path in the settings on success
+                // TODO: Emulator download links solution (could be stored in the database)
+                name = name.Split("Download", 2)[1];
+            }
+            else if (name.Contains("Run"))
+            {
+                EmulatorManagementRun(name);
+            }
+        }
+
+        // Run an emulator from the Emulator Management panel
+        private void EmulatorManagementRun(string name)
+        {
+            name = name.Split("Run", 2)[1];
+            var setting = "path" + name;
+
+            // Verify the setting exists
+            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
+            {
+                var emu = (string)Properties.Settings.Default[setting];
+                if (Path.Exists(emu))
+                    Process.Start(emu);
+                else
+                    MessageBox.Show("Emulator not found :(");
+            }
         }
 
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)

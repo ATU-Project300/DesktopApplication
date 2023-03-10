@@ -40,7 +40,7 @@
 
             <!-- Stack panel of buttons -->
             <StackPanel Grid.Row="1">
-                <Button Content="Home"
+                <Button Content="Games"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="GamesBtn"
                         MinHeight="50"
@@ -153,6 +153,58 @@
             </Grid>
         </TabPanel>
 
+        <!-- "Emulators" panel -->
+        <TabPanel Grid.Column="1" Name="Emulators" MinHeight="420" Visibility="Collapsed">
+            <!-- Create a grid of specific dimensions for the settings items to reside -->
+            <Grid Margin="10" MinWidth="600" MinHeight="400">
+                <!-- Add a row for each setting (or pair of elements for setting) -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" /> <!-- Title -->
+                    <RowDefinition Height="1*" /> <!-- RPCS3 -->
+                    <RowDefinition Height="1*" /> <!-- Xenia -->
+                    <RowDefinition Height="1*" /> <!-- PPSSPP -->
+                    <RowDefinition Height="1*" /> <!-- PCSX2 -->
+                    <RowDefinition Height="1*" /> <!-- DuckStation -->
+                    <RowDefinition Height="1*" /> <!-- SNES9x -->
+                    <RowDefinition Height="1*" /> <!-- Placeholder TODO: Fix this -->
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Emulator Management" FontSize="24" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" Grid.Row="0" />
+
+                <TextBlock Text="RPCS3" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="1" />
+                <Button Grid.Row="1" Click="EmulatorManagementBtnClick" Name="DownloadRPCS3Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="1" Click="EmulatorManagementBtnClick" Name="RunRPCS3Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+
+                <TextBlock Text="Xenia" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="2" />
+                <Button Grid.Row="2" Click="EmulatorManagementBtnClick" Name="DownloadXeniaBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="2" Click="EmulatorManagementBtnClick" Name="RunXeniaBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+
+                <TextBlock Text="PPSSPP" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="3" />
+                <Button Grid.Row="3" Click="EmulatorManagementBtnClick" Name="DownloadPPSSPPBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="3" Click="EmulatorManagementBtnClick" Name="RunPPSSPPBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+
+                <TextBlock Text="PCSX2" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="4" />
+                <Button Grid.Row="4" Click="EmulatorManagementBtnClick" Name="DownloadPCSX2Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="4" Click="EmulatorManagementBtnClick" Name="RunPCSX2Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+
+                <TextBlock Text="DuckStation" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="5" />
+                <Button Grid.Row="5" Click="EmulatorManagementBtnClick" Name="DownloadDuckStationBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="5" Click="EmulatorManagementBtnClick" Name="RunDuckStationBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                          
+                <TextBlock Text="SNES9x" FontSize="20" HorizontalAlignment="Left"
+                          VerticalAlignment="Center" Grid.Row="6" />
+                <Button Grid.Row="6" Click="EmulatorManagementBtnClick" Name="DownloadSNES9xBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="6" Click="EmulatorManagementBtnClick" Name="RunSNES9xBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+
+            </Grid>
+        </TabPanel>
+
         <!-- "Settings" panel -->
         <TabPanel Grid.Column="1" Name="Settings" MinHeight="420" Visibility="Collapsed">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
@@ -228,7 +280,7 @@
                     <RowDefinition Height="7*"></RowDefinition>
                     <RowDefinition Height="2*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock HorizontalAlignment="Center" Grid.Row="0" >About Odyssey</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Grid.Row="0" FontSize="32" >About Odyssey</TextBlock>
                 <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap">Odyssey is a Game/Emulator management platform which allows users to easily access their favourite games, without needing to research them beforehand.</TextBlock>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Padding="0,0,0,40" TextAlignment="Center" TextWrapping="Wrap">This desktop application was written by: sXXXXXXXX, sXXXXXXXX, sXXXXXXXX, sXXXXXXXX</TextBlock>
             </Grid>
