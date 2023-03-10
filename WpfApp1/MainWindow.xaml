@@ -15,7 +15,7 @@
     mc:Ignorable="d"
     ResizeMode="NoResize"
     Title="Odyssey" Height="450" Width="800"
-    MinHeight="425" MinWidth="750" Icon="/icon.png">
+    MinHeight="460" MinWidth="800" Icon="/icon.png">
     <Grid Name="MainGrid">
         <!-- Layout -->
         <Grid.ColumnDefinitions>
@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
 
             <!-- Logo image -->
-            <Image Source="images/light.png" Name="LogoImage" Height="80" HorizontalAlignment="Center" Margin="0,1,0,10"
+            <Image Source="images/light.png" Name="LogoImage" MinHeight="80" HorizontalAlignment="Center" Margin="0,1,0,10"
                    Grid.Row="0" />
 
             <!-- Stack panel of buttons -->
@@ -43,7 +43,7 @@
                 <Button Content="Home"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="HomeBtn"
-                        Height="50"
+                        MinHeight="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
@@ -54,7 +54,7 @@
                 <Button Content="Recent"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="RecentBtn"
-                        Height="50"
+                        MinHeight="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
@@ -64,7 +64,7 @@
                 <Button Content="All Games"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="AllGamesBtn"
-                        Height="50"
+                        MinHeight="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
@@ -75,7 +75,7 @@
                 <Button Content="Settings"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="SettingsBtn"
-                        Height="50"
+                        MinHeight="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
@@ -86,7 +86,7 @@
                 <Button Content="About"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="AboutBtn"
-                        Height="50"
+                        MinHeight="50"
                         FontSize="14"
                         Background="#b06050"
                         BorderBrush="Transparent"
@@ -105,7 +105,7 @@
         -->
 
         <!-- "Games" panel -->
-        <TabPanel Grid.Column="1" Name="Games" Height="420" Visibility="Visible">
+        <TabPanel Grid.Column="1" Name="Games" MinHeight="420" Visibility="Visible">
             <!-- Contains its own grid in which we position the search elements and the games covers -->
             <Grid>
                 <Grid.RowDefinitions>
@@ -115,8 +115,8 @@
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
-                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
-                <ComboBox Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" Width="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
+                <TextBox Name="SearchTxtBx" Width="400" MinHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
+                <ComboBox  Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" MinWidth="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
                     <!-- Emulator Filter -->
                     <ComboBoxItem>
                         <ComboBox  Name="EmulatorCbBx" Loaded="OccupyFilter"  SelectionChanged="BigFilter" SelectedIndex="0"/>
@@ -130,7 +130,7 @@
                         <ComboBox Name="ConsoleCbBx" Loaded="OccupyFilter" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.Column="0" Width="60" HorizontalAlignment="Right" SelectionChanged="Selector_OnSelectionChanged" Margin="20,20,100,20">
+                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="60" HorizontalAlignment="Right" SelectionChanged="Selector_OnSelectionChanged" Margin="20,20,100,20">
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="TitleRb">Name</RadioButton>
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="YearRb">Year</RadioButton>
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="RatingRb">Rating</RadioButton>
@@ -141,12 +141,12 @@
                 <ListView Grid.Row="1" ItemsSource="{Binding myGames}" Name="GameListView" Margin="2">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" Width="590" Height="2000"/>
+                            <UniformGrid Name="GamesUniformGrid" Columns="4" Rows="12" MinWidth="590" MinHeight="2000"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="15,2,2,2" Height="120" Width="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            <Image MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -154,9 +154,9 @@
         </TabPanel>
 
         <!-- "Settings" panel -->
-        <TabPanel Grid.Column="1" Name="Settings" Height="420" Visibility="Collapsed">
+        <TabPanel Grid.Column="1" Name="Settings" MinHeight="420" Visibility="Collapsed">
             <!-- Create a grid of specific dimensions for the settings items to reside -->
-            <Grid Margin="10" Width="600" Height="400">
+            <Grid Margin="10" MinWidth="600" MinHeight="400">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
@@ -176,53 +176,53 @@
                 <TextBlock Name="RPCS3txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
                 <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="1" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="1" />
 
                 <TextBlock Name="Xeniatxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="Xenia File Path:" FontSize="20" Grid.Row="2" />
                 <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="2" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="2" />
 
                 <TextBlock Name="PPSSPPtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PPSSPP File Path:" FontSize="20" Grid.Row="3" />
                 <TextBox x:Name="pathPPSSPPTxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="3" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="3" />
 
                 <TextBlock Name="PCSX2txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PCSX2 File Path:" FontSize="20" Grid.Row="4" />
                 <TextBox x:Name="pathPCSX2TxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="4" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="4" />
 
                 <TextBlock Name="EPSXEtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="EPSXE File Path:" FontSize="20" Grid.Row="5" />
                 <TextBox x:Name="pathEPSXETxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="5" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="5" />
 
                 <TextBlock Name="SNES9xtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="SNES9x File Path:" FontSize="20" Grid.Row="6" />
                 <TextBox x:Name="pathSNES9xTxtBx" MouseDoubleClick="SummonFilePicker"
-                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25"
-                         Width="350" Grid.Row="6" />
+                         TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
+                         MinWidth="350" Grid.Row="6" />
 
                 <TextBlock Name="GameFoldertxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Width="364" />
-                <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" Width="350" HorizontalAlignment="Right"
-                         VerticalAlignment="Center" Height="25" Grid.Row="7" />
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" MinWidth="364" />
+                <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" MinWidth="350" HorizontalAlignment="Right"
+                         VerticalAlignment="Center" MinHeight="25" Grid.Row="7" />
 
                 <Button Name="ApplyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
-                        Grid.Row="8" Width="150" Height="30" />
+                        Grid.Row="8" MinWidth="150" MinHeight="30" />
 
             </Grid>
         </TabPanel>
 
         <!-- "About" panel -->
         <TabPanel Grid.Column="1" Name="About" Visibility="Collapsed">
-            <Grid Margin="10" Width="580" Height="400">
+            <Grid Margin="10" MinWidth="580" MinHeight="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="7*"></RowDefinition>
@@ -234,8 +234,8 @@
             </Grid>
         </TabPanel>
         <!-- "More details" view for selected game  -->
-        <TabPanel Grid.Column="1" Name="DetailsView" Height="450" Visibility="Collapsed">
-            <Grid Name="DetailsGrid" Height="430" Width="600">
+        <TabPanel Grid.Column="1" Name="DetailsView" MinHeight="450" Visibility="Collapsed">
+            <Grid Name="DetailsGrid" MinHeight="430" MinWidth="600">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -257,7 +257,7 @@
                     <!-- Play -->
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="6" Margin="5"></Image>
-                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" Width="30" Height="30" Click="DetailsCloseButton_OnClick">X</Button>
+                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" MinWidth="30" MinHeight="30" Click="DetailsCloseButton_OnClick">X</Button>
                 <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitle" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYear" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
@@ -266,7 +266,7 @@
                 <TextBlock Grid.Row="4" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
                 <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameConsole" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="5" Grid.Column="1" Name="DetailsGameDescription" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
-                <Button Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Height="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
+                <Button Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" MinHeight="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
             </Grid>
         </TabPanel>
     </Grid>
