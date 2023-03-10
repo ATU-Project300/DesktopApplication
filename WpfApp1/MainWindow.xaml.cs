@@ -344,7 +344,7 @@ namespace Odyssey
             var ofd = new OpenFileDialog();
             var result = ofd.ShowDialog();
             if (result == false) return;
-            t.Text = ofd.FileName;
+            if (t != null) t.Text = ofd.FileName;
         }
 
         // Open a folder picker, store the resulting path in the text box
