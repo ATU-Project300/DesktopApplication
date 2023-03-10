@@ -26,6 +26,8 @@ namespace Odyssey
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
 
+        public List<Emulator> MyEmulators = new();
+
         // The current game selected for DetailsView
         // Variable exists so that we can access it from other methods
         public Game? SelectedGame;
@@ -50,7 +52,8 @@ namespace Odyssey
         // From the API, use the games data to occupy the myGames List
         public async void InitializeApiData()
         {
-            OccupyListVar(await ProcessGamesData(Client));
+            OccupyListVarGames(await ProcessGamesData(Client));
+            OccupyListVarEmulators(await ProcessEmulatorsData(Client));
 
             // This goes here only because it loads too early anywhere else
             DataContext = new GameViewModel(MyGames);
@@ -156,7 +159,7 @@ namespace Odyssey
         // such that they are individually addressable (!!!)
         // This is only called once
         // TODO: More efficient way of doing this?
-        private void OccupyListVar(List<GamesList> list)
+        private void OccupyListVarGames(List<GamesList> list)
         {
             foreach (var x in list)
             {
@@ -169,6 +172,19 @@ namespace Odyssey
                     Console = x.Console,
                     Emulator = x.Emulator,
                     Rating = x.Rating
+                });
+            }
+        }
+
+        private void OccupyListVarEmulators(List<EmulatorsList> list)
+        {
+            foreach (var x in list)
+            {
+                MyEmulators.Add(new Emulator()
+                {
+                    Name = x.Name,
+                    Image = x.Image,
+                    Uri = x.Uri
                 });
             }
         }
@@ -373,10 +389,10 @@ namespace Odyssey
 
             // Loop through the words and compare them
             foreach (var word1 in words1)
-            foreach (var word2 in words2)
-                // If the words match, add them to the list, the check also ignores case
-                if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
-                    matchingWords.Add(word1);
+                foreach (var word2 in words2)
+                    // If the words match, add them to the list, the check also ignores case
+                    if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
+                        matchingWords.Add(word1);
 
             // Set a max length for the strings
             var maxLength = Math.Min(words1.Length, words2.Length);
@@ -515,9 +531,7 @@ namespace Odyssey
 
             if (name.Contains("Download"))
             {
-                // TODO: Download (a portable version of) the emulator using WebClient, then set the path in the settings on success
-                // TODO: Emulator download links solution (could be stored in the database)
-                name = name.Split("Download", 2)[1];
+                DownloadEmulator(name);
             }
             else if (name.Contains("Run"))
             {
@@ -525,7 +539,44 @@ namespace Odyssey
             }
         }
 
+        // Determines some things to download an emulator
+        // TODO: Download (a portable version of) the emulator using WebClient, then set the path in the settings on success
+        // TODO: Emulator download links solution (could be stored in the database)
+        // TODO: Make this take an Emulator as a parameter instead of a string
+        private void DownloadEmulator(string name)
+        {
+            if (name.Contains("Download"))
+            {
+                name = name.Split("Download", 2)[1];
+            }
+
+            foreach (var emu in MyEmulators.Where(emu => emu.Name == name))
+            {
+                var output = emu.Name;
+
+                if (emu.Uri.EndsWith("zip"))
+                    output += ".zip";
+                else if (emu.Uri.EndsWith("7z"))
+                    output += ".7z";
+                else if (emu.Uri.EndsWith("rar"))
+                    output += ".rar";
+
+                if(Path.Exists(output))
+                    File.Delete(output);
+
+                if(DownloadFile(emu.Uri, output))
+                    // TODO: Extract the downloaded file per its format to a sensible folder and add the path to the settings
+                    MessageBox.Show("Downloaded successfully!");
+                else
+                    MessageBox.Show("Download failed :(");
+            }
+
+
+
+        }
+
         // Run an emulator from the Emulator Management panel
+        // TODO: Make this take an Emulator as a parameter instead of a string
         private void EmulatorManagementRun(string name)
         {
             name = name.Split("Run", 2)[1];
@@ -542,8 +593,12 @@ namespace Odyssey
             }
         }
 
+        // Run the BigFilter when the text box contents have changed
         private void SearchTxtBx_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            // This cannot be used as the text changed event directly due to it passing TextChangedEventsArgs
+            // which is not expected by this function
+            // TODO: Make it compatible (without breaking it for the other uses)
             BigFilter(sender, null);
         }
 
@@ -775,15 +830,26 @@ namespace Odyssey
         }
 
         //Downloads a file
-        public void DownloadFile(string Uri, string output)
+        public bool DownloadFile(string Uri, string output)
         {
+            bool complete = false;
+
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
                 wc.DownloadFileAsync(new Uri(Uri), output);
+                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+
+                // For each update in the downloads progress, do this
+                void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+                {
+                    if (e.ProgressPercentage == 100)
+                        complete = true;
+                }
 
                 // If the web client could not download the zip, this code executes
                 wc.Dispose(); // Dispose of the web client
+                return complete;
             }
         }
     }
