@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,9 +71,9 @@ namespace Odyssey
                 EndPoint = new Point(1, 1)
             };
             darkLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Black, 0.1));
+                new GradientStop(Colors.Black, 0.1));
             darkLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Gray, 2.5));
+                new GradientStop(Colors.Gray, 2.5));
 
             Color darkColour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
             Color darkColourText = Colors.White;
@@ -84,9 +85,9 @@ namespace Odyssey
                 EndPoint = new Point(1, 1)
             };
             myLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Purple, 0.1));
+                new GradientStop(Colors.Purple, 0.1));
             myLinearGradientBrush.GradientStops.Add(
-            new GradientStop(Colors.Yellow, 2.5));
+                new GradientStop(Colors.Yellow, 2.5));
 
             Color lightColour = (Color)ColorConverter.ConvertFromString("#b06050");
             Color lightColourText = Colors.Black;
@@ -203,7 +204,9 @@ namespace Odyssey
                 if (findGameFailed)
                     MessageBox.Show($"{game.Title} file not found :( \nIs the ROM in your game folder?", "Error");
                 if (pickEmulatorFailed)
-                    MessageBox.Show($"Emulator {game.Emulator} not found :( \nMake sure it is installed and added in settings", "Error");
+                    MessageBox.Show(
+                        $"Emulator {game.Emulator} not found :( \nMake sure it is installed and added in settings",
+                        "Error");
 
                 Trace.WriteLine($"[ERROR]: {msg1} {msg2}");
             }
@@ -326,7 +329,9 @@ namespace Odyssey
                             if (t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
-                            t.Text = Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Properties.Settings.Default[t.Name].ToString();
+                            t.Text = Properties.Settings.Default[t.Name].ToString() is null
+                                ? "Unset"
+                                : Properties.Settings.Default[t.Name].ToString();
                         }
                     }
             }
@@ -368,10 +373,10 @@ namespace Odyssey
 
             // Loop through the words and compare them
             foreach (var word1 in words1)
-                foreach (var word2 in words2)
-                    // If the words match, add them to the list, the check also ignores case
-                    if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
-                        matchingWords.Add(word1);
+            foreach (var word2 in words2)
+                // If the words match, add them to the list, the check also ignores case
+                if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
+                    matchingWords.Add(word1);
 
             // Set a max length for the strings
             var maxLength = Math.Min(words1.Length, words2.Length);
@@ -572,7 +577,8 @@ namespace Odyssey
             if (SearchTxtBx.Text.Length > 1)
             {
                 // Use a LINQ query to filter the list
-                filteredList = filteredList.Where(game => game.Title != null && game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
+                filteredList = filteredList.Where(game =>
+                    game.Title != null && game.Title.ToLower().Contains(SearchTxtBx.Text.ToLower())).ToList();
                 // Mark the filter as applied
                 bSearch = true;
             }
@@ -585,7 +591,8 @@ namespace Odyssey
             // Filter by emulator
             if (emulator != "All")
             {
-                filteredList = filteredList.Where(game => game.Emulator != null && game.Emulator.ToLower().Equals(emulator?.ToLower())).ToList();
+                filteredList = filteredList.Where(game =>
+                    game.Emulator != null && game.Emulator.ToLower().Equals(emulator?.ToLower())).ToList();
                 bEmulator = true;
             }
             else
@@ -607,7 +614,8 @@ namespace Odyssey
             // Filter by console
             if (console != "All")
             {
-                filteredList = filteredList.Where(game => game.Console != null && game.Console.ToLower().Equals(console?.ToLower())).ToList();
+                filteredList = filteredList
+                    .Where(game => game.Console != null && game.Console.ToLower().Equals(console?.ToLower())).ToList();
                 bConsole = true;
             }
             else
@@ -764,7 +772,19 @@ namespace Odyssey
 
             // Apply the sorted list to the ListView
             ApplyFilteredList(list);
+        }
 
+        //Downloads a file
+        public void DownloadFile(string Uri, string output)
+        {
+            using (WebClient wc = new WebClient())
+            {
+                //Download from URL to location
+                wc.DownloadFileAsync(new Uri(Uri), output);
+
+                // If the web client could not download the zip, this code executes
+                wc.Dispose(); // Dispose of the web client
+            }
         }
     }
 }
