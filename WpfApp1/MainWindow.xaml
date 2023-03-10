@@ -42,7 +42,7 @@
             <StackPanel Grid.Row="1">
                 <Button Content="Home"
                         Style="{DynamicResource MaterialDesignFlatButton}"
-                        Name="HomeBtn"
+                        Name="GamesBtn"
                         MinHeight="50"
                         Foreground="White"
                         FontSize="14"
@@ -50,7 +50,7 @@
                         BorderBrush="Transparent"
                         BorderThickness="0"
                         ClipToBounds="False"
-                        Click="HomeBtn_Click" />
+                        Click="HideOtherPanels" />
                 <Button Content="Recent"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Name="RecentBtn"
@@ -61,16 +61,16 @@
                         BorderBrush="Transparent"
                         BorderThickness="0" />
 
-                <Button Content="All Games"
+                <Button Content="Emulators"
                         Style="{DynamicResource MaterialDesignFlatButton}"
-                        Name="AllGamesBtn"
+                        Name="EmulatorsBtn"
                         MinHeight="50"
                         Foreground="White"
                         FontSize="14"
                         Background="#b06050"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        Click="AllGamesBtn_Click" />
+                        Click="HideOtherPanels"/>
 
                 <Button Content="Settings"
                         Style="{DynamicResource MaterialDesignFlatButton}"
@@ -81,7 +81,7 @@
                         Background="#b06050"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        Click="SettingsBTN_Click" />
+                        Click="HideOtherPanels" />
 
                 <Button Content="About"
                         Style="{DynamicResource MaterialDesignFlatButton}"
@@ -91,7 +91,7 @@
                         Background="#b06050"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        Click="AboutBTN_OnClick"
+                        Click="HideOtherPanels"
                         Foreground="White"/>
             </StackPanel>
         </Grid>
@@ -177,31 +177,31 @@
                            Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
                 <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
-                         MinWidth="350" Grid.Row="1" />
+                         Width="350" Grid.Row="1" />
 
                 <TextBlock Name="Xeniatxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="Xenia File Path:" FontSize="20" Grid.Row="2" />
                 <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
-                         MinWidth="350" Grid.Row="2" />
+                         Width="350" Grid.Row="2" />
 
                 <TextBlock Name="PPSSPPtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PPSSPP File Path:" FontSize="20" Grid.Row="3" />
                 <TextBox x:Name="pathPPSSPPTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
-                         MinWidth="350" Grid.Row="3" />
+                         Width="350" Grid.Row="3" />
 
                 <TextBlock Name="PCSX2txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PCSX2 File Path:" FontSize="20" Grid.Row="4" />
                 <TextBox x:Name="pathPCSX2TxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
-                         MinWidth="350" Grid.Row="4" />
+                         Width="350" Grid.Row="4" />
 
                 <TextBlock Name="DuckStationtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="DuckStation File Path:" FontSize="20" Grid.Row="5" />
                 <TextBox x:Name="pathDuckStationTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
-                         MinWidth="350" Grid.Row="5" />
+                         Width="350" Grid.Row="5" />
 
                 <TextBlock Name="SNES9xtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="SNES9x File Path:" FontSize="20" Grid.Row="6" />

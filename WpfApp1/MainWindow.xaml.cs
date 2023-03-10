@@ -94,8 +94,8 @@ namespace Odyssey
             {
                 MainGrid.Background = darkLinearGradientBrush;
                 LogoButtonsGrid.Background = new SolidColorBrush(darkColour);
-                HomeBtn.Background = new SolidColorBrush(darkColour);
-                AllGamesBtn.Background = new SolidColorBrush(darkColour);
+                GamesBtn.Background = new SolidColorBrush(darkColour);
+                EmulatorsBtn.Background = new SolidColorBrush(darkColour);
                 AboutBtn.Background = new SolidColorBrush(darkColour);
                 SettingsBtn.Background = new SolidColorBrush(darkColour);
                 RecentBtn.Background = new SolidColorBrush(darkColour);
@@ -104,8 +104,8 @@ namespace Odyssey
             {
                 MainGrid.Background = myLinearGradientBrush;
                 LogoButtonsGrid.Background = new SolidColorBrush(lightColour);
-                HomeBtn.Background = new SolidColorBrush(lightColour);
-                AllGamesBtn.Background = new SolidColorBrush(lightColour);
+                GamesBtn.Background = new SolidColorBrush(lightColour);
+                EmulatorsBtn.Background = new SolidColorBrush(lightColour);
                 AboutBtn.Background = new SolidColorBrush(lightColour);
                 SettingsBtn.Background = new SolidColorBrush(lightColour);
                 RecentBtn.Background = new SolidColorBrush(lightColour);
@@ -237,18 +237,6 @@ namespace Odyssey
             return FindFile(pathGameFolder.Text, game.Title);
         }
 
-        private void SettingsBTN_Click(object sender, RoutedEventArgs e)
-        {
-            Settings.Visibility = Visibility.Visible;
-            About.Visibility = Visibility.Collapsed;
-            Games.Visibility = Visibility.Collapsed;
-            DetailsView.Visibility = Visibility.Collapsed;
-
-            // This shouldn't really be here but it allows the user to see if the settings are valid
-            // as the user opens the settings page
-            VerifySettings();
-        }
-
         // Verify each setting we have
         // TODO: Make this loop through the settings instead of hard coding each one 
         // (This is the last place that needs to be changed!!!)
@@ -339,22 +327,6 @@ namespace Odyssey
                         }
                     }
             }
-        }
-
-        private void HomeBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Games.Visibility = Visibility.Visible;
-            About.Visibility = Visibility.Collapsed;
-            Settings.Visibility = Visibility.Collapsed;
-            DetailsView.Visibility = Visibility.Collapsed;
-        }
-
-        private void AllGamesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Games.Visibility = Visibility.Visible;
-            Settings.Visibility = Visibility.Collapsed;
-            About.Visibility = Visibility.Collapsed;
-            DetailsView.Visibility = Visibility.Collapsed;
         }
 
         // Settings Apply Button
@@ -471,13 +443,30 @@ namespace Odyssey
             return "Invalid";
         }
 
-        private void AboutBTN_OnClick(object sender, RoutedEventArgs e)
+        // Hides all other panels which aren't the one associated with the clicked button
+        private void HideOtherPanels(object sender, RoutedEventArgs e)
         {
-            Games.Visibility = Visibility.Collapsed;
-            Settings.Visibility = Visibility.Collapsed;
-            About.Visibility = Visibility.Visible;
-            DetailsView.Visibility = Visibility.Collapsed;
+            // Get the sender as a button, get its name excluding "Btn"
+            var name = (sender as Button)?.Name.Split("Btn", 2)[0];
+            
+            // Loop through all the TabPanels and hide the ones that aren't associated with the button
+            // and show the ones that are
+            foreach (var x in MainGrid.Children)
+            {
+                if (x is not TabPanel tabPanel) continue;
+                if (!tabPanel.Name.StartsWith(name))
+                    tabPanel.Visibility = Visibility.Collapsed;
+                else
+                {
+                    tabPanel.Visibility = Visibility.Visible;
+                    // This shouldn't really be here but it allows the user to see if the settings are valid
+                    // as the user opens the settings page
+                    if (tabPanel.Name == "Settings")
+                        VerifySettings();
+                }
+            }
         }
+
 
         // Essentially the click even for the game covers
         // TODO: Make this less bloated
