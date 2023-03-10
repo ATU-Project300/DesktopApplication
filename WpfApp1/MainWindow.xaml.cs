@@ -20,6 +20,8 @@ namespace Odyssey
 {
     public partial class MainWindow
     {
+        // TODO: Consistent variable and function naming (excluding cases as necessary)
+
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
 
@@ -233,9 +235,9 @@ namespace Odyssey
             // RPCS3 takes the folder as the game path, while the other emulators take the file
             // TODO: Find a different way about this such that we aren't hard coding the emulator name
             if (game.Emulator == "RPCS3")
-                return FindFolder(pathGameFolder.Text, game.Title);
+                return FindFolder(pathGameFolderTxtBx.Text, game.Title);
 
-            return FindFile(pathGameFolder.Text, game.Title);
+            return FindFile(pathGameFolderTxtBx.Text, game.Title);
         }
 
         // Verify each setting we have
@@ -249,7 +251,7 @@ namespace Odyssey
             VerifySetting(pathPCSX2TxtBx, true, "pcsx2.exe");
             VerifySetting(pathDuckStationTxtBx, true, "duckstation-qt-x64-ReleaseLTCG.exe");
             VerifySetting(pathSNES9xTxtBx, true, "snes9x-x64.exe");
-            VerifySetting(pathGameFolder, executableName: "game folder");
+            VerifySetting(pathGameFolderTxtBx, executableName: "game folder");
         }
 
         // Generic method to allow for simple verification of individual settings
@@ -351,7 +353,7 @@ namespace Odyssey
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // TODO: Replace this with a folder picker
-            FilePicker(pathGameFolder);
+            FilePicker(pathGameFolderTxtBx);
         }
 
         // Generic function to compare two strings and return a likeness percentage
@@ -474,7 +476,7 @@ namespace Odyssey
         }
 
         // Essentially the click even for the game covers
-        private void ImageClick(object sender, MouseButtonEventArgs e)
+        private void Image_Click(object sender, MouseButtonEventArgs e)
         {
             // Get the Game object associated with the clicked item
             // Do something with the selected game object, such as showing more details in a new window
@@ -493,16 +495,16 @@ namespace Odyssey
             if (SelectedGame.Image != null) DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
             Trace.WriteLine($"[INFO]: Rating {SelectedGame.Rating}");
             DetailsGameImage.Width = 250;
-            DetailsGameTitle.Text = SelectedGame.Title;
-            DetailsGameYear.Text = SelectedGame.Year.ToString();
-            DetailsGameRating.Text = SelectedGame.Rating.ToString();
-            DetailsGameConsole.Text = SelectedGame.Console;
-            DetailsGameDescription.Text = SelectedGame.Description;
+            DetailsGameTitleTxtBlk.Text = SelectedGame.Title;
+            DetailsGameYearTxtBlk.Text = SelectedGame.Year.ToString();
+            DetailsGameRatingTxtBlk.Text = SelectedGame.Rating.ToString();
+            DetailsGameConsoleTxtBlk.Text = SelectedGame.Console;
+            DetailsGameDescriptionTxtBlk.Text = SelectedGame.Description;
             DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
         }
 
         // Handles clicking any of the buttons in the Emulator Management panel
-        private void EmulatorManagementBtnClick(object sender, RoutedEventArgs e)
+        private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
 
@@ -723,7 +725,7 @@ namespace Odyssey
 
         // Starts the game selected in DetailsView
         // TODO: Remove this
-        private void DetailsGamePlayButton_OnClick(object sender, RoutedEventArgs e)
+        private void DetailsGamePlayButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedGame != null) StartGame(SelectedGame);
         }

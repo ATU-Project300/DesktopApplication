@@ -146,7 +146,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Image MouseLeftButtonUp="ImageClick" Name="DetailsViewBtn" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
+                            <!-- The name of this button is an edge case, it shouldn't follow the others -->
+                            <Image MouseLeftButtonUp="Image_Click" Name="DetailsViewBtn" Source="{Binding Image}" Margin="15,2,2,2" MaxHeight="120" MaxWidth="100" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" Stretch="Uniform" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -174,33 +175,33 @@
 
                 <TextBlock Text="RPCS3" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="1" />
-                <Button Grid.Row="1" Click="EmulatorManagementBtnClick" Name="DownloadRPCS3Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="1" Click="EmulatorManagementBtnClick" Name="RunRPCS3Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="1" Click="EmulatorManagementBtn_Click" Name="DownloadRPCS3Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="1" Click="EmulatorManagementBtn_Click" Name="RunRPCS3Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
 
                 <TextBlock Text="Xenia" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="2" />
-                <Button Grid.Row="2" Click="EmulatorManagementBtnClick" Name="DownloadXeniaBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="2" Click="EmulatorManagementBtnClick" Name="RunXeniaBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="2" Click="EmulatorManagementBtn_Click" Name="DownloadXeniaBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="2" Click="EmulatorManagementBtn_Click" Name="RunXeniaBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
 
                 <TextBlock Text="PPSSPP" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="3" />
-                <Button Grid.Row="3" Click="EmulatorManagementBtnClick" Name="DownloadPPSSPPBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="3" Click="EmulatorManagementBtnClick" Name="RunPPSSPPBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="3" Click="EmulatorManagementBtn_Click" Name="DownloadPPSSPPBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="3" Click="EmulatorManagementBtn_Click" Name="RunPPSSPPBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
 
                 <TextBlock Text="PCSX2" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="4" />
-                <Button Grid.Row="4" Click="EmulatorManagementBtnClick" Name="DownloadPCSX2Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="4" Click="EmulatorManagementBtnClick" Name="RunPCSX2Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="4" Click="EmulatorManagementBtn_Click" Name="DownloadPCSX2Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="4" Click="EmulatorManagementBtn_Click" Name="RunPCSX2Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
 
                 <TextBlock Text="DuckStation" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="5" />
-                <Button Grid.Row="5" Click="EmulatorManagementBtnClick" Name="DownloadDuckStationBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="5" Click="EmulatorManagementBtnClick" Name="RunDuckStationBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="DownloadDuckStationBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="RunDuckStationBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
                           
                 <TextBlock Text="SNES9x" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="6" />
-                <Button Grid.Row="6" Click="EmulatorManagementBtnClick" Name="DownloadSNES9xBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="6" Click="EmulatorManagementBtnClick" Name="RunSNES9xBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
+                <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="DownloadSNES9xBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
+                <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="RunSNES9xBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
 
             </Grid>
         </TabPanel>
@@ -225,45 +226,45 @@
                 <CheckBox Name="darkModeChkBx" Content="Dark Mode" FontSize="20" HorizontalAlignment="Center"
                           VerticalAlignment="Center" Grid.Row="0" />
 
-                <TextBlock Name="RPCS3txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="RPCS3TxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
                 <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="350" Grid.Row="1" />
 
-                <TextBlock Name="Xeniatxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="XeniaTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="Xenia File Path:" FontSize="20" Grid.Row="2" />
                 <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="350" Grid.Row="2" />
 
-                <TextBlock Name="PPSSPPtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="PPSSPPTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PPSSPP File Path:" FontSize="20" Grid.Row="3" />
                 <TextBox x:Name="pathPPSSPPTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="350" Grid.Row="3" />
 
-                <TextBlock Name="PCSX2txtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="PCSX2TxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PCSX2 File Path:" FontSize="20" Grid.Row="4" />
                 <TextBox x:Name="pathPCSX2TxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="350" Grid.Row="4" />
 
-                <TextBlock Name="DuckStationtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="DuckStationTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="DuckStation File Path:" FontSize="20" Grid.Row="5" />
                 <TextBox x:Name="pathDuckStationTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="350" Grid.Row="5" />
 
-                <TextBlock Name="SNES9xtxtblk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <TextBlock Name="SNES9xTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="SNES9x File Path:" FontSize="20" Grid.Row="6" />
                 <TextBox x:Name="pathSNES9xTxtBx" MouseDoubleClick="SummonFilePicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          MinWidth="350" Grid.Row="6" />
 
-                <TextBlock Name="GameFoldertxtblk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
+                <TextBlock Name="GameFolderTxtBlk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" MinWidth="364" />
-                <TextBox x:Name="pathGameFolder" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" MinWidth="350" HorizontalAlignment="Right"
+                <TextBox x:Name="pathGameFolderTxtBx" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" MinWidth="350" HorizontalAlignment="Right"
                          VerticalAlignment="Center" MinHeight="25" Grid.Row="7" />
 
                 <Button Name="ApplyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
@@ -310,15 +311,15 @@
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Name="DetailsGameImage" Grid.RowSpan="6" Margin="5"></Image>
                 <Button Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8" MinWidth="30" MinHeight="30" Name="GamesBtnReturn" Click="HideOtherPanels">X</Button>
-                <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitle" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitleTxtBlk" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYear" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYearTxtBlk" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Rating:</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameRating" Margin="60,6,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameRatingTxtBlk" Margin="60,6,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="4" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameConsole" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="1" Name="DetailsGameDescription" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
-                <Button Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" MinHeight="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_OnClick"></Button>
+                <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameConsoleTxtBlk" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="1" Name="DetailsGameDescriptionTxtBlk" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>
+                <Button Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" MinHeight="30" Name="DetailsGamePlayButton" Click="DetailsGamePlayButton_Click"></Button>
             </Grid>
         </TabPanel>
     </Grid>
