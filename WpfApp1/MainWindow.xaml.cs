@@ -202,7 +202,7 @@ namespace Odyssey
 
             if (pickEmulatorFailed || findGameFailed)
             {
-                if(findGameFailed)
+                if (findGameFailed)
                     MessageBox.Show($"{game.Title} file not found :( \nIs the ROM in your game folder?", "Error");
                 if (pickEmulatorFailed)
                     MessageBox.Show($"Emulator {game.Emulator} not found :( \nMake sure it is installed and added in settings", "Error");
@@ -251,7 +251,7 @@ namespace Odyssey
 
             // This shouldn't really be here but it allows the user to see if the settings are valid
             // as the user opens the settings page
-            VerifySettings(); 
+            VerifySettings();
         }
 
         // Verify each setting we have
@@ -307,12 +307,12 @@ namespace Odyssey
             // For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
             {
-                if(g is Grid grid)
+                if (g is Grid grid)
                     foreach (var t in grid.Children.OfType<TextBox>())
                     {
                         if (t.Name.StartsWith("path"))
                         {
-                            if(t.Name.EndsWith("TxtBx"))
+                            if (t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
                             Properties.Settings.Default[t.Name] = t.Text;
@@ -332,12 +332,12 @@ namespace Odyssey
             // For each textbox named "path*TxtBx", assign the text to the corresponding setting
             foreach (var g in Settings.Children)
             {
-                if(g is Grid grid)
+                if (g is Grid grid)
                     foreach (var t in grid.Children.OfType<TextBox>())
                     {
                         if (t.Name.StartsWith("path"))
                         {
-                            if(t.Name.EndsWith("TxtBx"))
+                            if (t.Name.EndsWith("TxtBx"))
                                 t.Name = t.Name.Remove(t.Name.Length - 5);
 
                             t.Text = Properties.Settings.Default[t.Name].ToString() is null ? "Unset" : Properties.Settings.Default[t.Name].ToString();
@@ -409,7 +409,7 @@ namespace Odyssey
             // Calculate the likeness percentage
             var likeness = (double)matchingWords.Count / maxLength * 100;
 
-            if(likeness > 0)
+            if (likeness > 0)
                 Trace.WriteLine($"[INFO]: Likeness: {likeness}. {str1} VS {str2}.");
 
             return likeness;
@@ -526,8 +526,8 @@ namespace Odyssey
 
             // Get the selected values from the combo boxes
             var emulator = EmulatorCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
-            var year = YearCbBx.SelectedValue.ToString()?.Split(':',2)[0];
-            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':',2)[0];
+            var year = YearCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
+            var console = ConsoleCbBx.SelectedValue.ToString()?.Split(':', 2)[0];
 
             // Display the selected values in the debug console
             Trace.WriteLine($"[INFO]: Selected Emulator {emulator}");
@@ -590,7 +590,7 @@ namespace Odyssey
             Trace.WriteLine($"[INFO]: filteredList stage console filter {filteredList.Count}");
 
             // If no filters have been applied, display the full list
-            if(!bSearch && !bEmulator && !bConsole && !bYear)
+            if (!bSearch && !bEmulator && !bConsole && !bYear)
                 ApplyFilteredList(MyGames);
             else
                 // Else display the list which has been filtered
@@ -679,12 +679,12 @@ namespace Odyssey
         private void YearCbBx_OnLoaded(object sender, RoutedEventArgs e)
         {
             // Create a new list of strings and add the "All" option to the list
-            List<string> yearList = new List<string> { "All" }; 
+            List<string> yearList = new List<string> { "All" };
 
             // Loop through all the games and add the year to the list if it doesn't already exist
             foreach (var game in MyGames)
             {
-                if(!yearList.Contains(game.Year.ToString()))
+                if (!yearList.Contains(game.Year.ToString()))
                     yearList.Add(game.Year.ToString());
             }
 
@@ -719,7 +719,7 @@ namespace Odyssey
         {
             RadioButton ck = sender as RadioButton;
             if (ck.IsChecked.Value)
-                Sort(ck?.Name.Substring(0,(ck.Name.Length - 2)));
+                Sort(ck?.Name.Substring(0, (ck.Name.Length - 2)));
 
         }
 
