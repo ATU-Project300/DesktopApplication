@@ -844,10 +844,14 @@ namespace Odyssey
                         void Save(string extension)
                         {
                             string settingName = "path" + emu.Name;
-                            // TODO: Set executable path here
+                            string path = "";
 
-                            // Use FindFile to search for the executable in the emulator folder
-                            string path = FindFile(output.Split(extension, 2)[0], emu.Name);
+                            //TODO: This shouldn't be hardcoded like this
+                            if (emu.Name == "PPSSPP")
+                                path = FindFile("PPSSPP", "PPSSPPWindows64.exe");
+                            else
+                                 path = FindFile(FindFolder(".", emu.Name), emu.Name);
+
 
                             if (path != null && path.EndsWith(".exe"))
                             {
@@ -889,6 +893,13 @@ namespace Odyssey
         // thanks https://stackoverflow.com/questions/7994477/extract-7zip-in-c-sharp-code
         public bool ExtractArchive(string sourceArchive, string destination)
         {
+            // TODO: This shouldn't be hard coded
+            // Add edge case for pcsx2 having a folder in the zip already
+            if (sourceArchive.ToLower().Contains("pcsx2"))
+            {
+                destination = ".";
+            }
+
             string zPath = "7za.exe"; //add to proj and set CopyToOuputDir
             try
             {
