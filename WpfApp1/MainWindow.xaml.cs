@@ -1,10 +1,12 @@
 ﻿using API;
+using Aspose.Zip.SevenZip;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -564,14 +566,8 @@ namespace Odyssey
                 if(Path.Exists(output))
                     File.Delete(output);
 
-                if(DownloadFile(emu.Uri, output))
-                    // TODO: Extract the downloaded file per its format to a sensible folder and add the path to the settings
-                    MessageBox.Show("Downloaded successfully!");
-                else
-                    MessageBox.Show("Download failed :(");
+                DownloadFile(emu.Uri, output);
             }
-
-
 
         }
 
@@ -830,10 +826,8 @@ namespace Odyssey
         }
 
         //Downloads a file
-        public bool DownloadFile(string Uri, string output)
+        public void DownloadFile(string Uri, string output)
         {
-            bool complete = false;
-
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
@@ -844,13 +838,32 @@ namespace Odyssey
                 void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
                 {
                     if (e.ProgressPercentage == 100)
-                        complete = true;
+                        MessageBox.Show($"{output} downloaded from {Uri}");
+
                 }
 
                 // If the web client could not download the zip, this code executes
                 wc.Dispose(); // Dispose of the web client
-                return complete;
             }
         }
+
+        // Extract a 7zip archive to a directory
+        public void Extract7zip(string archivePath, string outputPath)
+        {
+            using (SevenZipArchive archive = new SevenZipArchive(archivePath))
+            {
+                archive.ExtractToDirectory(outputPath);
+            }
+        }
+        
+        //Extract a zip archive to a directory
+        private void ExtractZip(string archivePath, string outputPath)
+        {
+            using (ZipArchive archive = ZipFile.OpenRead(archivePath))
+            {
+                archive.ExtractToDirectory(outputPath);
+            }
+        }
+
     }
 }
