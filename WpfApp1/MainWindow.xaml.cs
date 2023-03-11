@@ -1,12 +1,10 @@
 ﻿using API;
-using Aspose.Zip.SevenZip;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -566,7 +564,7 @@ namespace Odyssey
                 if (Path.Exists(output))
                     File.Delete(output);
 
-                DownloadFile(emu.Uri, output);
+                InstallEmulator(emu, output);
             }
 
         }
@@ -825,29 +823,60 @@ namespace Odyssey
             ApplyFilteredList(list);
         }
 
-        //Downloads a file
-        public void DownloadFile(string Uri, string output)
+        // Downloads an emulator, extracts it and then adds the emulator path to settings
+        // TODO: Split into multiple functions, this is a mess
+        public void InstallEmulator(Emulator emu, string output)
         {
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
-                wc.DownloadFileAsync(new Uri(Uri), output);
+                wc.DownloadFileAsync(new Uri(emu.Uri), output);
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
 
                 // For each update in the downloads progress, do this
                 void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
                 {
-                    if(e.ProgressPercentage % 10 == 1)
+                    if (e.ProgressPercentage % 10 == 1)
                         Trace.WriteLine($"[INFO]: Download progress of {output} {e.ProgressPercentage}%");
 
                     if (e.ProgressPercentage == 100)
                     {
+                        void Save(string extension)
+                        {
+                            string settingName = "path" + emu.Name;
+                            // TODO: Set executable path here
+
+                            // Use FindFile to search for the executable in the emulator folder
+                            string path = FindFile(output.Split(extension, 2)[0], emu.Name);
+
+                            if (path != null && path.EndsWith(".exe"))
+                            {
+                                // Put the found executable path into settings
+                                Properties.Settings.Default[settingName] = path;
+
+                                // Load each of the settings
+                                LoadSettings();
+
+                                // Save the settings
+                                SaveSettings();
+                            }
+
+                        }
+
                         wc.Dispose(); // Dispose of the web client
-                        MessageBox.Show($"{output} downloaded from {Uri}");
+                        Trace.WriteLine($"[INFO]: {output} downloaded from {emu.Uri}");
                         if (output.EndsWith(".7z"))
-                            ExtractArchive(output, output.Split(".7z", 2)[0]);
+                            if (ExtractArchive(output, output.Split(".7z", 2)[0]))
+                            {
+                                Trace.WriteLine("[INFO]: Adding to settings");
+                                Save(".7z");
+                            }
                         if (output.EndsWith(".zip"))
-                            ExtractArchive(output, output.Split(".zip", 2)[0]);
+                            if (ExtractArchive(output, output.Split(".zip", 2)[0]))
+                            {
+                                Trace.WriteLine("[INFO]: Adding to settings");
+                                Save(".zip");
+                            }
                     }
 
                 }
@@ -858,21 +887,24 @@ namespace Odyssey
         }
 
         // thanks https://stackoverflow.com/questions/7994477/extract-7zip-in-c-sharp-code
-        public void ExtractArchive(string sourceArchive, string destination)
+        public bool ExtractArchive(string sourceArchive, string destination)
         {
             string zPath = "7za.exe"; //add to proj and set CopyToOuputDir
             try
             {
+                Trace.WriteLine($"[INFO]: Extracting {sourceArchive} to {destination}");
                 ProcessStartInfo pro = new ProcessStartInfo();
                 pro.WindowStyle = ProcessWindowStyle.Hidden;
                 pro.FileName = zPath;
                 pro.Arguments = string.Format("x \"{0}\" -y -o\"{1}\"", sourceArchive, destination);
                 Process x = Process.Start(pro);
                 x.WaitForExit();
+                return true;
             }
             catch (System.Exception Ex)
             {
                 //handle error
+                return false;
             }
         }
     }
