@@ -268,18 +268,16 @@ namespace Odyssey
             // For each textbox named "path*TxtBx"
             foreach (var g in Settings.Children)
             {
-                if (g is Grid grid)
-                    foreach (var t in grid.Children.OfType<TextBox>())
-                    {
-                        if (t.Name.StartsWith("path"))
-                        {
-                                // Get the emulator name from the textbox name, then find the emulator in the MyEmulators list using the name
-                                var emulatorName = t.Name.Remove(0, 4);
-                                var emulator = MyEmulators.Find(x => x.Name == emulatorName);
+                if (g is not Grid grid) continue;
+                foreach (var t in grid.Children.OfType<TextBox>())
+                {
+                    if (!t.Name.StartsWith("path")) continue;
+                    // Get the emulator name from the textbox name, then find the emulator in the MyEmulators list using the name
+                    var emulatorName = t.Name.Remove(0, 4);
+                    var emulator = MyEmulators.Find(x => x.Name == emulatorName);
 
-                                VerifySetting(t,!t.Name.Contains("GameFolder"), emulator?.Exectuable);
-                        }
-                    }
+                    VerifySetting(t,!t.Name.Contains("GameFolder"), emulator?.Exectuable);
+                }
             }
 
 
