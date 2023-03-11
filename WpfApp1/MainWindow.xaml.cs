@@ -857,6 +857,7 @@ namespace Odyssey
             }
         }
 
+        // thanks https://stackoverflow.com/questions/7994477/extract-7zip-in-c-sharp-code
         public void ExtractArchive(string sourceArchive, string destination)
         {
             string zPath = "7za.exe"; //add to proj and set CopyToOuputDir
