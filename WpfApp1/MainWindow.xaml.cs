@@ -107,38 +107,27 @@ namespace Odyssey
             Color colour = new Color();
             Color textColour = new Color();
 
-            // If dark mode is enabled, change the colours to dark mode colours
+            LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 3),
+                EndPoint = new Point(1, 1)
+            };
+
             if (dark)
             {
                 // Dark theme colours:
-                LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush
-                {
-                    StartPoint = new Point(0, 3),
-                    EndPoint = new Point(1, 1)
-                };
-                darkLinearGradientBrush.GradientStops.Add(
+                myLinearGradientBrush.GradientStops.Add(
                     new GradientStop(Colors.Black, 0.1));
-                darkLinearGradientBrush.GradientStops.Add(
+                myLinearGradientBrush.GradientStops.Add(
                     new GradientStop(Colors.Gray, 2.5));
 
                 colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
                 textColour = Colors.White;
-                MainGrid.Background = darkLinearGradientBrush;
                 LogoButtonsGrid.Background = new SolidColorBrush(colour);
-                GamesBtn.Background = new SolidColorBrush(colour);
-                EmulatorsBtn.Background = new SolidColorBrush(colour);
-                AboutBtn.Background = new SolidColorBrush(colour);
-                SettingsBtn.Background = new SolidColorBrush(colour);
-                RecentBtn.Background = new SolidColorBrush(colour);
             }
             else
             {
                 // Light theme colours:
-                LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
-                {
-                    StartPoint = new Point(0, 3),
-                    EndPoint = new Point(1, 1)
-                };
                 myLinearGradientBrush.GradientStops.Add(
                     new GradientStop(Colors.Purple, 0.1));
                 myLinearGradientBrush.GradientStops.Add(
@@ -146,14 +135,22 @@ namespace Odyssey
 
                 colour = (Color)ColorConverter.ConvertFromString("#b06050");
                 textColour = Colors.Black;
-                MainGrid.Background = myLinearGradientBrush;
-                LogoButtonsGrid.Background = new SolidColorBrush(colour);
-                GamesBtn.Background = new SolidColorBrush(colour);
-                EmulatorsBtn.Background = new SolidColorBrush(colour);
-                AboutBtn.Background = new SolidColorBrush(colour);
-                SettingsBtn.Background = new SolidColorBrush(colour);
-                RecentBtn.Background = new SolidColorBrush(colour);
             }
+
+            MainGrid.Background = myLinearGradientBrush;
+            LogoButtonsGrid.Background = new SolidColorBrush(colour);
+
+            // For each of the buttons on the left side of the window, change their colour
+            foreach (var x in LogoButtonsGrid.Children)
+            {
+                if (x is not StackPanel sp) continue;
+                foreach (var y in sp.Children)
+                {
+                    if(y is not Button b) continue;
+                    b.Background = new SolidColorBrush(colour);
+                }
+            }
+
 
             // For each tabpanel, change each child items colour to white if dark mode is enabled
             // TODO: Improve variable naming here
