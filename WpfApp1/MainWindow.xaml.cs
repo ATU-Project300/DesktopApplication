@@ -563,7 +563,7 @@ namespace Odyssey
                 else if (emu.Uri.Contains(".rar"))
                     output += ".rar";
 
-                if(Path.Exists(output))
+                if (Path.Exists(output))
                     File.Delete(output);
 
                 DownloadFile(emu.Uri, output);
@@ -837,8 +837,18 @@ namespace Odyssey
                 // For each update in the downloads progress, do this
                 void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
                 {
+                    if(e.ProgressPercentage % 10 == 1)
+                        Trace.WriteLine($"[INFO]: Download progress of {output} {e.ProgressPercentage}%");
+
                     if (e.ProgressPercentage == 100)
+                    {
+                        wc.Dispose(); // Dispose of the web client
                         MessageBox.Show($"{output} downloaded from {Uri}");
+                        if (output.EndsWith(".7z"))
+                            ExtractArchive(output, output.Split(".7z", 2)[0]);
+                        if (output.EndsWith(".zip"))
+                            ExtractArchive(output, output.Split(".zip", 2)[0]);
+                    }
 
                 }
 
@@ -847,23 +857,22 @@ namespace Odyssey
             }
         }
 
-        // Extract a 7zip archive to a directory
-        public void Extract7zip(string archivePath, string outputPath)
+        public void ExtractArchive(string sourceArchive, string destination)
         {
-            using (SevenZipArchive archive = new SevenZipArchive(archivePath))
+            string zPath = "7za.exe"; //add to proj and set CopyToOuputDir
+            try
             {
-                archive.ExtractToDirectory(outputPath);
+                ProcessStartInfo pro = new ProcessStartInfo();
+                pro.WindowStyle = ProcessWindowStyle.Hidden;
+                pro.FileName = zPath;
+                pro.Arguments = string.Format("x \"{0}\" -y -o\"{1}\"", sourceArchive, destination);
+                Process x = Process.Start(pro);
+                x.WaitForExit();
+            }
+            catch (System.Exception Ex)
+            {
+                //handle error
             }
         }
-        
-        //Extract a zip archive to a directory
-        private void ExtractZip(string archivePath, string outputPath)
-        {
-            using (ZipArchive archive = ZipFile.OpenRead(archivePath))
-            {
-                archive.ExtractToDirectory(outputPath);
-            }
-        }
-
     }
 }
