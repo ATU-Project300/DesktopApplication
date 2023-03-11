@@ -101,58 +101,58 @@ namespace Odyssey
         // Must be added soon after InitializeComponent (Currently part of LoadSettings)
         private void Theming(bool dark)
         {
-            // Our colour schemes are defined here, so we can easily change them
+            // Initialise these variables so that they can be used in the foreach loops
+            // Colours are given values as needed in the if/else instead of creating many 
+            // variables holding light and dark variants.
+            Color colour = new Color();
+            Color textColour = new Color();
 
-            // Dark theme colours:
-            LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 3),
-                EndPoint = new Point(1, 1)
-            };
-            darkLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Black, 0.1));
-            darkLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Gray, 2.5));
-
-            Color darkColour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
-            Color darkColourText = Colors.White;
-
-            // Light theme colours:
-            LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 3),
-                EndPoint = new Point(1, 1)
-            };
-            myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Purple, 0.1));
-            myLinearGradientBrush.GradientStops.Add(
-                new GradientStop(Colors.Yellow, 2.5));
-
-            Color lightColour = (Color)ColorConverter.ConvertFromString("#b06050");
-            Color lightColourText = Colors.Black;
-
-            // Below is the code that actually changes the colours
-            // it loops through all the elements and changes their colours
-
+            // If dark mode is enabled, change the colours to dark mode colours
             if (dark)
             {
+                // Dark theme colours:
+                LinearGradientBrush darkLinearGradientBrush = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 3),
+                    EndPoint = new Point(1, 1)
+                };
+                darkLinearGradientBrush.GradientStops.Add(
+                    new GradientStop(Colors.Black, 0.1));
+                darkLinearGradientBrush.GradientStops.Add(
+                    new GradientStop(Colors.Gray, 2.5));
+
+                colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
+                textColour = Colors.White;
                 MainGrid.Background = darkLinearGradientBrush;
-                LogoButtonsGrid.Background = new SolidColorBrush(darkColour);
-                GamesBtn.Background = new SolidColorBrush(darkColour);
-                EmulatorsBtn.Background = new SolidColorBrush(darkColour);
-                AboutBtn.Background = new SolidColorBrush(darkColour);
-                SettingsBtn.Background = new SolidColorBrush(darkColour);
-                RecentBtn.Background = new SolidColorBrush(darkColour);
+                LogoButtonsGrid.Background = new SolidColorBrush(colour);
+                GamesBtn.Background = new SolidColorBrush(colour);
+                EmulatorsBtn.Background = new SolidColorBrush(colour);
+                AboutBtn.Background = new SolidColorBrush(colour);
+                SettingsBtn.Background = new SolidColorBrush(colour);
+                RecentBtn.Background = new SolidColorBrush(colour);
             }
             else
             {
+                // Light theme colours:
+                LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 3),
+                    EndPoint = new Point(1, 1)
+                };
+                myLinearGradientBrush.GradientStops.Add(
+                    new GradientStop(Colors.Purple, 0.1));
+                myLinearGradientBrush.GradientStops.Add(
+                    new GradientStop(Colors.Yellow, 2.5));
+
+                colour = (Color)ColorConverter.ConvertFromString("#b06050");
+                textColour = Colors.Black;
                 MainGrid.Background = myLinearGradientBrush;
-                LogoButtonsGrid.Background = new SolidColorBrush(lightColour);
-                GamesBtn.Background = new SolidColorBrush(lightColour);
-                EmulatorsBtn.Background = new SolidColorBrush(lightColour);
-                AboutBtn.Background = new SolidColorBrush(lightColour);
-                SettingsBtn.Background = new SolidColorBrush(lightColour);
-                RecentBtn.Background = new SolidColorBrush(lightColour);
+                LogoButtonsGrid.Background = new SolidColorBrush(colour);
+                GamesBtn.Background = new SolidColorBrush(colour);
+                EmulatorsBtn.Background = new SolidColorBrush(colour);
+                AboutBtn.Background = new SolidColorBrush(colour);
+                SettingsBtn.Background = new SolidColorBrush(colour);
+                RecentBtn.Background = new SolidColorBrush(colour);
             }
 
             // For each tabpanel, change each child items colour to white if dark mode is enabled
@@ -168,22 +168,13 @@ namespace Odyssey
                         switch (z)
                         {
                             case TextBlock textBlock:
-                                textBlock.Foreground =
-                                    dark
-                                        ? new SolidColorBrush(darkColourText)
-                                        : new SolidColorBrush(lightColourText);
+                                textBlock.Foreground = new SolidColorBrush(textColour);
                                 break;
                             case TextBox textBox:
-                                textBox.Foreground =
-                                    dark
-                                        ? new SolidColorBrush(darkColourText)
-                                        : new SolidColorBrush(lightColourText);
+                                textBox.Foreground = new SolidColorBrush(textColour);
                                 break;
                             case CheckBox checkBox:
-                                checkBox.Foreground =
-                                    dark
-                                        ? new SolidColorBrush(darkColourText)
-                                        : new SolidColorBrush(lightColourText);
+                                checkBox.Foreground = new SolidColorBrush(textColour);
                                 break;
                         }
                     }
@@ -238,17 +229,16 @@ namespace Odyssey
         // Returns the path to the correct emulator for a game
         private static string PickEmulator(Game game)
         {
+            // The setting name is the emulator name + "path".
+            // Example "pathXenia"
             var setting = "path" + game.Emulator;
 
             // Verify the setting exists before returning it
-            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
-            {
-                var emu = (string)Properties.Settings.Default[setting];
-                if (Path.Exists(emu))
-                    return emu;
-                else return "Invalid";
-            }
-            else return "Invalid";
+            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().All(x => x.Name != setting))
+                return "Invalid";
+            var emu = (string)Properties.Settings.Default[setting];
+            return Path.Exists(emu) ? emu : "Invalid";
+
         }
 
         // Checks if the game is valid and if the game path is set and returns the result of FindFile for the game
@@ -276,7 +266,7 @@ namespace Odyssey
                     var emulatorName = t.Name.Remove(0, 4);
                     var emulator = MyEmulators.Find(x => x.Name == emulatorName);
 
-                    VerifySetting(t,!t.Name.Contains("GameFolder"), emulator?.Exectuable);
+                    VerifySetting(t, !t.Name.Contains("GameFolder"), emulator?.Exectuable);
                 }
             }
 
