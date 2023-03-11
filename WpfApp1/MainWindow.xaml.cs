@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using static API.Api;
+using static Odyssey.Find;
 
 namespace Odyssey
 {
@@ -59,6 +60,41 @@ namespace Odyssey
             DataContext = new GameViewModel(MyGames);
             ApplyFilteredList(MyGames);
             Ready = true;
+        }
+
+        // Occupy the local list var "myGames" with the games
+        // such that they are individually addressable (!!!)
+        // This is only called once
+        // TODO: More efficient way of doing this?
+        private void OccupyListVarGames(List<GamesList> list)
+        {
+            foreach (var x in list)
+            {
+                MyGames.Add(new Game()
+                {
+                    Title = x.Title,
+                    Year = x.Year,
+                    Description = x.Description,
+                    Image = x.Image,
+                    Console = x.Console,
+                    Emulator = x.Emulator,
+                    Rating = x.Rating
+                });
+            }
+        }
+
+        private void OccupyListVarEmulators(List<EmulatorsList> list)
+        {
+            foreach (var x in list)
+            {
+                MyEmulators.Add(new Emulator()
+                {
+                    Name = x.Name,
+                    Image = x.Image,
+                    Exectuable = x.Executable,
+                    Uri = x.Uri
+                });
+            }
         }
 
         // Allow for switching between light and dark themes
@@ -155,39 +191,6 @@ namespace Odyssey
             }
         }
 
-        // Occupy the local list var "myGames" with the games
-        // such that they are individually addressable (!!!)
-        // This is only called once
-        // TODO: More efficient way of doing this?
-        private void OccupyListVarGames(List<GamesList> list)
-        {
-            foreach (var x in list)
-            {
-                MyGames.Add(new Game()
-                {
-                    Title = x.Title,
-                    Year = x.Year,
-                    Description = x.Description,
-                    Image = x.Image,
-                    Console = x.Console,
-                    Emulator = x.Emulator,
-                    Rating = x.Rating
-                });
-            }
-        }
-
-        private void OccupyListVarEmulators(List<EmulatorsList> list)
-        {
-            foreach (var x in list)
-            {
-                MyEmulators.Add(new Emulator()
-                {
-                    Name = x.Name,
-                    Image = x.Image,
-                    Uri = x.Uri
-                });
-            }
-        }
 
         // Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
@@ -260,17 +263,26 @@ namespace Odyssey
         }
 
         // Verify each setting we have
-        // TODO: Make this loop through the settings instead of hard coding each one 
-        // (This is the last place that needs to be changed!!!)
         private void VerifySettings()
         {
-            VerifySetting(pathRPCS3TxtBx, true, "rpcs3.exe");
-            VerifySetting(pathXeniaTxtBx, true, "xenia.exe");
-            VerifySetting(pathPPSSPPTxtBx, true, "PPSSPPWindows64.exe");
-            VerifySetting(pathPCSX2TxtBx, true, "pcsx2.exe");
-            VerifySetting(pathDuckStationTxtBx, true, "duckstation-qt-x64-ReleaseLTCG.exe");
-            VerifySetting(pathSNES9xTxtBx, true, "snes9x-x64.exe");
-            VerifySetting(pathGameFolderTxtBx, executableName: "game folder");
+            // For each textbox named "path*TxtBx"
+            foreach (var g in Settings.Children)
+            {
+                if (g is Grid grid)
+                    foreach (var t in grid.Children.OfType<TextBox>())
+                    {
+                        if (t.Name.StartsWith("path"))
+                        {
+                                // Get the emulator name from the textbox name, then find the emulator in the MyEmulators list using the name
+                                var emulatorName = t.Name.Remove(0, 4);
+                                var emulator = MyEmulators.Find(x => x.Name == emulatorName);
+
+                                VerifySetting(t,!t.Name.Contains("GameFolder"), emulator?.Exectuable);
+                        }
+                    }
+            }
+
+
         }
 
         // Generic method to allow for simple verification of individual settings
@@ -377,95 +389,7 @@ namespace Odyssey
             FilePicker(pathGameFolderTxtBx);
         }
 
-        // Generic function to compare two strings and return a likeness percentage
-        public static double CompareStrings(string str1, string? str2)
-        {
-            // Split the strings into words
-            var words1 = str1.Split(' ', '-', '_', '.');
-            var words2 = str2?.Split(' ', '-', '_', '.');
 
-            // Create a list to store the matching words
-            var matchingWords = new List<string>();
-
-            // Loop through the words and compare them
-            foreach (var word1 in words1)
-                foreach (var word2 in words2)
-                    // If the words match, add them to the list, the check also ignores case
-                    if (string.Equals(word1, word2, StringComparison.OrdinalIgnoreCase))
-                        matchingWords.Add(word1);
-
-            // Set a max length for the strings
-            var maxLength = Math.Min(words1.Length, words2.Length);
-
-            // Calculate the likeness percentage
-            var likeness = (double)matchingWords.Count / maxLength * 100;
-
-            if (likeness > 0)
-                Trace.WriteLine($"[INFO]: Likeness: {likeness}. {str1} VS {str2}.");
-
-            return likeness;
-        }
-
-        // Generic function to search a directory for a file
-        public static string FindFile(string? directory, string? fileName)
-        {
-            if (directory != null && directory.Length > 0)
-            {
-                var directoryInfo = new DirectoryInfo(directory);
-                var files = directoryInfo.GetFiles();
-
-                // If the file name is short, reduce the expected likeness such
-                // that we are more likely to get a match. (See "Halo 3")
-                if (fileName != null)
-                {
-                    double expectedLikeness = fileName.Length switch
-                    {
-                        < 3 => 55,
-                        < 4 => 60,
-                        < 7 => 65,
-                        > 12 => 70,
-                        _ => 60
-                    };
-
-                    foreach (var file in files)
-                    {
-                        if (CompareStrings(file.Name, fileName) > expectedLikeness)
-                            return file.FullName;
-                    }
-                }
-            }
-
-            return "Invalid";
-        }
-
-        // Generic function to search a directory for another directory
-        public static string FindFolder(string? directory, string? folderName)
-        {
-            if (directory != null && directory.Length > 0)
-            {
-                var folderInfo = new DirectoryInfo(directory);
-                var folder = folderInfo.GetDirectories();
-
-                // If the file name is short, reduce the expected likeness such
-                // that we are more likely to get a match. (See "Halo 3")
-                if (folderName != null)
-                {
-                    double expectedLikeness = folderName.Length switch
-                    {
-                        < 4 => 20,
-                        < 7 => 30,
-                        > 12 => 80,
-                        _ => 60
-                    };
-
-                    foreach (var dir in folder)
-                        if (CompareStrings(dir.Name, folderName) > expectedLikeness)
-                            return dir.FullName;
-                }
-            }
-
-            return "Invalid";
-        }
 
         // Hides all other panels which aren't the one associated with the clicked button
         private void HideOtherPanels(object sender, RoutedEventArgs e)
@@ -540,8 +464,6 @@ namespace Odyssey
         }
 
         // Determines some things to download an emulator
-        // TODO: Download (a portable version of) the emulator using WebClient, then set the path in the settings on success
-        // TODO: Emulator download links solution (could be stored in the database)
         // TODO: Make this take an Emulator as a parameter instead of a string
         private void DownloadEmulator(string name)
         {
@@ -844,13 +766,8 @@ namespace Odyssey
                         void Save(string extension)
                         {
                             string settingName = "path" + emu.Name;
-                            string path = "";
 
-                            //TODO: This shouldn't be hardcoded like this
-                            if (emu.Name == "PPSSPP")
-                                path = FindFile("PPSSPP", "PPSSPPWindows64.exe");
-                            else
-                                 path = FindFile(FindFolder(".", emu.Name), emu.Name);
+                            string path = FindFile(FindFolder(".", emu.Name), emu.Exectuable);
 
 
                             if (path != null && path.EndsWith(".exe"))

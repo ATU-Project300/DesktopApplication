@@ -118,5 +118,17 @@ namespace Odyssey.Properties {
                 this["pathSNES9x"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathXEMU {
+            get {
+                return ((string)(this["pathXEMU"]));
+            }
+            set {
+                this["pathXEMU"] = value;
+            }
+        }
     }
 }
