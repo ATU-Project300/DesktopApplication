@@ -185,15 +185,16 @@ namespace Odyssey
         {
             bool pickEmulatorFailed = false, findGameFailed = false;
             string msg1 = "Emulator valid.", msg2 = "Game file present";
-            string lGame;
+            var lGame = "Invalid";
 
             // If PickEmulator fails, return
             string lEmulator = PickEmulator(game); // Prevents calling the method twice
+
             if (lEmulator == "Invalid")
                 pickEmulatorFailed = true;
+            else
+                lGame = FindGame(game); // Prevents calling the method twice
 
-            // If FindGame fails, return
-            lGame = FindGame(game); // Prevents calling the method twice
             if (lGame == "Invalid")
                 findGameFailed = true;
 
@@ -252,14 +253,14 @@ namespace Odyssey
         // Verify each setting we have
         private void VerifySettings()
         {
-            // For each textbox named "path*TxtBx"
+            // For each TextBox named "path*"
             foreach (var g in Settings.Children)
             {
                 if (g is not Grid grid) continue;
                 foreach (var t in grid.Children.OfType<TextBox>())
                 {
                     if (!t.Name.StartsWith("path")) continue;
-                    // Get the emulator name from the textbox name, then find the emulator in the MyEmulators list using the name
+                    // Get the emulator name from the TextBox name, then find the emulator in the MyEmulators list using the name
                     var emulatorName = t.Name.Remove(0, 4);
                     var emulator = MyEmulators.Find(x => x.Name == emulatorName);
 
@@ -738,12 +739,14 @@ namespace Odyssey
             {
                 //Download from URL to location
                 wc.DownloadFileAsync(new Uri(emu.Uri), output);
-                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(WcDownloadProgressChanged);
 
                 // For each update in the downloads progress, do this
-                void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+                void WcDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
                 {
-                    if (e.ProgressPercentage % 10 == 1)
+                    DownloadProgressBar.Value = e.ProgressPercentage;
+
+                    if (e.ProgressPercentage % 5 == 1)
                         Trace.WriteLine($"[INFO]: Download progress of {output} {e.ProgressPercentage}%");
 
                     if (e.ProgressPercentage == 100)
@@ -771,18 +774,23 @@ namespace Odyssey
 
                         wc.Dispose(); // Dispose of the web client
                         Trace.WriteLine($"[INFO]: {output} downloaded from {emu.Uri}");
+
                         if (output.EndsWith(".7z"))
                             if (ExtractArchive(output, output.Split(".7z", 2)[0]))
                             {
                                 Trace.WriteLine("[INFO]: Adding to settings");
                                 Save(".7z");
                             }
+
                         if (output.EndsWith(".zip"))
+                        {
                             if (ExtractArchive(output, output.Split(".zip", 2)[0]))
                             {
                                 Trace.WriteLine("[INFO]: Adding to settings");
                                 Save(".zip");
                             }
+                        }
+
                     }
 
                 }

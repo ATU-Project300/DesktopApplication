@@ -14,7 +14,11 @@ A Windows desktop application to help find the right emulator for your games.
 
 1. Put all your ROMs/ISOs into a folder making sure they are named similar to the game title.
 
-1. Configure the paths to your emulators and game folder in the settings and start playing.
+1. Configure the path to the game folder
+
+    * Optional: configure the paths to already installed emulators
+
+1. Use the Emulator Manager to install the supported emulators
 
 ## For Developers
 
@@ -23,27 +27,6 @@ Please feel free to create an issue and/or PR if you notice anything incorrect h
 ### Trello
 
 [Link](https://trello.com/b/0Fzksv3i/desktop-application-tasks)
-
-### Adding Emulators
-
-Note: Settings are added in pairs of `TextBlock` and `TextBox`, which will both be in the same Grid Row.
-
-1. In the XAML (code view), locate the `TabPanel` named "Settings".
-
-1. In the `Grid.RowDefinitions` tags, add another row of height `1*` (Above the one of height `2*`).
-
-
-1. Duplicate the last emulator's pair of settings and increase the `Grid.Row` by 1 for the new pair of elements.
-
-1. For any of the elements below the new settings (which are within the same Grid) increase the `Grid.Row` by `1` also.
-
-1. In the newly created settings pair, replace any instances of an emulator name with that of your new emulator.
-
-    Example, replacing `PPSSPPtxtbx` with `Xeniatxtbx`. Also `pathPPSSPPTxtBx` with `pathXeniaTxtBx`.
-    
-1. In the `Settings.settings` file, add a setting for your emulator, following the naming convention.
-
-1. From here, add your games to your NoSQL database.
 
 
 ### API Data Handling
@@ -54,19 +37,21 @@ This function exists only because we need something
 to hold the async stuff.
 
 It waits for the API to return all of its data (JSON)
-and passes it to the `OccupyListVar` function.
+and passes it to the `OccupyListVarGames` function.
 
 This function simply iterates through every game
 in the list, adding them as "`Game`" objects to our
-"class local" list of Game objects called "`myGames`".
+"class local" list of Game objects called "`MyGames`".
 
 We then set the DataContext of the application to
 the `GameViewModel` class and through the constructor
-of that class we pass our now full "`myGames`" list.
+of that class we pass our now full "`MyGames`" list.
 
 This then allows us to set the contents of
-the `GameViewModel.myGames` list to the full
+the `GameViewModel.MyGames` list to the full
 list containing our data.
+
+Emulator data is handled the same way.
 
 ### ROMs
 
@@ -78,20 +63,25 @@ and a likely path to a ROM is determined and used.
 This begins in the `StartGame` fucntion which is responsible
 for constructing a launch command from the selected game
 using the other functions to be mentioned.
-The first being `FindGame`.
+The first being `PickEmulator`.
 
-`FindGame` takes a `Game` type as an argument. It first
-checks if the game isn't null, if this check fails, the
-function returns null.
+`PickEmulator` takes the argument of `game`.
+A variable named `settings` is then created by
+prepending "path" to `game.Emulator`, this creates,
+for example, "pathXenia".
 
-It then checks if the Emulator associated with the game
-which was passed as an argument is "RPCS3" using the
-`PickEmulator` function, which returns the emulator
-for a game. In the case that the game is to be
-launcher with RPCS3, we return the result of the
-`FindFolder` function with the Game Folder path and game
-title as arguments. Otherwise we use the 
-`FindFile` function which takes the same arguments.
+If a setting matching this name is not found, we return invalid.
+Otherwise we return the value stored in the setting, provided the path
+is valid. Following the above example, we would be returning
+the value of `Properties.Settings.Default.pathXenia`.
+
+Back in `StartGame`, if the returned string is "Invalid",
+we set a boolean to true to indicate this.
+
+In any other case, `FindGame` is called with the argument of `game`.
+`FindGame` checks first if the emulator for the game is "RPCS3" and if so,
+uses `FindFolder` to search for the game files. Otherwise `FindFile` is used.
+The result of whichever function is used is returned.
 
 `FindFile` and `FindFolder` are fairly generic functions
 which simply iterate through each file or folder
@@ -156,15 +146,21 @@ The `VerifySettings` function passes information about
 each setting to the `VerifySetting` function which runs
 a series of checks on the provided settings and acts accordingly.
 
+`VerifySettings` uses a loop to iterate through the relevant TextBoxes.
+For each TextBox which is named `path*`, determine the emulator name by removing "path" from its name. Then use the emulator name to find the emulator in the `MyEmulators` list, where we can then find the `Executable` property to pass to the `VerifySetting` function.
+
 ### Theming
 
 Themes are managed through a `Theming` function which currently
 takes a bool to enable or disable the dark theme.
 
-Either the light or dark theme could be customised or
-replaced through this function as the colours in use
-are defined in variables.
+Some variables are initally assigned to eventually hold colours.
 
+The if statement then checks if the `dark` bool is True and in that case it assigns the dark colour scheme colours to the variables at the beginning of the function.
+
+Loops are then used to iterate through all relevant elements and set the colours.
+
+This could be slower than manually setting the colours for all elements individually but it's significantly faster for development as theming newly added elements is no longer a concern using this method.
 
 # Credits
 
@@ -173,3 +169,5 @@ are defined in variables.
 * https://mahapps.com/
 
 * https://github.com/jrsoftware/issrc
+
+* https://www.7-zip.org/
