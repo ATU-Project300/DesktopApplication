@@ -1,4 +1,4 @@
-name: Build Release Windows WPF Application
+name: Build
 
 on:
   push:

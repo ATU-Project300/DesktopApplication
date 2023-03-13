@@ -1,4 +1,5 @@
 # Odyssey
+[![Build](https://github.com/ATU-Project300/DesktopApplication/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/ATU-Project300/DesktopApplication/actions/workflows/dotnet-desktop.yml)
 
 A Windows desktop application to help find the right emulator for your games.
 
