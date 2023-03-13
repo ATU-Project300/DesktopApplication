@@ -116,7 +116,14 @@
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
                 <TextBox Name="SearchTxtBx" Width="400" MinHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
-                <ComboBox  Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" MinWidth="60" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20">
+                <ComboBox  Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" MinWidth="40" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" Foreground="Black">
+                    <ComboBox.OpacityMask>
+                        <ImageBrush ImageSource="https://www.seekpng.com/png/full/229-2291316_png-file-filter-icon-png.png" TileMode="None"/>
+                    </ComboBox.OpacityMask>
+                    <ComboBox.Background>
+                        <ImageBrush ImageSource="https://www.seekpng.com/png/full/229-2291316_png-file-filter-icon-png.png" TileMode="FlipXY" Stretch="Fill"/>
+                    </ComboBox.Background>
+
                     <!-- Emulator Filter -->
                     <ComboBoxItem>
                         <ComboBox  Name="EmulatorCbBx" Loaded="OccupyFilter"  SelectionChanged="BigFilter" SelectedIndex="0"/>
@@ -130,7 +137,19 @@
                         <ComboBox Name="ConsoleCbBx" Loaded="OccupyFilter" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="60" HorizontalAlignment="Right" SelectionChanged="Selector_OnSelectionChanged" Margin="20,20,100,20">
+                <ComboBox Grid.Column="0" MinWidth="40" HorizontalAlignment="Left" SelectionChanged="Selector_OnSelectionChanged" Margin="471,0,0,0">
+                    <ComboBox.Background>
+                        <ImageBrush ImageSource="https://cdn-icons-png.flaticon.com/512/130/130898.png"/>
+                    </ComboBox.Background>
+                    <ComboBox.OpacityMask>
+                        <ImageBrush ImageSource="https://cdn-icons-png.flaticon.com/512/130/130898.png" TileMode="Tile"/>
+                    </ComboBox.OpacityMask>
+                    <ComboBox.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Foreground>
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="TitleRb">Name</RadioButton>
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="YearRb">Year</RadioButton>
                     <RadioButton GroupName="Sort" Checked="radioButton_Checked" Name="RatingRb">Rating</RadioButton>
@@ -160,15 +179,24 @@
             <Grid Margin="10" MinWidth="600" MinHeight="430">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" /> <!-- Title -->
-                    <RowDefinition Height="1*" /> <!-- RPCS3 -->
-                    <RowDefinition Height="1*" /> <!-- Xenia -->
-                    <RowDefinition Height="1*" /> <!-- PPSSPP -->
-                    <RowDefinition Height="1*" /> <!-- PCSX2 -->
-                    <RowDefinition Height="1*" /> <!-- DuckStation -->
-                    <RowDefinition Height="1*" /> <!-- SNES9x -->
-                    <RowDefinition Height="1*" /> <!-- XEMU -->
-                    <RowDefinition Height="2*" /> <!-- Progress bar -->
+                    <RowDefinition Height="1*" />
+                    <!-- Title -->
+                    <RowDefinition Height="1*" />
+                    <!-- RPCS3 -->
+                    <RowDefinition Height="1*" />
+                    <!-- Xenia -->
+                    <RowDefinition Height="1*" />
+                    <!-- PPSSPP -->
+                    <RowDefinition Height="1*" />
+                    <!-- PCSX2 -->
+                    <RowDefinition Height="1*" />
+                    <!-- DuckStation -->
+                    <RowDefinition Height="1*" />
+                    <!-- SNES9x -->
+                    <RowDefinition Height="1*" />
+                    <!-- XEMU -->
+                    <RowDefinition Height="2*" />
+                    <!-- Progress bar -->
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Emulator Management" FontSize="24" HorizontalAlignment="Center"
@@ -198,7 +226,7 @@
                           VerticalAlignment="Center" Grid.Row="5" />
                 <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="DownloadDuckStationBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
                 <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="RunDuckStationBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-                          
+
                 <TextBlock Text="SNES9x" FontSize="20" HorizontalAlignment="Left"
                           VerticalAlignment="Center" Grid.Row="6" />
                 <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="DownloadSNES9xBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
