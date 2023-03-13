@@ -1,5 +1,4 @@
 ﻿using API;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,12 +10,21 @@ using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using static API.Api;
 using static Odyssey.Find;
+using Button = System.Windows.Controls.Button;
+using CheckBox = System.Windows.Controls.CheckBox;
+using ComboBox = System.Windows.Controls.ComboBox;
+using MessageBox = System.Windows.Forms.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using RadioButton = System.Windows.Controls.RadioButton;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace Odyssey
 {
@@ -125,7 +133,8 @@ namespace Odyssey
                 colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
                 textColour = Colors.White;
 
-                logoImage.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoDark.png"));
+                logoImage.Source =
+                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoDark.png"));
             }
             else
             {
@@ -138,7 +147,8 @@ namespace Odyssey
                 colour = (Color)ColorConverter.ConvertFromString("#b06050");
                 textColour = Colors.Black;
 
-                logoImage.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoLight.png"));
+                logoImage.Source =
+                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoLight.png"));
             }
 
             MainGrid.Background = myLinearGradientBrush;
@@ -150,7 +160,7 @@ namespace Odyssey
                 if (x is not StackPanel sp) continue;
                 foreach (var y in sp.Children)
                 {
-                    if(y is not Button b) continue;
+                    if (y is not System.Windows.Controls.Button b) continue;
                     b.Background = new SolidColorBrush(colour);
                 }
             }
@@ -364,6 +374,7 @@ namespace Odyssey
             LoadSettings();
         }
 
+        //TODO: Replace the individual double click events for paths to a single event which uses "sender" to find the TextBox
         // Generic function to open a file picker and store the result in a text box
         private void FilePicker(TextBox? t)
         {
@@ -373,11 +384,20 @@ namespace Odyssey
             if (t != null) t.Text = ofd.FileName;
         }
 
+        private void FolderPicker(TextBox? t)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = "C:\\";
+            var result = fbd.ShowDialog();
+            if (result.ToString() == "Cancel") return;
+            if (t != null) t.Text = fbd.SelectedPath;
+        }
+
         // Open a folder picker, store the resulting path in the text box
         private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // TODO: Replace this with a folder picker
-            FilePicker(pathGameFolderTxtBx);
+            FolderPicker(pathGameFolderTxtBx);
         }
 
 
@@ -463,7 +483,7 @@ namespace Odyssey
                 img.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/star.png"));
                 img.Width = 20;
                 img.Height = 20;
-                img.SetValue(Grid.ColumnProperty,i);
+                img.SetValue(Grid.ColumnProperty, i);
                 DetailsGameRatingBlk.Children.Add(img);
                 SelectedGame.Rating--;
                 i++;
