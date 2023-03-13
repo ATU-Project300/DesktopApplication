@@ -783,8 +783,9 @@ namespace Odyssey
 
         // Downloads an emulator, extracts it and then adds the emulator path to settings
         // TODO: Split into multiple functions, this is a mess
-        public void InstallEmulator(Emulator emu, string output)
+        public void InstallEmulator(Emulator? emu, string? output)
         {
+            if (emu == null || output == null)  return;
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
