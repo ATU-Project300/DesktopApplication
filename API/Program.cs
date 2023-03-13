@@ -5,7 +5,7 @@ namespace API
     public class Api
     {
         // TODO: Replace this once the API is hosted somewhere else
-        public static string Url = "http://45.152.209.166:3000/";
+        public static string Url = "https://api-production-4035.up.railway.app/";
 
         public static void Main()
         {
