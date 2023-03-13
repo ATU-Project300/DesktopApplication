@@ -1,5 +1,3 @@
-; Copy this file to the "\DesktopApplication\WpfApp1\bin\Release\net7.0-windows"
-; folder and run
 
 [Setup]
 AppName=Odyssey
