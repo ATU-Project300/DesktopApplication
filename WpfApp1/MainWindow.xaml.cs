@@ -115,6 +115,10 @@ namespace Odyssey
             Color colour = new Color();
             Color textColour = new Color();
             Image logoImage = (Image)FindName("LogoImage");
+            ImageBrush sortBrushO = (ImageBrush)FindName("SortImageBrushO");
+            ImageBrush sortBrushB = (ImageBrush)FindName("SortImageBrushB");
+            ImageBrush filterBrushO = (ImageBrush)FindName("FilterImageBrushO");
+            ImageBrush filterBrushB = (ImageBrush)FindName("FilterImageBrushB");
 
             LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
             {
@@ -133,9 +137,14 @@ namespace Odyssey
                 colour = (Color)ColorConverter.ConvertFromString("#222222");
                 textColour = Colors.White;
 
+                // TODO: Clean these up
                 // https://learn.microsoft.com/en-us/dotnet/desktop/wpf/app-development/pack-uris-in-wpf?redirectedfrom=MSDN&view=netframeworkdesktop-4.8
                 logoImage.Source =
-                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoDark.png"));
+                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Logo.png"));
+                sortBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Sort.png"));
+                sortBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Sort.png"));
+                filterBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Filter.png"));
+                filterBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Filter.png"));
             }
             else
             {
@@ -148,8 +157,13 @@ namespace Odyssey
                 colour = (Color)ColorConverter.ConvertFromString("#b06050");
                 textColour = Colors.Black;
 
+                // TODO: Clean these up
                 logoImage.Source =
-                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoLight.png"));
+                    new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/Light/Logo.png"));
+                sortBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Sort.png"));
+                sortBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Sort.png"));
+                filterBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Filter.png"));
+                filterBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Filter.png"));
             }
 
             MainGrid.Background = myLinearGradientBrush;
@@ -471,7 +485,7 @@ namespace Odyssey
             while (SelectedGame.Rating > 0)
             {
                 var img = new Image();
-                img.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/star.png"));
+                img.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/Star.png"));
                 img.Width = 20;
                 img.Height = 20;
                 img.SetValue(Grid.ColumnProperty, i);

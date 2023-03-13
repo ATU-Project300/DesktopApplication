@@ -115,13 +115,13 @@
                     <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <!-- Applying material design styling to this apparently makes the text box not work, please don't break it :) -->
-                <TextBox Name="SearchTxtBx" Width="400" MinHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
-                <ComboBox  Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" MinWidth="40" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" Foreground="Black">
+                <TextBox Name="SearchTxtBx" Width="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SearchTxtBx_OnTextChanged" Style="{StaticResource MaterialDesignTextBox}" Margin="20, 15,20,20" FontSize="16" Grid.Column="0"/>
+                <ComboBox  Grid.Row="0" Grid.Column="0" SelectionChanged="Selector_OnSelectionChanged" Width="30" Height="30" IsEditable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="1,1,60,1" Foreground="Black">
                     <ComboBox.OpacityMask>
-                        <ImageBrush ImageSource="https://www.seekpng.com/png/full/229-2291316_png-file-filter-icon-png.png" TileMode="None"/>
+                        <ImageBrush x:Name="FilterImageBrushO" ImageSource="/Resources/Light/Filter.png" TileMode="None"/>
                     </ComboBox.OpacityMask>
                     <ComboBox.Background>
-                        <ImageBrush ImageSource="https://www.seekpng.com/png/full/229-2291316_png-file-filter-icon-png.png" TileMode="FlipXY" Stretch="Fill"/>
+                        <ImageBrush x:Name="FilterImageBrushB" ImageSource="/Resources/Light/Filter.png" TileMode="FlipXY" Stretch="Fill"/>
                     </ComboBox.Background>
 
                     <!-- Emulator Filter -->
@@ -137,12 +137,12 @@
                         <ComboBox Name="ConsoleCbBx" Loaded="OccupyFilter" SelectionChanged="BigFilter" SelectedIndex="0"/>
                     </ComboBoxItem>
                 </ComboBox>
-                <ComboBox Grid.Column="0" MinWidth="40" HorizontalAlignment="Left" SelectionChanged="Selector_OnSelectionChanged" Margin="471,0,0,0">
+                <ComboBox Grid.Column="0" Width="30" Height="30" HorizontalAlignment="Left" SelectionChanged="Selector_OnSelectionChanged" Margin="470,1,1,1">
                     <ComboBox.Background>
-                        <ImageBrush ImageSource="https://cdn-icons-png.flaticon.com/512/130/130898.png"/>
+                        <ImageBrush x:Name="SortImageBrushB" ImageSource="/Resources/Light/Sort.png"/>
                     </ComboBox.Background>
                     <ComboBox.OpacityMask>
-                        <ImageBrush ImageSource="https://cdn-icons-png.flaticon.com/512/130/130898.png" TileMode="Tile"/>
+                        <ImageBrush x:Name="SortImageBrushO" ImageSource="/Resources/Light/Sort.png" TileMode="Tile"/>
                     </ComboBox.OpacityMask>
                     <ComboBox.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
