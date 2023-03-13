@@ -409,7 +409,7 @@ namespace Odyssey
             foreach (var x in MainGrid.Children)
             {
                 if (x is not TabPanel tabPanel) continue;
-                if (!tabPanel.Name.StartsWith(name))
+                if (name != null && !tabPanel.Name.StartsWith(name))
                     tabPanel.Visibility = Visibility.Collapsed;
                 else
                 {
@@ -486,6 +486,7 @@ namespace Odyssey
         private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
+            if(name == null) return;
 
             if (name.Contains("Download"))
             {
@@ -701,12 +702,10 @@ namespace Odyssey
 
             foreach (var game in MyGames)
             {
-                if (property != null)
-                {
-                    var a = game.GetType().GetProperty(property)?.GetValue(game);
-                    if (!list.Contains(a))
-                        list.Add(((string)a)!);
-                }
+                if (property == null) continue;
+                var a = game.GetType().GetProperty(property)?.GetValue(game);
+                if (!list.Contains(a))
+                    list.Add(((string)a)!);
             }
 
             // Sort the list alphabetically
@@ -786,6 +785,7 @@ namespace Odyssey
         public void InstallEmulator(Emulator? emu, string? output)
         {
             if (emu == null || output == null)  return;
+
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
@@ -804,22 +804,19 @@ namespace Odyssey
                     {
                         void Save(string extension)
                         {
-                            string settingName = "path" + emu.Name;
+                            var settingName = "path" + emu.Name;
 
-                            string path = FindFile(FindFolder(".", emu.Name), emu.Exectuable);
+                            var path = FindFile(FindFolder(".", emu.Name), emu.Exectuable);
 
+                            if (!path.EndsWith(".exe")) return;
+                            // Put the found executable path into settings
+                            Properties.Settings.Default[settingName] = path;
 
-                            if (path != null && path.EndsWith(".exe"))
-                            {
-                                // Put the found executable path into settings
-                                Properties.Settings.Default[settingName] = path;
+                            // Load each of the settings
+                            LoadSettings();
 
-                                // Load each of the settings
-                                LoadSettings();
-
-                                // Save the settings
-                                SaveSettings();
-                            }
+                            // Save the settings
+                            SaveSettings();
 
                         }
 
@@ -882,8 +879,9 @@ namespace Odyssey
 
         private void DarkModeQuickToggle(object sender, RoutedEventArgs e)
         {
-            Theming(darkModeChkBx.IsChecked.Value);
-            Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            var darkModeToggle = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Theming(darkModeToggle);
+            Properties.Settings.Default.DarkMode = darkModeToggle;
             Properties.Settings.Default.Save();
         }
     }
