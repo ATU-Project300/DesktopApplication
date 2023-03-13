@@ -29,13 +29,13 @@
         <Grid Grid.Column="0" Height="450" Name="LogoButtonsGrid" Background="#b06050">
             <Grid.RowDefinitions>
                 <!-- Logo goes here -->
-                <RowDefinition Height="2.6*" />
+                <RowDefinition Height="3*" />
                 <!-- Buttons go here -->
                 <RowDefinition Height="7*" />
             </Grid.RowDefinitions>
 
             <!-- Logo image -->
-            <Image Name="LogoImage" MinHeight="100" HorizontalAlignment="Center" Margin="0,5,0,2"
+            <Image Name="LogoImage" Height="110" HorizontalAlignment="Center" Margin="0,5,0,2"
                    Grid.Row="0" />
 
             <!-- Stack panel of buttons -->
