@@ -878,5 +878,12 @@ namespace Odyssey
                 return false;
             }
         }
+
+        private void DarkModeQuickToggle(object sender, RoutedEventArgs e)
+        {
+            Theming(darkModeChkBx.IsChecked.Value);
+            Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
+            Properties.Settings.Default.Save();
+        }
     }
 }

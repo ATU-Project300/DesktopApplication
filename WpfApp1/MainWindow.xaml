@@ -233,7 +233,7 @@
                 </Grid.RowDefinitions>
 
                 <CheckBox Name="darkModeChkBx" Content="Dark Mode" FontSize="20" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" Grid.Row="0" />
+                          VerticalAlignment="Center" Checked="DarkModeQuickToggle" Unchecked="DarkModeQuickToggle" Grid.Row="0" />
 
                 <TextBlock Name="RPCS3TxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
