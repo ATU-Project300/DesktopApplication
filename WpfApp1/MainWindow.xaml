@@ -348,6 +348,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="1" Name="DetailsGameTitleTxtBlk" Margin="5,30,5,5" FontSize="24" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYearTxtBlk" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <!-- TODO: Change this to Emulation rating -->
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Rating:</TextBlock>
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="60,5,5,5" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed" Name="DetailsUnrated">Not yet rated.</TextBlock>
                 <Grid Margin="0,0,100,5" Grid.Row="3" Grid.Column="1" Name="DetailsGameRatingBlk" Width="140">
