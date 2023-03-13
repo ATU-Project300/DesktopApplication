@@ -9,8 +9,6 @@
 
   <ItemGroup>
     <None Remove="icon.png" />
-    <None Remove="Images\light.png" />
-    <None Remove="Images\star.png" />
     <None Remove="Resources\LogoDark.png" />
     <None Remove="Resources\LogoLight.png" />
   </ItemGroup>
@@ -50,9 +48,6 @@
 
   <ItemGroup>
     <Resource Include="icon.png" />
-    <Resource Include="Images\light.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\LogoDark.png" />
     <Resource Include="Resources\LogoLight.png" />
     <Resource Include="Resources\star.png" />

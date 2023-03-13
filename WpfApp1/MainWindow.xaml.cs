@@ -106,6 +106,7 @@ namespace Odyssey
             // variables holding light and dark variants.
             Color colour = new Color();
             Color textColour = new Color();
+            Image logoImage = (Image)FindName("LogoImage");
 
             LinearGradientBrush myLinearGradientBrush = new LinearGradientBrush
             {
@@ -123,7 +124,8 @@ namespace Odyssey
 
                 colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
                 textColour = Colors.White;
-                LogoButtonsGrid.Background = new SolidColorBrush(colour);
+
+                logoImage.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoDark.png"));
             }
             else
             {
@@ -135,6 +137,8 @@ namespace Odyssey
 
                 colour = (Color)ColorConverter.ConvertFromString("#b06050");
                 textColour = Colors.Black;
+
+                logoImage.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoLight.png"));
             }
 
             MainGrid.Background = myLinearGradientBrush;
