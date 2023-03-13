@@ -11,8 +11,10 @@
 
   <ItemGroup>
     <None Remove="icon.png" />
+    <None Remove="Resources\Dark\Close.png" />
     <None Remove="Resources\Dark\Filter.png" />
     <None Remove="Resources\Dark\Sort.png" />
+    <None Remove="Resources\Light\Close.png" />
     <None Remove="Resources\Light\Filter.png" />
     <None Remove="Resources\Light\Sort.png" />
     <None Remove="Resources\LogoDark.png" />
@@ -63,9 +65,11 @@
 
   <ItemGroup>
     <Resource Include="icon.png" />
+    <Resource Include="Resources\Dark\Close.png" />
     <Resource Include="Resources\Dark\Filter.png" />
     <Resource Include="Resources\Dark\Logo.png" />
     <Resource Include="Resources\Dark\Sort.png" />
+    <Resource Include="Resources\Light\Close.png" />
     <Resource Include="Resources\Light\Filter.png" />
     <Resource Include="Resources\Light\Logo.png" />
     <Resource Include="Resources\Light\Sort.png" />

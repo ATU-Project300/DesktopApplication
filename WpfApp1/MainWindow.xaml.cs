@@ -115,6 +115,7 @@ namespace Odyssey
             Color colour = new Color();
             Color textColour = new Color();
             Image logoImage = (Image)FindName("LogoImage");
+            Image closeImage = (Image)FindName("GamesBtnReturn");
             ImageBrush sortBrushO = (ImageBrush)FindName("SortImageBrushO");
             ImageBrush sortBrushB = (ImageBrush)FindName("SortImageBrushB");
             ImageBrush filterBrushO = (ImageBrush)FindName("FilterImageBrushO");
@@ -145,6 +146,7 @@ namespace Odyssey
                 sortBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Sort.png"));
                 filterBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Filter.png"));
                 filterBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Filter.png"));
+                closeImage.Source = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Dark/Close.png"));
             }
             else
             {
@@ -164,6 +166,7 @@ namespace Odyssey
                 sortBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Sort.png"));
                 filterBrushO.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Filter.png"));
                 filterBrushB.ImageSource = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Filter.png"));
+                closeImage.Source = new BitmapImage(uriSource: new Uri("pack://application:,,,/odyssey;component/Resources/Light/Close.png"));
             }
 
             MainGrid.Background = myLinearGradientBrush;
