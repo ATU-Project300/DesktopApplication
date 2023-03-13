@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
 
             <!-- Logo image -->
-            <Image Source="images/light.png" Name="LogoImage" MinHeight="100" HorizontalAlignment="Center" Margin="0,5,0,2"
+            <Image Source="Resources/LogoLight.png" Name="LogoImage" MinHeight="100" HorizontalAlignment="Center" Margin="0,5,0,2"
                    Grid.Row="0" />
 
             <!-- Stack panel of buttons -->
@@ -330,7 +330,16 @@
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Released:</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Name="DetailsGameYearTxtBlk" Margin="80,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Rating:</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Name="DetailsGameRatingTxtBlk" Margin="60,6,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="60,5,5,5" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed" Name="DetailsUnrated">Not yet rated.</TextBlock>
+                <Grid Margin="0,0,100,5" Grid.Row="3" Grid.Column="1" Name="DetailsGameRatingBlk" Width="140">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
                 <TextBlock Grid.Row="4" Grid.Column="1" Margin="5" FontSize="16" TextWrapping="Wrap">Console:</TextBlock>
                 <TextBlock Grid.Row="4" Grid.Column="1" Name="DetailsGameConsoleTxtBlk" Margin="75,5,5,5" FontSize="16" TextWrapping="Wrap"></TextBlock>
                 <TextBlock Grid.Row="5" Grid.Column="1" Name="DetailsGameDescriptionTxtBlk" Margin="5" FontSize="12" TextWrapping="Wrap"></TextBlock>

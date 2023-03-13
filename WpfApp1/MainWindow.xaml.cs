@@ -264,7 +264,8 @@ namespace Odyssey
                     var emulatorName = t.Name.Remove(0, 4);
                     var emulator = MyEmulators.Find(x => x.Name == emulatorName);
 
-                    VerifySetting(t, !t.Name.Contains("GameFolder"), emulator?.Exectuable);
+                    if (emulator?.Exectuable != null)
+                        VerifySetting(t, !t.Name.Contains("GameFolder"), emulator.Exectuable);
                 }
             }
 
@@ -428,10 +429,42 @@ namespace Odyssey
             DetailsGameImage.Width = 250;
             DetailsGameTitleTxtBlk.Text = SelectedGame.Title;
             DetailsGameYearTxtBlk.Text = SelectedGame.Year.ToString();
-            DetailsGameRatingTxtBlk.Text = SelectedGame.Rating.ToString();
             DetailsGameConsoleTxtBlk.Text = SelectedGame.Console;
             DetailsGameDescriptionTxtBlk.Text = SelectedGame.Description;
             DetailsGamePlayButton.Content = $"Play {SelectedGame.Title} on {SelectedGame.Emulator}";
+
+            // Create a variable to access the grid here
+            Grid ratingGrid = (Grid)FindName("DetailsGameRatingBlk");
+
+            //Remove any stars already present in the grid
+            ratingGrid.Children.Clear();
+
+            // Show the unrated text if the game has no rating, else hide it
+            if (SelectedGame.Rating == 0)
+            {
+                // Show the text and return as we don't need to draw any stars
+                DetailsUnrated.SetValue(VisibilityProperty, Visibility.Visible);
+                return;
+            }
+            else
+            {
+                DetailsUnrated.SetValue(VisibilityProperty, Visibility.Collapsed);
+            }
+
+            // For the value of SelectedGame.Rating, draw that number of stars.png in the DetailsGameRatingImgBlk
+            int i = 1;
+            while (SelectedGame.Rating > 0)
+            {
+                var img = new Image();
+                img.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/star.png"));
+                img.Width = 20;
+                img.Height = 20;
+                img.SetValue(Grid.ColumnProperty,i);
+                DetailsGameRatingBlk.Children.Add(img);
+                SelectedGame.Rating--;
+                i++;
+            }
+
         }
 
         // Handles clicking any of the buttons in the Emulator Management panel
