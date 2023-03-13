@@ -133,6 +133,7 @@ namespace Odyssey
                 colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
                 textColour = Colors.White;
 
+                // https://learn.microsoft.com/en-us/dotnet/desktop/wpf/app-development/pack-uris-in-wpf?redirectedfrom=MSDN&view=netframeworkdesktop-4.8
                 logoImage.Source =
                     new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/LogoDark.png"));
             }
@@ -374,7 +375,6 @@ namespace Odyssey
             LoadSettings();
         }
 
-        //TODO: Replace the individual double click events for paths to a single event which uses "sender" to find the TextBox
         // Generic function to open a file picker and store the result in a text box
         private void FilePicker(TextBox? t)
         {
@@ -392,15 +392,6 @@ namespace Odyssey
             if (result.ToString() == "Cancel") return;
             if (t != null) t.Text = fbd.SelectedPath;
         }
-
-        // Open a folder picker, store the resulting path in the text box
-        private void GameFolderPath_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // TODO: Replace this with a folder picker
-            FolderPicker(pathGameFolderTxtBx);
-        }
-
-
 
         // Hides all other panels which aren't the one associated with the clicked button
         private void HideOtherPanels(object sender, RoutedEventArgs e)
@@ -655,9 +646,11 @@ namespace Odyssey
         }
 
         // TODO: Better name for this (could remove and sacrifice the generic FilePicker function)
-        private void SummonFilePicker(object sender, MouseButtonEventArgs e)
+        private void SummonPicker(object sender, MouseButtonEventArgs e)
         {
-            FilePicker(sender as TextBox);
+            var x = sender as TextBox;
+            if(x.Name.Contains("Folder")) FolderPicker(x);
+            else FilePicker(x);
         }
 
         // Animated scaling of image when mouse is over it

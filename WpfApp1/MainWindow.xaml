@@ -237,49 +237,49 @@
 
                 <TextBlock Name="RPCS3TxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="RPCS3 File Path:" FontSize="20" Grid.Row="1" />
-                <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathRPCS3TxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="1" />
 
                 <TextBlock Name="XeniaTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="Xenia File Path:" FontSize="20" Grid.Row="2" />
-                <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathXeniaTxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="2" />
 
                 <TextBlock Name="PPSSPPTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PPSSPP File Path:" FontSize="20" Grid.Row="3" />
-                <TextBox x:Name="pathPPSSPPTxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathPPSSPPTxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="3" />
 
                 <TextBlock Name="PCSX2TxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="PCSX2 File Path:" FontSize="20" Grid.Row="4" />
-                <TextBox x:Name="pathPCSX2TxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathPCSX2TxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="4" />
 
                 <TextBlock Name="DuckStationTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="DuckStation File Path:" FontSize="20" Grid.Row="5" />
-                <TextBox x:Name="pathDuckStationTxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathDuckStationTxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="5" />
 
                 <TextBlock Name="SNES9xTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="SNES9x File Path:" FontSize="20" Grid.Row="6" />
-                <TextBox x:Name="pathSNES9xTxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathSNES9xTxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="6" />
 
                 <TextBlock Name="XEMUTxtBlk" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="XEMU File Path:" FontSize="20" Grid.Row="7" />
-                <TextBox x:Name="pathXEMUTxtBx" MouseDoubleClick="SummonFilePicker"
+                <TextBox x:Name="pathXEMUTxtBx" MouseDoubleClick="SummonPicker"
                          TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="25"
                          Width="380" Grid.Row="7" />
 
                 <TextBlock Name="GameFolderTxtBlk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" MinWidth="364" />
-                <TextBox x:Name="pathGameFolderTxtBx" MouseDoubleClick="GameFolderPath_OnMouseDoubleClick" TextWrapping="Wrap" MinWidth="380" HorizontalAlignment="Right"
+                <TextBox x:Name="pathGameFolderTxtBx" MouseDoubleClick="SummonPicker" TextWrapping="Wrap" MinWidth="380" HorizontalAlignment="Right"
                          VerticalAlignment="Center" MinHeight="25" Grid.Row="8" />
 
                 <Button Name="ApplyBtn" Content="Apply Changes" HorizontalAlignment="Center" Click="ApplyBtn_Click"
