@@ -128,9 +128,9 @@ namespace Odyssey
                 myLinearGradientBrush.GradientStops.Add(
                     new GradientStop(Colors.Black, 0.1));
                 myLinearGradientBrush.GradientStops.Add(
-                    new GradientStop(Colors.Gray, 2.5));
+                    new GradientStop(Colors.White, 8.5));
 
-                colour = (Color)ColorConverter.ConvertFromString("#5A5A5A");
+                colour = (Color)ColorConverter.ConvertFromString("#222222");
                 textColour = Colors.White;
 
                 // https://learn.microsoft.com/en-us/dotnet/desktop/wpf/app-development/pack-uris-in-wpf?redirectedfrom=MSDN&view=netframeworkdesktop-4.8
