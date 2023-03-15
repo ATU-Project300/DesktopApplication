@@ -187,17 +187,22 @@
         // Using other methods, construct a launchCommand to be ran by Process.Start
         private void StartGame(Game game)
         {
-            bool pickEmulatorFailed = false, findGameFailed = false;
+            bool pickEmulatorFailed = false, findGameFailed = false, verifyPathSettingFailed = false;
             string msg1 = "Emulator valid.", msg2 = "Game file present";
             var lGame = "Invalid";
 
-            // If PickEmulator fails, return
             string lEmulator = PickEmulator(game); // Prevents calling the method twice
 
             if (lEmulator == "Invalid")
                 pickEmulatorFailed = true;
+            
+            if (VerifySetting(pathGameFolderTxtBx, false))
+                    lGame = FindGame(game); // Prevents calling the method twice
             else
-                lGame = FindGame(game); // Prevents calling the method twice
+            {
+                verifyPathSettingFailed = true;
+                lGame = "";
+            }
 
             if (lGame == "Invalid")
                 findGameFailed = true;
@@ -213,12 +218,15 @@
 
             if (pickEmulatorFailed || findGameFailed)
             {
+                string errorMessage = "";
+                if(verifyPathSettingFailed)
+                    errorMessage += "ERROR 1: Game folder path is invalid. Please check your settings.\n";
                 if (findGameFailed)
-                    MessageBox.Show($"{game.Title} file not found :( \nIs the ROM in your game folder?", "Error");
+                    errorMessage += $"ERROR 2: ROM/ISO file for {game.Title} was not found, is it in your game folder?\n";
                 if (pickEmulatorFailed)
-                    MessageBox.Show(
-                        $"Emulator {game.Emulator} not found :( \nMake sure it is installed and added in settings",
-                        "Error");
+                    errorMessage += $"ERROR 3: Emulator {game.Emulator} was not found, you can download it from the Emulators panel.";
+
+                MessageBox.Show(errorMessage);
 
                 Trace.WriteLine($"[ERROR]: {msg1} {msg2}");
             }
@@ -276,7 +284,7 @@
         }
 
         // Generic method to allow for simple verification of individual settings
-        private static void VerifySetting(TextBox t, bool executable = false, string executableName = "")
+        private static bool VerifySetting(TextBox t, bool executable = false, string executableName = "")
         {
             // Colours for the text boxes for case of error or no error
             Color errorColour = Color.FromArgb(80, 255, 0, 0);
@@ -305,6 +313,7 @@
             // highlight the textbox with the error colour specific at the beginning of this method
             // else apply the noColour colour (this exists to undo errorColour)
             t.Background = !TxtBxCheck() ? new SolidColorBrush(errorColour) : new SolidColorBrush(noColour);
+            return TxtBxCheck();
         }
 
         // TODO: Make this and VerifySettings not overlap so much
