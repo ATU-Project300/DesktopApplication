@@ -455,7 +455,9 @@ namespace Odyssey
         private void GenerateDetailsView(Game game)
         {
             if (game == null) return;
+            SelectedGame = null;
             SelectedGame = game;
+
             if (SelectedGame.Image != null) DetailsGameImage.Source = new BitmapImage(new Uri(SelectedGame.Image));
             Trace.WriteLine($"[INFO]: Rating {SelectedGame.Rating}");
             DetailsGameImage.Width = 250;
@@ -472,7 +474,7 @@ namespace Odyssey
             ratingGrid.Children.Clear();
 
             // Show the unrated text if the game has no rating, else hide it
-            if (SelectedGame.Rating == 0)
+            if (game.Rating == 0)
             {
                 // Show the text and return as we don't need to draw any stars
                 DetailsUnrated.SetValue(VisibilityProperty, Visibility.Visible);
@@ -483,9 +485,10 @@ namespace Odyssey
                 DetailsUnrated.SetValue(VisibilityProperty, Visibility.Collapsed);
             }
 
-            // For the value of SelectedGame.Rating, draw that number of stars.png in the DetailsGameRatingImgBlk
-            int i = 1;
-            while (SelectedGame.Rating > 0)
+            // For the value of game.Rating, draw that number of stars.png in the DetailsGameRatingImgBlk
+            var i = 1;
+            var j = game.Rating;
+            while (j > 0)
             {
                 var img = new Image();
                 img.Source = new BitmapImage(new Uri("pack://application:,,,/odyssey;component/Resources/Star.png"));
@@ -493,7 +496,7 @@ namespace Odyssey
                 img.Height = 20;
                 img.SetValue(Grid.ColumnProperty, i);
                 DetailsGameRatingBlk.Children.Add(img);
-                SelectedGame.Rating--;
+                j--;
                 i++;
             }
 
