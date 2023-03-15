@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Odyssey
+﻿namespace Odyssey
 {
     public class GameViewModel
     {

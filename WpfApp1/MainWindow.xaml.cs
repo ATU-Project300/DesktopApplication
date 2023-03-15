@@ -1,32 +1,4 @@
-﻿using API;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using static API.Api;
-using static Odyssey.Find;
-using Button = System.Windows.Controls.Button;
-using CheckBox = System.Windows.Controls.CheckBox;
-using ComboBox = System.Windows.Controls.ComboBox;
-using MessageBox = System.Windows.Forms.MessageBox;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using RadioButton = System.Windows.Controls.RadioButton;
-using TextBox = System.Windows.Controls.TextBox;
-
-namespace Odyssey
+﻿namespace Odyssey
 {
     public partial class MainWindow
     {
@@ -530,16 +502,42 @@ namespace Odyssey
         // Handles clicking any of the buttons in the Emulator Management panel
         private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
+            // Example of name: "RunXenia"
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
             if (name == null) return;
 
             if (name.Contains("Download"))
             {
+                name = name.Split("Download", 2)[1];
                 DownloadEmulator(name);
             }
             else if (name.Contains("Run"))
             {
+                name = name.Split("Run", 2)[1];
                 EmulatorManagementRun(name);
+            }
+            else if (name.Contains("Delete"))
+            {
+                name = name.Split("Delete", 2)[1];
+                DeleteEmulator(name);
+            }
+        }
+
+        // Delete and emulator by name
+        // TODO: Investigate SNES9x "Valid.Ext" file causing an exception
+        private void DeleteEmulator(string? name)
+        {
+            if(name == null) return;
+            var folder = FindFolder(".", name);
+            if (!Path.Exists(folder)) return;
+            try
+            {
+                // rm -r name
+                Directory.Delete(folder, true);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"[ERROR]: {e}");
             }
         }
 
@@ -547,11 +545,6 @@ namespace Odyssey
         // TODO: Make this take an Emulator as a parameter instead of a string
         private void DownloadEmulator(string name)
         {
-            if (name.Contains("Download"))
-            {
-                name = name.Split("Download", 2)[1];
-            }
-
             foreach (var emu in MyEmulators.Where(emu => emu.Name == name))
             {
                 var output = emu.Name;
@@ -568,14 +561,12 @@ namespace Odyssey
 
                 InstallEmulator(emu, output);
             }
-
         }
 
         // Run an emulator from the Emulator Management panel
         // TODO: Make this take an Emulator as a parameter instead of a string
         private void EmulatorManagementRun(string name)
         {
-            name = name.Split("Run", 2)[1];
             var setting = "path" + name;
 
             // Verify the setting exists

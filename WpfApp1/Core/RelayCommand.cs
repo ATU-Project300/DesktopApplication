@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-
-namespace Odyssey.Core
+﻿namespace Odyssey.Core
 {
     class RelayCommand : ICommand
     {
