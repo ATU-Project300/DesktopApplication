@@ -335,6 +335,18 @@ namespace Odyssey
             t.Background = !TxtBxCheck() ? new SolidColorBrush(errorColour) : new SolidColorBrush(noColour);
         }
 
+        private void VerifySettingOnChange(object? sender, RoutedEventArgs e)
+        {
+            if(sender == null) return;
+            var t = sender as TextBox;
+            var emulatorName = t.Name.Remove(0, 4);
+            var emulator = MyEmulators.Find(x => x.Name == emulatorName);
+            
+            if (emulator?.Exectuable != null)
+                VerifySetting(t, !t.Name.Contains("GameFolder"), emulator.Exectuable);
+
+        }
+
         // Save settings
         private void SaveSettings()
         {
@@ -383,9 +395,7 @@ namespace Odyssey
                     }
             }
         }
-
-        // Settings Apply Button
-        private void ApplyBtn_Click(object sender, RoutedEventArgs e)
+        private void ApplySettings()
         {
             VerifySettings();
             SaveSettings();
@@ -435,6 +445,10 @@ namespace Odyssey
                     // as the user opens the settings page
                     if (tabPanel.Name == "Settings")
                         VerifySettings();
+                    else
+                    {
+                        ApplySettings();
+                    }
                 }
             }
         }
