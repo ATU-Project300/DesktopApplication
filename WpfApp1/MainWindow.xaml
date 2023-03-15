@@ -298,7 +298,7 @@
 
                 <TextBlock Name="GameFolderTxtBlk" TextWrapping="Wrap" Text="Game Folder Path:" FontSize="20"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" MinWidth="364" />
-                <TextBox x:Name="pathGameFolderTxtBx" MouseDoubleClick="SummonPicker" TextWrapping="Wrap" MinWidth="380" HorizontalAlignment="Right"
+                <TextBox x:Name="pathGameFolderTxtBx" MouseDoubleClick="SummonPicker" TextWrapping="Wrap" MinWidth="380" HorizontalAlignment="Right" TextChanged="VerifySettingOnChange"
                          VerticalAlignment="Center" MinHeight="25" Grid.Row="8" />
             </Grid>
         </TabPanel>

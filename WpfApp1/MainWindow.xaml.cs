@@ -296,8 +296,7 @@ namespace Odyssey
                     var emulatorName = t.Name.Remove(0, 4);
                     var emulator = MyEmulators.Find(x => x.Name == emulatorName);
 
-                    if (emulator?.Exectuable != null)
-                        VerifySetting(t, !t.Name.Contains("GameFolder"), emulator.Exectuable);
+                    VerifySetting(t, !t.Name.Contains("GameFolder"), emulator?.Exectuable);
                 }
             }
 
@@ -315,7 +314,8 @@ namespace Odyssey
             bool TxtBxCheck()
             {
                 // Some checks
-                if (t.Text.Length < 4) return false; // No actual path should be less characters than this
+                if (t.Text.Length < 2) return false; // No actual path should be less characters than this (C:\)
+                if (!Path.Exists(t.Text)) return false; // If the path doesn't exist
                 switch (executable)
                 {
                     case true when !t.Text.EndsWith(".exe"):
@@ -335,15 +335,24 @@ namespace Odyssey
             t.Background = !TxtBxCheck() ? new SolidColorBrush(errorColour) : new SolidColorBrush(noColour);
         }
 
+        // TODO: Make this and VerifySettings not overlap so much
+        // Verify a single setting when it is changed
         private void VerifySettingOnChange(object? sender, RoutedEventArgs e)
         {
-            if(sender == null) return;
+            if (sender == null) return;
             var t = sender as TextBox;
-            var emulatorName = t.Name.Remove(0, 4);
-            var emulator = MyEmulators.Find(x => x.Name == emulatorName);
-            
-            if (emulator?.Exectuable != null)
-                VerifySetting(t, !t.Name.Contains("GameFolder"), emulator.Exectuable);
+
+            if (t.Name.Contains("GameFolder"))
+                VerifySetting(t, false);
+            else
+            {
+                var emulatorName = t.Name.Remove(0, 4);
+                var emulator = MyEmulators.Find(x => x.Name == emulatorName);
+
+                if (emulator?.Exectuable != null)
+                    VerifySetting(t, !t.Name.Contains("GameFolder"), emulator.Exectuable);
+            }
+
 
         }
 
@@ -441,8 +450,10 @@ namespace Odyssey
                 else
                 {
                     tabPanel.Visibility = Visibility.Visible;
+                    // TODO: Better solution for this
                     // This shouldn't really be here but it allows the user to see if the settings are valid
                     // as the user opens the settings page
+                    // If they are switching to a page other than the settings page, apply the settings (workaround to remove apply button)
                     if (tabPanel.Name == "Settings")
                         VerifySettings();
                     else
@@ -520,7 +531,7 @@ namespace Odyssey
         private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
-            if(name == null) return;
+            if (name == null) return;
 
             if (name.Contains("Download"))
             {
@@ -684,7 +695,7 @@ namespace Odyssey
         private void SummonPicker(object sender, MouseButtonEventArgs e)
         {
             var x = sender as TextBox;
-            if(x.Name.Contains("Folder")) FolderPicker(x);
+            if (x.Name.Contains("Folder")) FolderPicker(x);
             else FilePicker(x);
         }
 
@@ -818,7 +829,7 @@ namespace Odyssey
         // TODO: Split into multiple functions, this is a mess
         public void InstallEmulator(Emulator? emu, string? output)
         {
-            if (emu == null || output == null)  return;
+            if (emu == null || output == null) return;
 
             using (WebClient wc = new WebClient())
             {
