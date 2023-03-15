@@ -9,6 +9,8 @@
 
         public List<Emulator> MyEmulators = new();
 
+        public static string OdysseyPath;
+
         // The current game selected for DetailsView
         // Variable exists so that we can access it from other methods
         public Game? SelectedGame;
@@ -27,6 +29,18 @@
             InitializeComponent();
             LoadSettings();
             InitializeApiData();
+            CreateOdysseyFolder();
+            Trace.WriteLine(OdysseyPath + "\\");
+        }
+
+        // Create a folder named Odyssey in APPDATA to store emulators
+        private void CreateOdysseyFolder()
+        {
+            OdysseyPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Odyssey";
+            if (!Directory.Exists(OdysseyPath))
+            {
+                Directory.CreateDirectory(OdysseyPath);
+            }
         }
 
 
@@ -537,12 +551,15 @@
         private void DeleteEmulator(string? name)
         {
             if(name == null) return;
-            var folder = FindFolder(".", name);
+            var folder = FindFolder(OdysseyPath, name);
+            var file = FindFile(OdysseyPath, name);
             if (!Path.Exists(folder)) return;
             try
             {
-                // rm -r name
+                // Recursively delete the emulators directory
                 Directory.Delete(folder, true);
+                // Delete any file that matches the emulator title (Like the archives)
+                File.Delete(file);
             }
             catch (Exception e)
             {
@@ -565,8 +582,8 @@
                 else if (emu.Uri.Contains(".rar"))
                     output += ".rar";
 
-                if (Path.Exists(output))
-                    File.Delete(output);
+                if (Path.Exists(OdysseyPath + "\\" + output))
+                    File.Delete(OdysseyPath + "\\" + output);
 
                 InstallEmulator(emu, output);
             }
@@ -830,11 +847,12 @@
         public void InstallEmulator(Emulator? emu, string? output)
         {
             if (emu == null || output == null) return;
+            var outputPath = OdysseyPath + "\\" + output;
 
             using (WebClient wc = new WebClient())
             {
                 //Download from URL to location
-                wc.DownloadFileAsync(new Uri(emu.Uri), output);
+                wc.DownloadFileAsync(new Uri(emu.Uri), outputPath);
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(WcDownloadProgressChanged);
 
                 // For each update in the downloads progress, do this
@@ -851,7 +869,7 @@
                         {
                             var settingName = "path" + emu.Name;
 
-                            var path = FindFile(FindFolder(".", emu.Name), emu.Exectuable);
+                            var path = FindFile(FindFolder(OdysseyPath, emu.Name), emu.Exectuable);
 
                             if (!path.EndsWith(".exe")) return;
                             // Put the found executable path into settings
@@ -869,7 +887,7 @@
                         Trace.WriteLine($"[INFO]: {output} downloaded from {emu.Uri}");
 
                         if (output.EndsWith(".7z"))
-                            if (ExtractArchive(output, output.Split(".7z", 2)[0]))
+                            if (ExtractArchive(outputPath, OdysseyPath + "\\" + output.Split(".7z", 2)[0]))
                             {
                                 Trace.WriteLine("[INFO]: Adding to settings");
                                 Save(".7z");
@@ -877,7 +895,7 @@
 
                         if (output.EndsWith(".zip"))
                         {
-                            if (ExtractArchive(output, output.Split(".zip", 2)[0]))
+                            if (ExtractArchive(outputPath, OdysseyPath + "\\" + output.Split(".zip", 2)[0]))
                             {
                                 Trace.WriteLine("[INFO]: Adding to settings");
                                 Save(".zip");
@@ -900,7 +918,7 @@
             // Add edge case for pcsx2 having a folder in the zip already
             if (sourceArchive.ToLower().Contains("pcsx2"))
             {
-                destination = ".";
+                destination = OdysseyPath + "\\";
             }
 
             string zPath = "7za.exe"; //add to proj and set CopyToOuputDir

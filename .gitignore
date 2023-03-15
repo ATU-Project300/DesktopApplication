@@ -409,3 +409,4 @@ WpfApp1/bin/Debug/net7.0-windows/Odyssey.dll.config
 WpfApp1/bin/Debug/net7.0-windows/Odyssey.exe
 WpfApp1/bin/Debug/net7.0-windows/Odyssey.pdb
 *.swp
+mysetup.exe
