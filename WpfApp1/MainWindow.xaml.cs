@@ -3,12 +3,14 @@
     public partial class MainWindow
     {
         // TODO: Consistent variable and function naming (excluding cases as necessary)
+        // TODO: Better implementation of using the %APPDATA% folder
 
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
 
         public List<Emulator> MyEmulators = new();
 
+        // Contains the path to the Odyssey folder in %APPDATA%
         public static string OdysseyPath;
 
         // The current game selected for DetailsView
@@ -30,10 +32,9 @@
             LoadSettings();
             InitializeApiData();
             CreateOdysseyFolder();
-            Trace.WriteLine(OdysseyPath + "\\");
         }
 
-        // Create a folder named Odyssey in APPDATA to store emulators
+        // Create a folder named Odyssey in %APPDATA% to store emulators
         private void CreateOdysseyFolder()
         {
             OdysseyPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Odyssey";
