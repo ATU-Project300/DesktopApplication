@@ -57,8 +57,7 @@
             Ready = true;
         }
 
-        // Occupy the local list var "myGames" with the games
-        // such that they are individually addressable (!!!)
+        // Occupy the local list var "MyGames" with the games from the API
         // This is only called once
         // TODO: More efficient way of doing this?
         private void OccupyListVarGames(List<GamesList> list)
@@ -78,6 +77,7 @@
             }
         }
 
+        // Same as above but for emulators
         private void OccupyListVarEmulators(List<EmulatorsList> list)
         {
             foreach (var x in list)
@@ -160,6 +160,7 @@
             LogoButtonsGrid.Background = new SolidColorBrush(colour);
 
             // For each of the buttons on the left side of the window, change their colour
+            // TODO: Improve variable naming here
             foreach (var x in LogoButtonsGrid.Children)
             {
                 if (x is not StackPanel sp) continue;
@@ -270,7 +271,7 @@
         private string FindGame(Game game)
         {
             // RPCS3 takes the folder as the game path, while the other emulators take the file
-            // TODO: Find a different way about this such that we aren't hard coding the emulator name
+            // TODO: Find a different way about this such that we aren't hard coding the emulator name (Maybe through a property of the emulator class?)
             if (game.Emulator == "RPCS3")
                 return FindFolder(pathGameFolderTxtBx.Text, game.Title);
 
@@ -549,6 +550,7 @@
 
         // Delete and emulator by name
         // TODO: Investigate SNES9x "Valid.Ext" file causing an exception
+        // TODO: Make this take an Emulator as a parameter instead of a string
         private void DeleteEmulator(string? name)
         {
             if(name == null) return;
