@@ -6,7 +6,7 @@ A Windows desktop application to help find the right emulator for your games.
 
 ## Screenshots
 
-![Application as of March 1st 2023](./media/13.03.23.png)
+![Application as of March 15th 2023](./media/15.03.23.png)
 
 ## For Users
 
