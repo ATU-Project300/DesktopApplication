@@ -90,9 +90,6 @@
         <!--
             NOTE: All TabPanels *should* be in `Grid.Column="1"` such that they all take the same positioning.
             In some cases, you may need to specify the dimensions of the main item under the tab panel.
-
-            Example: The "ScrollViewer" for the "Games" panel needed to have its width set to 600 such that it would
-            present properly before the games were loaded.
         -->
 
         <!-- "Games" panel -->
@@ -170,72 +167,13 @@
             <Grid Margin="10" MinWidth="600" MinHeight="430">
                 <!-- Add a row for each setting (or pair of elements for setting) -->
                 <Grid.RowDefinitions>
-                    <!-- Title -->
-                    <RowDefinition Height="1*" />
-                    <!-- RPCS3 -->
-                    <RowDefinition Height="1*" />
-                    <!-- Xenia -->
-                    <RowDefinition Height="1*" />
-                    <!-- PPSSPP -->
-                    <RowDefinition Height="1*" />
-                    <!-- PCSX2 -->
-                    <RowDefinition Height="1*" />
-                    <!-- DuckStation -->
-                    <RowDefinition Height="1*" />
-                    <!-- SNES9x -->
-                    <RowDefinition Height="1*" />
-                    <!-- XEMU -->
-                    <RowDefinition Height="1*" />
-                    <!-- Progress bar -->
-                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Emulator Management" FontSize="24" HorizontalAlignment="Center"
                           VerticalAlignment="Center" Grid.Row="0" />
 
-                <TextBlock Text="RPCS3" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="1" />
-                <Button Grid.Row="1" Click="EmulatorManagementBtn_Click" Name="DeleteRPCS3Btn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="1" Click="EmulatorManagementBtn_Click" Name="DownloadRPCS3Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="1" Click="EmulatorManagementBtn_Click" Name="RunRPCS3Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="Xenia" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="2" />
-                <Button Grid.Row="2" Click="EmulatorManagementBtn_Click" Name="DeleteXeniaBtn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="2" Click="EmulatorManagementBtn_Click" Name="DownloadXeniaBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="2" Click="EmulatorManagementBtn_Click" Name="RunXeniaBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="PPSSPP" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="3" />
-                <Button Grid.Row="3" Click="EmulatorManagementBtn_Click" Name="DeletePPSSPPBtn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="3" Click="EmulatorManagementBtn_Click" Name="DownloadPPSSPPBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="3" Click="EmulatorManagementBtn_Click" Name="RunPPSSPPBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="PCSX2" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="4" />
-                <Button Grid.Row="4" Click="EmulatorManagementBtn_Click" Name="DeletePCSX2Btn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="4" Click="EmulatorManagementBtn_Click" Name="DownloadPCSX2Btn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="4" Click="EmulatorManagementBtn_Click" Name="RunPCSX2Btn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="DuckStation" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="5" />
-                <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="DeleteDuckStationBtn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="DownloadDuckStationBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="5" Click="EmulatorManagementBtn_Click" Name="RunDuckStationBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="SNES9x" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="6" />
-                <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="DeleteSNES9xBtn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="DownloadSNES9xBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="6" Click="EmulatorManagementBtn_Click" Name="RunSNES9xBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <TextBlock Text="XEMU" FontSize="20" HorizontalAlignment="Left"
-                          VerticalAlignment="Center" Grid.Row="7" />
-                <Button Grid.Row="7" Click="EmulatorManagementBtn_Click" Name="DeleteXEMUBtn" Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,208,2" ></Button>
-                <Button Grid.Row="7" Click="EmulatorManagementBtn_Click" Name="DownloadXEMUBtn" Content="Download" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,100,2" ></Button>
-                <Button Grid.Row="7" Click="EmulatorManagementBtn_Click" Name="RunXEMUBtn" Content="Run" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,30,2" ></Button>
-
-                <ProgressBar Grid.Row="8" Width="520" Height="23" Margin="20,2,2,2" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DownloadProgressBar"></ProgressBar>
+                <ProgressBar Width="520" Height="23" Margin="20,2,2,2" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DownloadProgressBar"></ProgressBar>
 
             </Grid>
         </TabPanel>

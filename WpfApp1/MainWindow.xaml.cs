@@ -1,4 +1,5 @@
-﻿using HorizontalAlignment = System.Windows.HorizontalAlignment;
+﻿using System.Diagnostics.CodeAnalysis;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
 namespace Odyssey
 {
@@ -95,9 +96,10 @@ namespace Odyssey
             }
 
             // TODO: These shouldn't be here
-            // When the Emulators list is full, generate the settings panel and set theming again
+            // When the Emulators list is full, generate the settings and emulators panels and set theming again
             // so it's applied to the new elements
             GenerateSettingsPanel();
+            GenerateEmulatorManagementPanel();
             Theming(darkModeChkBx.IsChecked.Value);
         }
 
@@ -365,6 +367,7 @@ namespace Odyssey
         // Save settings
         private void SaveSettings()
         {
+            GenerateSettingsPanel();
             Properties.Settings.Default.DarkMode = darkModeChkBx.IsChecked.GetValueOrDefault();
 
             // For each textbox named "path*TxtBx", assign the text to the corresponding setting
@@ -541,6 +544,9 @@ namespace Odyssey
 
             // Find the grid within the settings TabPanel
             var settingsGrid = settingsTabPanel?.Children.OfType<Grid>().FirstOrDefault();
+
+            if (settingsGrid.Name == "SettingsGrid") return;
+
             settingsGrid.Name = "SettingsGrid";
 
             // For each emulator in the MyEmulators list, create a new row in the settings grid
@@ -555,7 +561,7 @@ namespace Odyssey
                 // Add the row to the settings grid
                 settingsGrid?.RowDefinitions.Add(row);
 
-                // Create the emulator label on this row
+                // Create the emulator TextBlock on this row
                 var emuTxtBlk = new TextBlock()
                 {
                     Text = emu.Name + ":",
@@ -591,18 +597,104 @@ namespace Odyssey
             }
         }
 
+        private void GenerateEmulatorManagementPanel()
+        {
+            // Find the emulators TabPanel
+            var emulatorsTabPanel = MainGrid.Children.OfType<TabPanel>().FirstOrDefault(x => x.Name == "Emulators");
+
+            // Find the grid within the emulators TabPanel
+            var emulatorsGrid = emulatorsTabPanel?.Children.OfType<Grid>().FirstOrDefault();
+
+            if (emulatorsGrid.Name == "EmulatorsGrid") return;
+
+            emulatorsGrid.Name = "EmulatorsGrid";
+
+            RowDefinition? row;
+            foreach (Emulator emu in MyEmulators)
+            {
+                // Create a new row
+                row = new RowDefinition();
+
+                // Set the height of the row to auto
+                row.Height = new GridLength(45);
+
+                // Add the row to the settings grid
+                emulatorsGrid?.RowDefinitions.Add(row);
+
+                // Create the emulator TextBlock on this row
+                var emuTxtBlk = new TextBlock()
+                {
+                    Text = emu.Name,
+                    FontSize = 20,
+                    Margin = new Thickness(0, 10, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var emuDelBtn = new Button()
+                {
+                    Content = "Delete",
+                    Name = "Delete" + emu.Name + "Btn",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(2, 2, 208, 2)
+                };
+
+                var emuDldBtn = new Button()
+                {
+                    Content = "Download",
+                    Name = "Download" + emu.Name + "Btn",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(2, 2, 100, 2)
+                };
+
+                var emuRunBtn = new Button()
+                {
+                    Content = "Run",
+                    Name = "Run" + emu.Name + "Btn",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(2, 2, 30, 2)
+                };
+
+                emuDelBtn.Click += EmulatorManagementBtn_Click;
+                emuDldBtn.Click += EmulatorManagementBtn_Click;
+                emuRunBtn.Click += EmulatorManagementBtn_Click;
+
+                // Set the row for both elements
+                Grid.SetRow(emuTxtBlk, emulatorsGrid?.RowDefinitions.Count - 1 ?? 0);
+                Grid.SetRow(emuDelBtn, emulatorsGrid?.RowDefinitions.Count - 1 ?? 0);
+                Grid.SetRow(emuDldBtn, emulatorsGrid?.RowDefinitions.Count - 1 ?? 0);
+                Grid.SetRow(emuRunBtn, emulatorsGrid?.RowDefinitions.Count - 1 ?? 0);
+
+                // Add them to the row
+                emulatorsGrid?.Children.Add(emuTxtBlk);
+                emulatorsGrid?.Children.Add(emuDelBtn);
+                emulatorsGrid?.Children.Add(emuDldBtn);
+                emulatorsGrid?.Children.Add(emuRunBtn);
+            }
+
+            // Create a new row
+            row = new RowDefinition();
+
+            // Set the height of the row to auto
+            row.Height = new GridLength(45);
+
+            // Add the row to the settings grid
+            emulatorsGrid?.RowDefinitions.Add(row);
+
+            Grid.SetRow(DownloadProgressBar, emulatorsGrid?.RowDefinitions.Count ?? 0);
+
+        }
+
         // Handles clicking any of the buttons in the Emulator Management panel
         private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
-            Emulator FindEmu(string name, string verb)
+            Emulator FindEmu(string name, string? verb)
             {
                 if (verb == null) return null;
-                foreach (var emu in MyEmulators.Where(emu => emu.Name == name))
-                {
-                    return emu;
-                }
-
-                return null;
+                return MyEmulators.Where(emu => emu.Name == name).FirstOrDefault();
             }
 
             // Example of name: "RunXenia"
