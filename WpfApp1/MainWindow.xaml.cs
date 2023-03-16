@@ -4,6 +4,7 @@
     {
         // TODO: Consistent variable and function naming (excluding cases as necessary)
         // TODO: Better implementation of using the %APPDATA% folder
+        // TODO: Generation of Emulator and Settings panels using the MyEmulators list
 
         // Contains games stored in a sane fashion
         public List<Game> MyGames = new();
