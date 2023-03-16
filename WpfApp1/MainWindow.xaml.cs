@@ -1,4 +1,6 @@
-﻿namespace Odyssey
+﻿using HorizontalAlignment = System.Windows.HorizontalAlignment;
+
+namespace Odyssey
 {
     public partial class MainWindow
     {
@@ -91,6 +93,12 @@
                     Uri = x.Uri
                 });
             }
+
+            // TODO: These shouldn't be here
+            // When the Emulators list is full, generate the settings panel and set theming again
+            // so it's applied to the new elements
+            GenerateSettingsPanel();
+            Theming(darkModeChkBx.IsChecked.Value);
         }
 
         // Allow for switching between light and dark themes
@@ -212,9 +220,9 @@
 
             if (lEmulator == "Invalid")
                 pickEmulatorFailed = true;
-            
+
             if (VerifySetting(pathGameFolderTxtBx, false))
-                    lGame = FindGame(game); // Prevents calling the method twice
+                lGame = FindGame(game); // Prevents calling the method twice
             else
             {
                 verifyPathSettingFailed = true;
@@ -236,7 +244,7 @@
             if (pickEmulatorFailed || findGameFailed)
             {
                 string errorMessage = "";
-                if(verifyPathSettingFailed)
+                if (verifyPathSettingFailed)
                     errorMessage += "ERROR 1: Game folder path is invalid. Please check your settings.\n";
                 if (findGameFailed)
                     errorMessage += $"ERROR 2: ROM/ISO file for {game.Title} was not found, is it in your game folder?\n";
@@ -525,38 +533,105 @@
 
         }
 
+        // Generate the settings panel based on the MyEmulators list
+        private void GenerateSettingsPanel()
+        {
+            // Find the settings TabPanel
+            var settingsTabPanel = MainGrid.Children.OfType<TabPanel>().FirstOrDefault(x => x.Name == "Settings");
+
+            // Find the grid within the settings TabPanel
+            var settingsGrid = settingsTabPanel?.Children.OfType<Grid>().FirstOrDefault();
+            settingsGrid.Name = "SettingsGrid";
+
+            // For each emulator in the MyEmulators list, create a new row in the settings grid
+            foreach (Emulator emu in MyEmulators)
+            {
+                // Create a new row
+                var row = new RowDefinition();
+
+                // Set the height of the row to auto
+                row.Height = new GridLength(30);
+
+                // Add the row to the settings grid
+                settingsGrid?.RowDefinitions.Add(row);
+
+                // Create the emulator label on this row
+                var emuTxtBlk = new TextBlock()
+                {
+                    Text = emu.Name + ":",
+                    FontSize = 20,
+                    Margin = new Thickness(0, 10, 0, 0),
+                    Name = emu.Name + "TxtBlk",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var emuPathTxBx = new TextBox()
+                {
+                    Name = "path" + emu.Name + "TxtBx",
+                    TextWrapping = TextWrapping.Wrap,
+                    MinHeight = 25,
+                    Width = 380,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                // Set the double click event for the textbox
+                emuPathTxBx.MouseDoubleClick += SummonPicker;
+                emuPathTxBx.TextChanged += VerifySettingOnChange;
+
+                // Set the row for both elements
+                Grid.SetRow(emuPathTxBx, settingsGrid?.RowDefinitions.Count - 1 ?? 0);
+                Grid.SetRow(emuTxtBlk, settingsGrid?.RowDefinitions.Count - 1 ?? 0);
+
+                // Add them to the row
+                settingsGrid?.Children.Add(emuPathTxBx);
+                settingsGrid?.Children.Add(emuTxtBlk);
+
+            }
+        }
+
         // Handles clicking any of the buttons in the Emulator Management panel
         private void EmulatorManagementBtn_Click(object sender, RoutedEventArgs e)
         {
+            Emulator FindEmu(string name, string verb)
+            {
+                if (verb == null) return null;
+                foreach (var emu in MyEmulators.Where(emu => emu.Name == name))
+                {
+                    return emu;
+                }
+
+                return null;
+            }
+
             // Example of name: "RunXenia"
             var name = (sender as Button)?.Name.Split("Btn", 2)[0];
             if (name == null) return;
 
             if (name.Contains("Download"))
             {
-                name = name.Split("Download", 2)[1];
-                DownloadEmulator(name);
+                PrepareEmulator(FindEmu(name.Split("Download", 2)[1], "Download"));
             }
             else if (name.Contains("Run"))
             {
-                name = name.Split("Run", 2)[1];
-                EmulatorManagementRun(name);
+                EmulatorManagementRun(FindEmu(name.Split("Run", 2)[1], "Run"));
             }
             else if (name.Contains("Delete"))
             {
-                name = name.Split("Delete", 2)[1];
-                DeleteEmulator(name);
+                DeleteEmulator(FindEmu(name.Split("Delete", 2)[1], "Delete"));
             }
+
+
+
         }
 
         // Delete and emulator by name
         // TODO: Investigate SNES9x "Valid.Ext" file causing an exception
-        // TODO: Make this take an Emulator as a parameter instead of a string
-        private void DeleteEmulator(string? name)
+        private void DeleteEmulator(Emulator emu)
         {
-            if(name == null) return;
-            var folder = FindFolder(OdysseyPath, name);
-            var file = FindFile(OdysseyPath, name);
+            var folder = FindFolder(OdysseyPath, emu.Name);
+            var file = FindFile(OdysseyPath, emu.Name);
             if (!Path.Exists(folder)) return;
             try
             {
@@ -571,43 +646,37 @@
             }
         }
 
-        // Determines some things to download an emulator
-        // TODO: Make this take an Emulator as a parameter instead of a string
-        private void DownloadEmulator(string name)
+        // Determines the correct file extension for the emulator
+        private void PrepareEmulator(Emulator emu)
         {
-            foreach (var emu in MyEmulators.Where(emu => emu.Name == name))
-            {
-                var output = emu.Name;
+            var output = emu.Name;
 
-                if (emu.Uri.Contains(".zip"))
-                    output += ".zip";
-                else if (emu.Uri.Contains(".7z"))
-                    output += ".7z";
-                else if (emu.Uri.Contains(".rar"))
-                    output += ".rar";
+            if (emu.Uri.Contains(".zip"))
+                output += ".zip";
+            else if (emu.Uri.Contains(".7z"))
+                output += ".7z";
+            else if (emu.Uri.Contains(".rar"))
+                output += ".rar";
 
-                if (Path.Exists(OdysseyPath + "\\" + output))
-                    File.Delete(OdysseyPath + "\\" + output);
+            if (Path.Exists(OdysseyPath + "\\" + output))
+                File.Delete(OdysseyPath + "\\" + output);
 
-                InstallEmulator(emu, output);
-            }
+            // Download the emulator with this information
+            DownloadEmulator(emu, output);
         }
 
         // Run an emulator from the Emulator Management panel
-        // TODO: Make this take an Emulator as a parameter instead of a string
-        private void EmulatorManagementRun(string name)
+        private void EmulatorManagementRun(Emulator emu)
         {
-            var setting = "path" + name;
+            var setting = "path" + emu.Name;
 
             // Verify the setting exists
-            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().Any(x => x.Name == setting))
-            {
-                var emu = (string)Properties.Settings.Default[setting];
-                if (Path.Exists(emu))
-                    Process.Start(emu);
-                else
-                    MessageBox.Show("Emulator not found :(");
-            }
+            if (Properties.Settings.Default.Properties.Cast<SettingsProperty>().All(x => x.Name != setting)) return;
+            var emuExecutable = (string)Properties.Settings.Default[setting];
+            if (Path.Exists(emuExecutable))
+                Process.Start(emuExecutable);
+            else
+                MessageBox.Show($"{emu.Name} not found :(");
         }
 
         // Run the BigFilter when the text box contents have changed
@@ -846,72 +915,78 @@
             ApplyFilteredList(list);
         }
 
-        // Downloads an emulator, extracts it and then adds the emulator path to settings
-        // TODO: Split into multiple functions, this is a mess
-        public void InstallEmulator(Emulator? emu, string? output)
+        // Downloads an emulator, given the emulator object and the output file name
+        public void DownloadEmulator(Emulator? emu, string? output)
         {
             if (emu == null || output == null) return;
-            var outputPath = OdysseyPath + "\\" + output;
 
-            using (WebClient wc = new WebClient())
+            // TODO: use HttpClient as WebClient is obsolete
+            using var wc = new WebClient();
+
+            // Download from URL to location
+            wc.DownloadFileAsync(new Uri(emu.Uri), OdysseyPath + "\\" + output);
+            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(WcDownloadProgressChanged);
+
+            // For each update in the downloads progress, do this
+            void WcDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
             {
-                //Download from URL to location
-                wc.DownloadFileAsync(new Uri(emu.Uri), outputPath);
-                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(WcDownloadProgressChanged);
+                // Set the download progress bar to show the current percentage
+                DownloadProgressBar.Value = e.ProgressPercentage;
 
-                // For each update in the downloads progress, do this
-                void WcDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+                if (e.ProgressPercentage % 10 == 1)
+                    Trace.WriteLine($"[INFO]: Download progress of {output} {DownloadProgressBar.Value}%");
+
+                if (e.ProgressPercentage == 100)
                 {
-                    DownloadProgressBar.Value = e.ProgressPercentage;
 
-                    if (e.ProgressPercentage % 5 == 1)
-                        Trace.WriteLine($"[INFO]: Download progress of {output} {e.ProgressPercentage}%");
+                    wc.Dispose(); // Dispose of the web client
+                    Trace.WriteLine($"[INFO]: {output} downloaded from {emu.Uri}");
 
-                    if (e.ProgressPercentage == 100)
-                    {
-                        void Save(string extension)
-                        {
-                            var settingName = "path" + emu.Name;
-
-                            var path = FindFile(FindFolder(OdysseyPath, emu.Name), emu.Exectuable);
-
-                            if (!path.EndsWith(".exe")) return;
-                            // Put the found executable path into settings
-                            Properties.Settings.Default[settingName] = path;
-
-                            // Load each of the settings
-                            LoadSettings();
-
-                            // Save the settings
-                            SaveSettings();
-
-                        }
-
-                        wc.Dispose(); // Dispose of the web client
-                        Trace.WriteLine($"[INFO]: {output} downloaded from {emu.Uri}");
-
-                        if (output.EndsWith(".7z"))
-                            if (ExtractArchive(outputPath, OdysseyPath + "\\" + output.Split(".7z", 2)[0]))
-                            {
-                                Trace.WriteLine("[INFO]: Adding to settings");
-                                Save(".7z");
-                            }
-
-                        if (output.EndsWith(".zip"))
-                        {
-                            if (ExtractArchive(outputPath, OdysseyPath + "\\" + output.Split(".zip", 2)[0]))
-                            {
-                                Trace.WriteLine("[INFO]: Adding to settings");
-                                Save(".zip");
-                            }
-                        }
-
-                    }
-
+                    // Upon finishing the download, install the emulator
+                    InstallEmulator(emu, output);
                 }
 
-                // If the web client could not download the zip, this code executes
-                wc.Dispose(); // Dispose of the web client
+            }
+
+            // If the web client could not download the zip, this code executes
+            wc.Dispose(); // Dispose of the web client
+        }
+
+        // Given the emulator object and the output file name, "install" the emulator
+        private void InstallEmulator(Emulator emu, string output)
+        {
+            void Save(string extension)
+            {
+                var settingName = "path" + emu.Name;
+
+                var path = FindFile(FindFolder(OdysseyPath, emu.Name), emu.Exectuable);
+
+                if (!path.EndsWith(".exe")) return;
+                // Put the found executable path into settings
+                Properties.Settings.Default[settingName] = path;
+
+                // Load each of the settings
+                LoadSettings();
+
+                // Save the settings
+                SaveSettings();
+
+            }
+
+            if (output.EndsWith(".7z"))
+                if (ExtractArchive(OdysseyPath + "\\" + output, OdysseyPath + "\\" + output.Split(".7z", 2)[0]))
+                {
+                    Trace.WriteLine("[INFO]: Adding to settings");
+                    Save(".7z");
+                }
+
+            if (output.EndsWith(".zip"))
+            {
+                if (ExtractArchive(OdysseyPath + "\\" + output, OdysseyPath + "\\" + output.Split(".zip", 2)[0]))
+                {
+                    Trace.WriteLine("[INFO]: Adding to settings");
+                    Save(".zip");
+                }
             }
         }
 
